@@ -30,6 +30,15 @@ RETURN:     'return';
 FUNCION:    'func';
 PRINT:      'print';
 INOUT:      'inout';
+APPEND:     'append';
+REMOVE:     'remove';
+REMOVELAST: 'removeLast';
+COUNT:      'count';
+EMPTY:      'isEmpty';
+AT:         'at';
+REPEATING:  'repeating';
+STRUCT:     'struct';
+MUTATING:   'mutating';
 
 // primitives
 NUMBER: [0-9]+ ('.' [0-9]+)?;
@@ -74,6 +83,9 @@ RETORNO:        '->';
 COMA:           ',';
 PUNTO:          '.';
 GUIONBAJO:      '_';
+
+CORCHIZQ:       '[';
+CORCHDER:       ']';
 
 
 // skip

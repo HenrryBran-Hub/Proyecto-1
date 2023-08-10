@@ -2,20 +2,26 @@ grammar SwiftGrammar;
 import SwiftLexer; 
 
 inicio
-    : (sentenciascontrol)+ EOF;
+    : (sentenciascontrol)* EOF;
 
 // LISTA DE TODAS LAS SENTENCIAS QUE SE PUEDAN EJECUTAR EN EL ARCHIVO
 sentenciascontrol
-    : declavariable (PUNTOCOMA)?
-    | declaconstante (PUNTOCOMA)?
-    | asignacionvariable (PUNTOCOMA)?
-    | ifelsecontrol
+    : ifelsecontrol
     | swtichcontrol
     | whilecontrol
     | forcontrol
     | guardcontrol
     | printcontrol
+    | structcontrol
     | funciondeclaracioncontrol
+    | declavariable (PUNTOCOMA)?
+    | declaconstante (PUNTOCOMA)?
+    | asignacionvariable (PUNTOCOMA)?
+    | vectorcontrol (PUNTOCOMA)?
+    | vectoragregar (PUNTOCOMA)?
+    | vectorremover (PUNTOCOMA)?
+    | matrizcontrol (PUNTOCOMA)?
+    | matrizasignacion (PUNTOCOMA)?
     ;
 
 listainstrucciones
@@ -35,6 +41,11 @@ listainstrucciones
     | floatembebida
     | stringembebida
     | funcionllamadacontrol
+    | vectorcontrol (PUNTOCOMA)?
+    | vectoragregar (PUNTOCOMA)?
+    | vectorremover (PUNTOCOMA)?
+    | matrizcontrol (PUNTOCOMA)?
+    | matrizasignacion (PUNTOCOMA)?
     ;
 
 // DECLARACIÓN DE VARIABLES
@@ -53,8 +64,8 @@ declaconstante
 // ASIGNACION DE VARIABLES
 asignacionvariable
     : ID_VALIDO IG expresion
-    | ID_VALIDO SUMA
-    | ID_VALIDO RESTA
+    | ID_VALIDO SUMA expresion
+    | ID_VALIDO RESTA expresion
     ;
 
 tipodato
@@ -67,22 +78,15 @@ tipodato
 
 // expresion GENERAL fragment
 expresion
-    : expresion AND expresion 
-    | expresion OR expresion
-    | expresion MAYOR expresion
-    | expresion MENOR expresion
-    | expresion MAY_IG expresion
-    | expresion MEN_IG expresion
-    | expresion IG_IG expresion
-    | expresion DIF expresion
-    | expresion ADD expresion
-    | expresion SUB expresion
-    | expresion DIV expresion
-    | expresion MUL expresion
-    | expresion MODULO expresion
-    | PARIZQ expresion PARDER
+    : NOT expresion
+    | left=expresion op=(DIV|MUL|MODULO) right=expresion
+    | left=expresion op=(ADD|SUB) right=expresion
+    | left=expresion op=(MAYOR| MENOR| MAY_IG|MEN_IG) right=expresion
+    | left=expresion op=(IG_IG|DIF) right=expresion 
+    | left=expresion op=AND right=expresion 
+    | left=expresion op=OR right=expresion 
+    | PARIZQ expresion PARDER    
     | SUB expresion
-    | NOT expresion
     | NUMBER
     | CADENA
     | TRU
@@ -94,6 +98,10 @@ expresion
     | floatembebida
     | stringembebida
     | funcionllamadacontrol
+    | vectorvacio
+    | vectorcount
+    | vectoraccess
+    | matrizobtener
     ;
 
 // CREACION DE IF-ELSE
@@ -105,12 +113,7 @@ ifelsecontrol
 
 // CREACION DEL SWITCH
 swtichcontrol
-    : SWITCH expresion LLAVEIZQ caselist (defecto)? LLAVEDER
-    ;
-
-caselist
-    : caselist casecontrol
-    | casecontrol
+    : SWITCH expresion LLAVEIZQ casecontrol+ (defecto)? LLAVEDER
     ;
 
 casecontrol
@@ -134,7 +137,7 @@ forcontrol
 
 //CREACION DE GUARD
 guardcontrol
-    : GUARD expresion ELSE LLAVEIZQ (listainstrucciones)* (CONTINUE|BREAK|retorno) LLAVEDER
+    : GUARD expresion ELSE LLAVEIZQ (listainstrucciones)* (CONTINUE|BREAK|retorno) (PUNTOCOMA)? LLAVEDER
     ;
 
 //CREACION DEL RETURN
@@ -143,14 +146,78 @@ retorno
     ;
 
 //CREACION DEL VECTOR (pendiente)
-vectorontrol
-    : VAR ID_VALIDO DOS_PUNTOS tipodato definicionvector
+vectorcontrol
+    : VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER definicionvector
     ;
 
 definicionvector
-    : LLAVEIZQ tipodato LLAVEDER
+    : IG CORCHIZQ listaexpresion CORCHDER
+    | CORCHIZQ tipodato CORCHDER CORCHIZQ CORCHDER
     | PARIZQ PARDER
     | ID_VALIDO
+    ;
+
+listaexpresion
+    : expresion (COMA listaexpresion)*
+    ;
+
+vectoragregar
+    : ID_VALIDO PUNTO APPEND PARIZQ expresion PARDER
+    | ID_VALIDO CORCHIZQ expresion CORCHDER IG ID_VALIDO CORCHIZQ expresion CORCHDER
+    ;
+
+vectorremover
+    : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER
+    | ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expresion PARDER
+    ;
+vectorvacio
+    : ID_VALIDO PUNTO EMPTY
+    ;
+
+vectorcount
+    :ID_VALIDO PUNTO COUNT
+    ;
+
+vectoraccess
+    : ID_VALIDO CORCHIZQ expresion CORCHDER
+    ;
+
+//CREACION DE MATRICES
+matrizcontrol
+    : VAR ID_VALIDO ( DOS_PUNTOS tipomatriz)? IG defmatriz
+    ;
+
+tipomatriz
+    : CORCHIZQ tipomatriz CORCHDER
+    | CORCHIZQ tipodato CORCHDER
+    ;
+
+defmatriz
+    : listavaloresmat
+    | simplematriz
+    ;
+
+listavaloresmat
+    : CORCHIZQ listavaloresmat2 CORCHDER
+    ;
+
+listavaloresmat2
+    : listavaloresmat2 COMA listavaloresmat
+    | listavaloresmat
+    | listaexpresion
+    ;
+
+simplematriz
+    : tipomatriz PARIZQ REPEATING DOS_PUNTOS simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER
+    | tipomatriz PARIZQ REPEATING DOS_PUNTOS expresion COMA COUNT DOS_PUNTOS NUMBER PARDER
+    ;
+
+matrizasignacion
+    : ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER ( CORCHIZQ expresion CORCHDER )* IG expresion
+    ;
+
+matrizobtener
+    :  ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER ( CORCHIZQ expresion CORCHDER )*
     ;
 
 //CREACION DE EMBEBIDAS
@@ -188,4 +255,13 @@ funcionllamadacontrol
 listaparametrosllamada
     : COMA (ID_VALIDO DOS_PUNTOS )? ('&')? expresion listaparametrosllamada
     | (ID_VALIDO DOS_PUNTOS)? ('&')? expresion
+    ;
+
+structcontrol
+    : STRUCT ID_VALIDO LLAVEIZQ (listaatributos)* LLAVEDER
+    ;
+
+listaatributos
+    : (LET|VAR) ID_VALIDO ( DOS_PUNTOS tipodato)? (IG expresion)? PUNTOCOMA
+    | MUTATING CIERRE_INTE declaracionfunciones
     ;
