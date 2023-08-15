@@ -1,0 +1,86 @@
+package instructions
+
+import (
+	"Backend/environment"
+	"Backend/interfaces"
+	"strconv"
+)
+
+type VariableDeclaracion struct {
+	Lin   int
+	Col   int
+	Name  string
+	Type  environment.TipoExpresion
+	Value interfaces.Expression
+}
+
+func NewVariableDeclaration(lin int, col int, name string, tipo environment.TipoExpresion, value interfaces.Expression) VariableDeclaracion {
+	return VariableDeclaracion{lin, col, name, tipo, value}
+}
+
+func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+	value := v.Value.Ejecutar(ast, env)
+	symbol := environment.Symbol{
+		Lin:   v.Lin,
+		Col:   v.Col,
+		Tipo:  v.Type,
+		Valor: value.Valor,
+	}
+	Variable := environment.Variable{
+		Name:    v.Name,
+		Symbols: symbol,
+	}
+
+	var tipoexp int = -1
+	var tipoexpstr string
+	switch symbol.Valor.(type) {
+	case int:
+		tipoexp = 0
+		tipoexpstr = "Int"
+	case float64:
+		tipoexp = 1
+		tipoexpstr = "Float"
+	case string:
+		tipoexp = 2
+		tipoexpstr = "String"
+	case bool:
+		tipoexp = 3
+		tipoexpstr = "Boolean"
+	case rune:
+		tipoexp = 4
+		tipoexpstr = "Character"
+	default:
+		tipoexp = 5
+		tipoexpstr = "nil"
+	}
+
+	var tipoexpstr2 string
+	switch v.Type {
+	case 0:
+		tipoexpstr2 = "Int"
+	case 1:
+		tipoexpstr2 = "Float"
+	case 2:
+		tipoexpstr2 = "String"
+	case 3:
+		tipoexpstr2 = "Boolean"
+	case 4:
+		tipoexpstr2 = "Character"
+	default:
+		tipoexpstr2 = "nil"
+	}
+
+	if tipoexp != int(v.Type) {
+		Errores := environment.Errores{
+			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \n Tipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+		}
+		ast.ErroresHTML(Errores)
+		return nil
+	}
+
+	ast.GuardarVariable(Variable)
+	return nil
+}

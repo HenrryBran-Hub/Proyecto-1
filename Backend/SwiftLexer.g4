@@ -34,7 +34,7 @@ APPEND:     'append';
 REMOVE:     'remove';
 REMOVELAST: 'removeLast';
 COUNT:      'count';
-EMPTY:      'isEmpty';
+ISEMPTY:      'isEmpty';
 AT:         'at';
 REPEATING:  'repeating';
 STRUCT:     'struct';

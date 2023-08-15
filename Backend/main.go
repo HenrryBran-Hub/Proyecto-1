@@ -1,12 +1,58 @@
 package main
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
-	"net/http"
+	//"net/http"
+
+	"Backend/environment"
+	"Backend/interfaces"
+	"Backend/parser"
+
+	"github.com/antlr4-go/antlr/v4"
 )
 
+type TreeShapeListener struct {
+	*parser.BaseSwiftGrammarListener
+	Code []interface{}
+}
+
 func main() {
+	//Entrada
+	//code := "var Cadena:String = \"hola\" \n var entero:Int = 3.25 \nprint(Cadena + entero)"
+	code := "var Cadena:Int = 25 \n var entero:Int = cadena \nprint(entero + Cadena)"
+	//Leyendo entrada
+	input := antlr.NewInputStream(code)
+	lexer := parser.NewSwiftLexer(input)
+	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+	//creacion de parser
+	p := parser.NewSwiftGrammarParser(tokens)
+	p.BuildParseTrees = true
+	tree := p.S()
+	//listener
+	var listener *TreeShapeListener = NewTreeShapeListener()
+	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
+	Code := listener.Code
+	//create ast
+	var Ast environment.AST
+	Ast.IniciarAmbito()
+	//ejecución
+	for _, inst := range Code {
+		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+	}
+	fmt.Println("imprimimos el ast " + Ast.GetPrint())
+	fmt.Println("imprimimos el ast " + Ast.GetErrors())
+}
+
+func NewTreeShapeListener() *TreeShapeListener {
+	return new(TreeShapeListener)
+}
+
+func (this *TreeShapeListener) ExitS(ctx *parser.SContext) {
+	this.Code = ctx.GetCode()
+}
+
+/*
 	http.HandleFunc("/nombre", func(w http.ResponseWriter, r *http.Request) {
 		names := []string{"Alice", "Bob", "Charlie", "David", "Eva"}
 		randomName := names[0]
@@ -35,4 +81,4 @@ func main() {
 
 	fmt.Println("Servidor escuchando en http://localhost:8080")
 	http.ListenAndServe(":8080", corsHandler(http.DefaultServeMux))
-}
+*/

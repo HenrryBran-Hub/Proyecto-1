@@ -1,267 +1,99 @@
-grammar SwiftGrammar; 
-import SwiftLexer; 
+grammar SwiftGrammar;
 
-inicio
-    : (sentenciascontrol)* EOF;
+options {
+	tokenVocab = SwiftLexer;
+}
 
-// LISTA DE TODAS LAS SENTENCIAS QUE SE PUEDAN EJECUTAR EN EL ARCHIVO
-sentenciascontrol
-    : ifelsecontrol
-    | swtichcontrol
-    | whilecontrol
-    | forcontrol
-    | guardcontrol
-    | printcontrol
-    | structcontrol
-    | funciondeclaracioncontrol
-    | declavariable (PUNTOCOMA)?
-    | declaconstante (PUNTOCOMA)?
-    | asignacionvariable (PUNTOCOMA)?
-    | vectorcontrol (PUNTOCOMA)?
-    | vectoragregar (PUNTOCOMA)?
-    | vectorremover (PUNTOCOMA)?
-    | matrizcontrol (PUNTOCOMA)?
-    | matrizasignacion (PUNTOCOMA)?
-    ;
+@header {
+    import "Backend/interfaces"
+    import "Backend/environment"
+    import "Backend/expressions"
+    import "Backend/instructions"
+    import "strings"
+}
 
-listainstrucciones
-    : declavariable (PUNTOCOMA)?
-    | declaconstante (PUNTOCOMA)?
-    | asignacionvariable (PUNTOCOMA)?
-    | ifelsecontrol
-    | swtichcontrol
-    | whilecontrol
-    | forcontrol
-    | guardcontrol
-    | CONTINUE (PUNTOCOMA)?
-    | BREAK (PUNTOCOMA)?
-    | retorno (PUNTOCOMA)?
-    | printcontrol
-    | intembebida
-    | floatembebida
-    | stringembebida
-    | funcionllamadacontrol
-    | vectorcontrol (PUNTOCOMA)?
-    | vectoragregar (PUNTOCOMA)?
-    | vectorremover (PUNTOCOMA)?
-    | matrizcontrol (PUNTOCOMA)?
-    | matrizasignacion (PUNTOCOMA)?
-    ;
+s returns [[]interface{} code]
+: block EOF
+    {   
+        $code = $block.blk
+    }
+;
 
-// DECLARACIÓN DE VARIABLES
-declavariable
-    : VAR ID_VALIDO DOS_PUNTOS tipodato IG expresion
-    | VAR ID_VALIDO IG expresion
-    | VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE
-    ;
+block returns [[]interface{} blk]
+@init{
+    $blk = []interface{}{}
+    var listInt []IInstructionContext
+  }
+: ins+=instruction+
+    {
+        listInt = localctx.(*BlockContext).GetIns()
+        for _, e := range listInt {
+            $blk = append($blk, e.GetInst())
+        }
+    }
+;
 
-// DECLARACION CONSTANTE
-declaconstante
-    : LET ID_VALIDO DOS_PUNTOS tipodato IG expresion
-    | LET ID_VALIDO IG expresion
-    ;
+instruction returns [interfaces.Instruction inst]
+: printstmt { $inst = $printstmt.prnt}
+| declavarible { $inst = $declavarible.decvbl}
+;
 
-// ASIGNACION DE VARIABLES
-asignacionvariable
-    : ID_VALIDO IG expresion
-    | ID_VALIDO SUMA expresion
-    | ID_VALIDO RESTA expresion
-    ;
+printstmt returns [interfaces.Instruction prnt]
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
+;
 
-tipodato
-    : INT
-    | FLOAT
-    | STRING
-    | BOOL 
-    | CHARACT
-    ;
+declavarible returns [interfaces.Instruction decvbl]
+: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
+;
 
-// expresion GENERAL fragment
-expresion
-    : NOT expresion
-    | left=expresion op=(DIV|MUL|MODULO) right=expresion
-    | left=expresion op=(ADD|SUB) right=expresion
-    | left=expresion op=(MAYOR| MENOR| MAY_IG|MEN_IG) right=expresion
-    | left=expresion op=(IG_IG|DIF) right=expresion 
-    | left=expresion op=AND right=expresion 
-    | left=expresion op=OR right=expresion 
-    | PARIZQ expresion PARDER    
-    | SUB expresion
-    | NUMBER
-    | CADENA
-    | TRU
-    | FAL
-    | CHARACTER
-    | ID_VALIDO
-    | NULO
-    | intembebida
-    | floatembebida
-    | stringembebida
-    | funcionllamadacontrol
-    | vectorvacio
-    | vectorcount
-    | vectoraccess
-    | matrizobtener
-    ;
+tipodato returns [environment.TipoExpresion tipo]
+: INT { $tipo = environment.INTEGER }
+| FLOAT { $tipo = environment.FLOAT }
+| STRING { $tipo = environment.STRING }
+| BOOL { $tipo = environment.BOOLEAN }
+| CHARACT { $tipo = environment.CHARACTER }
+;
 
-// CREACION DE IF-ELSE
-ifelsecontrol
-    : IF expresion LLAVEIZQ (listainstrucciones)* LLAVEDER
-    | IF expresion LLAVEIZQ (listainstrucciones)* LLAVEDER ELSE LLAVEIZQ (listainstrucciones)* LLAVEDER 
-    | IF expresion LLAVEIZQ (listainstrucciones)* LLAVEDER ELSE ifelsecontrol
-    ;
-
-// CREACION DEL SWITCH
-swtichcontrol
-    : SWITCH expresion LLAVEIZQ casecontrol+ (defecto)? LLAVEDER
-    ;
-
-casecontrol
-    : CASE expresion DOS_PUNTOS (listainstrucciones)*
-    ;
-
-defecto
-    : DEFAULT DOS_PUNTOS (listainstrucciones)*
-    ;
-
-// CREACION DEL WHILE
-whilecontrol
-    : WHILE expresion LLAVEIZQ (listainstrucciones)* LLAVEDER
-    ;
-
-//CREACION DEL FOR
-forcontrol
-    : FOR ID_VALIDO IN expresion LLAVEIZQ (listainstrucciones)* LLAVEDER
-    | FOR ID_VALIDO IN expresion RANGO  expresion LLAVEIZQ (listainstrucciones)* LLAVEDER
-    ;
-
-//CREACION DE GUARD
-guardcontrol
-    : GUARD expresion ELSE LLAVEIZQ (listainstrucciones)* (CONTINUE|BREAK|retorno) (PUNTOCOMA)? LLAVEDER
-    ;
-
-//CREACION DEL RETURN
-retorno
-    : RETURN (expresion)? 
-    ;
-
-//CREACION DEL VECTOR (pendiente)
-vectorcontrol
-    : VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER definicionvector
-    ;
-
-definicionvector
-    : IG CORCHIZQ listaexpresion CORCHDER
-    | CORCHIZQ tipodato CORCHDER CORCHIZQ CORCHDER
-    | PARIZQ PARDER
-    | ID_VALIDO
-    ;
-
-listaexpresion
-    : expresion (COMA listaexpresion)*
-    ;
-
-vectoragregar
-    : ID_VALIDO PUNTO APPEND PARIZQ expresion PARDER
-    | ID_VALIDO CORCHIZQ expresion CORCHDER IG ID_VALIDO CORCHIZQ expresion CORCHDER
-    ;
-
-vectorremover
-    : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER
-    | ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expresion PARDER
-    ;
-vectorvacio
-    : ID_VALIDO PUNTO EMPTY
-    ;
-
-vectorcount
-    :ID_VALIDO PUNTO COUNT
-    ;
-
-vectoraccess
-    : ID_VALIDO CORCHIZQ expresion CORCHDER
-    ;
-
-//CREACION DE MATRICES
-matrizcontrol
-    : VAR ID_VALIDO ( DOS_PUNTOS tipomatriz)? IG defmatriz
-    ;
-
-tipomatriz
-    : CORCHIZQ tipomatriz CORCHDER
-    | CORCHIZQ tipodato CORCHDER
-    ;
-
-defmatriz
-    : listavaloresmat
-    | simplematriz
-    ;
-
-listavaloresmat
-    : CORCHIZQ listavaloresmat2 CORCHDER
-    ;
-
-listavaloresmat2
-    : listavaloresmat2 COMA listavaloresmat
-    | listavaloresmat
-    | listaexpresion
-    ;
-
-simplematriz
-    : tipomatriz PARIZQ REPEATING DOS_PUNTOS simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER
-    | tipomatriz PARIZQ REPEATING DOS_PUNTOS expresion COMA COUNT DOS_PUNTOS NUMBER PARDER
-    ;
-
-matrizasignacion
-    : ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER ( CORCHIZQ expresion CORCHDER )* IG expresion
-    ;
-
-matrizobtener
-    :  ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER ( CORCHIZQ expresion CORCHDER )*
-    ;
-
-//CREACION DE EMBEBIDAS
-printcontrol
-    :PRINT PARIZQ (expresion)? PARDER
-    ;
-
-intembebida
-    : INT PARIZQ expresion PARDER
-    ;
-
-floatembebida
-    : FLOAT PARIZQ expresion PARDER
-    ;
-
-stringembebida
-    : STRING PARIZQ expresion PARDER
-    ;
-
-//CREACION DE FUNCIONES
-funciondeclaracioncontrol
-    : FUNCION ID_VALIDO PARIZQ listaparametros? PARDER RETORNO tipodato LLAVEIZQ (listainstrucciones)+ LLAVEDER
-    | FUNCION ID_VALIDO PARIZQ listaparametros? PARDER LLAVEIZQ (listainstrucciones)+ LLAVEDER
-    ;
-
-listaparametros
-    : COMA (ID_VALIDO | GUIONBAJO )? ID_VALIDO DOS_PUNTOS INOUT? tipodato listaparametros
-    | (ID_VALIDO | GUIONBAJO )? ID_VALIDO DOS_PUNTOS INOUT? tipodato
-    ;
-
-funcionllamadacontrol
-    :ID_VALIDO PARIZQ listaparametrosllamada? PARIZQ
-    ;
-
-listaparametrosllamada
-    : COMA (ID_VALIDO DOS_PUNTOS )? ('&')? expresion listaparametrosllamada
-    | (ID_VALIDO DOS_PUNTOS)? ('&')? expresion
-    ;
-
-structcontrol
-    : STRUCT ID_VALIDO LLAVEIZQ (listaatributos)* LLAVEDER
-    ;
-
-listaatributos
-    : (LET|VAR) ID_VALIDO ( DOS_PUNTOS tipodato)? (IG expresion)? PUNTOCOMA
-    | MUTATING CIERRE_INTE declaracionfunciones
-    ;
+expr returns [interfaces.Expression e]
+: left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr op=(ADD|SUB) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr op=(MAY_IG|MAYOR) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr op=(MEN_IG|MENOR) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr op=(IG_IG|DIF) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| PARIZQ expr PARDER { $e = $expr.e }
+| NUMBER                             
+    {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
+        }
+    }
+| CADENA
+    {
+        str := $CADENA.text
+        $e = expressions.NewPrimitive($CADENA.line, $CADENA.pos, str[1:len(str)-1],environment.STRING)
+    }                        
+| TRU { $e = expressions.NewPrimitive($TRU.line, $TRU.pos, true, environment.BOOLEAN) }
+| FAL { $e = expressions.NewPrimitive($FAL.line, $FAL.pos, false, environment.BOOLEAN) }
+| CHARACTER 
+    { 
+        str := $CHARACTER.text
+        $e = expressions.NewPrimitive($FAL.line, $FAL.pos, str[1:len(str)-1], environment.CHARACTER) 
+    }
+|ID_VALIDO
+    {
+        id := $ID_VALIDO.text
+        $e = instructions.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
+    }
+;
