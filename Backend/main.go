@@ -1,9 +1,10 @@
 package main
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"fmt"
-	//"net/http"
+	"io/ioutil"
+	"net/http"
 
 	"Backend/environment"
 	"Backend/interfaces"
@@ -18,34 +19,148 @@ type TreeShapeListener struct {
 }
 
 func main() {
-	//Entrada
-	// code := " var entero:Int?\nvar flotante:Float?\n var cadena:String?\n   var boleano:Bool?\nvar character:Character?"
-	code := "var valor: String? //correcto, declaración sin valor"
-	//Leyendo entrada
+	http.Handle("/simbolos", corsMiddleware(http.HandlerFunc(handleSimbolos)))
+	//http.Handle("/ejecutar", corsMiddleware(http.HandlerFunc(handleEjecutar)))
+	http.Handle("/errores", corsMiddleware(http.HandlerFunc(handleErrores)))
+
+	fmt.Println("Servidor escuchando en http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
+}
+
+func handleEjecutar(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error al leer el cuerpo de la petición", http.StatusInternalServerError)
+		return
+	}
+
+	var data map[string]string
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error al procesar el cuerpo de la petición", http.StatusBadRequest)
+		return
+	}
+
+	code := data["code"]
+	result := ejecutar(code)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"result": result})
+}
+
+func ejecutar(code string) string {
 	input := antlr.NewInputStream(code)
 	lexer := parser.NewSwiftLexer(input)
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-	//creacion de parser
 	p := parser.NewSwiftGrammarParser(tokens)
 	p.BuildParseTrees = true
 	tree := p.S()
-	//listener
 	var listener *TreeShapeListener = NewTreeShapeListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 	Code := listener.Code
-	//create ast
 	var Ast environment.AST
 	Ast.IniciarAmbito()
-	//ejecución
 	for _, inst := range Code {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
 	}
-	fmt.Println("imprimimos el ast " + Ast.GetPrint())
-	fmt.Println("imprimimos la tabla de simbolos:")
-	Ast.TablaVariablesHTML()
-	fmt.Println("imprimimos el los ERRORES")
-	Ast.TablaErroresHTML()
+	fmt.Println("creamos la tabla html ejecutar")
+	return Ast.GetPrint()
+}
 
+func handleSimbolos(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error al leer el cuerpo de la petición", http.StatusInternalServerError)
+		return
+	}
+
+	var data map[string]string
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error al procesar el cuerpo de la petición", http.StatusBadRequest)
+		return
+	}
+
+	code := data["code"]
+	result := ejecutar(code)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"result": result})
+}
+
+func simbolos(code string) string {
+	input := antlr.NewInputStream(code)
+	lexer := parser.NewSwiftLexer(input)
+	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+	p := parser.NewSwiftGrammarParser(tokens)
+	p.BuildParseTrees = true
+	tree := p.S()
+	var listener *TreeShapeListener = NewTreeShapeListener()
+	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
+	Code := listener.Code
+	var Ast environment.AST
+	Ast.IniciarAmbito()
+	for _, inst := range Code {
+		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+	}
+	fmt.Println("creamos la tabla html")
+	//Ast.TablaVariablesHTML()
+	fmt.Println("terminamos la tabla html")
+	return Ast.GetPrint()
+}
+
+func handleErrores(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error al leer el cuerpo de la petición", http.StatusInternalServerError)
+		return
+	}
+
+	var data map[string]string
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error al procesar el cuerpo de la petición", http.StatusBadRequest)
+		return
+	}
+
+	code := data["code"]
+	result := ejecutar(code)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"result": result})
+}
+
+func errores(code string) string {
+	input := antlr.NewInputStream(code)
+	lexer := parser.NewSwiftLexer(input)
+	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+	p := parser.NewSwiftGrammarParser(tokens)
+	p.BuildParseTrees = true
+	tree := p.S()
+	var listener *TreeShapeListener = NewTreeShapeListener()
+	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
+	Code := listener.Code
+	var Ast environment.AST
+	Ast.IniciarAmbito()
+	for _, inst := range Code {
+		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+	}
+	return Ast.GetPrint()
 }
 
 func NewTreeShapeListener() *TreeShapeListener {
@@ -56,33 +171,14 @@ func (this *TreeShapeListener) ExitS(ctx *parser.SContext) {
 	this.Code = ctx.GetCode()
 }
 
-/*
-	http.HandleFunc("/nombre", func(w http.ResponseWriter, r *http.Request) {
-		names := []string{"Alice", "Bob", "Charlie", "David", "Eva"}
-		randomName := names[0]
-		data := map[string]string{"name": randomName}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(data)
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		// Call the next handler in the chain
+		next.ServeHTTP(w, r)
 	})
-
-	http.HandleFunc("/direccion", func(w http.ResponseWriter, r *http.Request) {
-		addresses := []string{"123 Main St", "456 Elm St", "789 Oak St", "321 Maple St", "654 Pine St"}
-		randomAddress := addresses[0]
-		data := map[string]string{"address": randomAddress}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(data)
-	})
-
-	// Configuración de CORS para permitir peticiones desde el frontend
-	corsHandler := func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-			next.ServeHTTP(w, r)
-		})
-	}
-
-	fmt.Println("Servidor escuchando en http://localhost:8080")
-	http.ListenAndServe(":8080", corsHandler(http.DefaultServeMux))
-*/
+}

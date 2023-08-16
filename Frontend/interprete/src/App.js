@@ -7,7 +7,8 @@ const App = () => {
   const textarea1Ref = useRef(null);
   const [code, setCode] = useState('');
   const [currentFile, setCurrentFile] = useState(null);
-
+  const [result, setResult] = useState('');
+  
   const handleAbrirClick = () => {
     fileInputRef.current.click();
   };
@@ -43,6 +44,66 @@ const App = () => {
     alert('Henrry David Bran Velasquez \n201314439');
   };
 
+  const handleEjecutarClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/ejecutar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: textarea1Ref.current.value }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.result);
+        alert('Compilado con Exito');
+      } else {
+        alert('Error en la respuesta:', response.statusText);
+      }
+    } catch (error) {
+      alert('Error en la solicitud:', error);
+    }
+  };
+
+  const handleSimbolosClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/simbolos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: textarea1Ref.current.value }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.result);
+        alert('Compilado con Exito');
+      } else {
+        alert('Error en la respuesta:', response.statusText);
+      }
+    } catch (error) {
+      alert('Error en la solicitud:', error);
+    }
+  };
+
+  const handleErroresClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/errores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: textarea1Ref.current.value }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.result);
+        alert('Compilado con Exito');
+      } else {
+        alert('Error en la respuesta:', response.statusText);
+      }
+    } catch (error) {
+      alert('Error en la solicitud:', error);
+    }
+  };
+
   return (
     <>
       <input
@@ -60,7 +121,7 @@ const App = () => {
             <li className="nav-item">
               <button
                 id="abrir"
-                class="btn btn-outline-primary"
+                className="btn btn-outline-primary"
                 onClick={handleAbrirClick}
               >
                 Abrir
@@ -69,7 +130,7 @@ const App = () => {
             <li className="nav-item">
               <button
                 id="guardar"
-                class="btn btn-outline-primary"
+                className="btn btn-outline-primary"
                 onClick={handleGuardarClick}
               >
                 Guardar
@@ -78,7 +139,7 @@ const App = () => {
             <li className="nav-item">
               <button
                 id="acerca-de"
-                class="btn btn-outline-primary"
+                className="btn btn-outline-primary"
                 onClick={handleAcercaDeClick}
               >
                 Acerca de
@@ -111,21 +172,17 @@ const App = () => {
               rows="22"
               style={{ resize: 'none' }}
               readOnly
+              value={result}
             ></textarea>
           </div>
         </div>
         <hr />
         <div className="row">
           <div className="col-md-12 text-center">
-            <button id="ejecutar" class="btn btn-outline-success">Ejecutar</button>
-            <button
-              id="mostrar-reportes"
-              class="btn btn-outline-info"
-            >
-              Mostrar Reportes
-            </button>
-            <button id="simbolos" class="btn btn-outline-warning">Simbolos</button>
-            <button id="errores" class="btn btn-outline-danger">Errores</button>
+          <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Ejecutar</button>
+            <button id="mostrar-reportes" className="btn btn-outline-info">Mostrar Reportes</button>
+            <button id="simbolos" className="btn btn-outline-warning" onClick={handleSimbolosClick}>Simbolos</button>
+            <button id="errores" className="btn btn-outline-danger" onClick={handleErroresClick}>Errores</button>
           </div>
           <hr />
           <hr />

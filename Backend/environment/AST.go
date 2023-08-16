@@ -3,6 +3,9 @@ package environment
 import (
 	list "container/list"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -134,23 +137,108 @@ func (a *AST) ErroresHTML(errores Errores) {
 }
 
 func (a *AST) TablaVariablesHTML() {
-	fmt.Println("----- Tabla de Simbolos -----")
-	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
-		lista := e.Value.(*list.List)
-		for v := lista.Front(); v != nil; v = v.Next() {
-			variable := v.Value.(Variable)
-			fmt.Println("Nombre:", variable.Name)
-			fmt.Println("Mutable:", variable.Mutable)
-			fmt.Println("Fila:", variable.Symbols.Lin)
-			fmt.Println("Columna:", variable.Symbols.Col)
-			fmt.Println("Valor:", variable.Symbols.Valor)
-			fmt.Println("Tipo:", variable.Symbols.Tipo)
-			fmt.Println("Ambito:", variable.Symbols.Scope)
-			fmt.Println("------------------------------")
-		}
+	// Create a new HTML file
+	fmt.Println("creamos la tabla html en funcion")
+	file, err := os.Create("TablaDeSimbolos.html")
+	if err != nil {
+		log.Fatal(err)
 	}
-	fmt.Println("------------------------------")
+	defer file.Close()
+
+	// Imprimir la ruta del archivo recién creado
+	absPath, err := filepath.Abs("TablaDeSimbolos.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Archivo creado en:", absPath)
 }
+
+/*
+func (a *AST) TablaVariablesHTML() {
+	// Create a new HTML file
+	file, err := os.Create("TablaDeSimbolos.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	   	// Write the HTML header and table structure
+	   	fmt.Fprintln(file, `<!DOCTYPE html>
+	   <html>
+	   <head>
+	   	<title>Tabla de Simbolos</title>
+	   	<style>
+	   		body {
+	   			background-color: #333;
+	   			color: white;
+	   			font-family: sans-serif;
+	   		}
+	   		table {
+	   			border-collapse: collapse;
+	   			width: 100%;
+	   		}
+	   		th, td {
+	   			text-align: left;
+	   			padding: 8px;
+	   			border-bottom: 1px solid #ddd;
+	   		}
+	   		tr:hover {background-color: #555;}
+	   	</style>
+	   </head>
+	   <body>
+	   	<h1>Tabla de Simbolos</h1>
+	   	<table>
+	   		<tr>
+	   			<th>No</th>
+	   			<th>Nombre</th>
+	   			<th>Mutable</th>
+	   			<th>Fila</th>
+	   			<th>Columna</th>
+	   			<th>Valor</th>
+	   			<th>Tipo</th>
+	   			<th>Ambito</th>
+	   		</tr>`)
+
+	   		rowNumber := 1
+	   		for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
+	   			lista := e.Value.(*list.List)
+	   			for v := lista.Front(); v != nil; v = v.Next() {
+	   				variable := v.Value.(Variable)
+
+	   				fmt.Fprintf(file, `
+	   					<tr>
+	   						<td>%d</td>
+	   						<td>%s</td>
+	   						<td>%t</td>
+	   						<td>%d</td>
+	   						<td>%d</td>
+	   						<td>%v</td>
+	   						<td>%s</td>
+	   						<td>%s</td>
+	   					</tr>`,
+	   					rowNumber,
+	   					variable.Name,
+	   					variable.Mutable,
+	   					variable.Symbols.Lin,
+	   					variable.Symbols.Col,
+	   					variable.Symbols.Valor,
+	   					variable.Symbols.Tipo,
+	   					variable.Symbols.Scope,
+	   				)
+	   				rowNumber++
+	   			}
+	   		}
+
+	   	// Write the HTML footer
+	   	fmt.Fprintln(file, `
+	           </table>
+	       </body>
+	       </html>`)
+
+	   	// Open the HTML file in the default web browser
+	   	open.Start("TablaDeSimbolos.html")
+}
+*/
 
 func (a *AST) TablaErroresHTML() {
 	fmt.Println("----- Tabla de Errores -----")
