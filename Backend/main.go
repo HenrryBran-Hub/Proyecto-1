@@ -20,7 +20,7 @@ type TreeShapeListener struct {
 
 func main() {
 	http.Handle("/simbolos", corsMiddleware(http.HandlerFunc(handleSimbolos)))
-	//http.Handle("/ejecutar", corsMiddleware(http.HandlerFunc(handleEjecutar)))
+	http.Handle("/ejecutar", corsMiddleware(http.HandlerFunc(handleEjecutar)))
 	http.Handle("/errores", corsMiddleware(http.HandlerFunc(handleErrores)))
 
 	fmt.Println("Servidor escuchando en http://localhost:8080")
@@ -92,7 +92,7 @@ func handleSimbolos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	code := data["code"]
-	result := ejecutar(code)
+	result := simbolos(code)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"result": result})
@@ -113,9 +113,7 @@ func simbolos(code string) string {
 	for _, inst := range Code {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
 	}
-	fmt.Println("creamos la tabla html")
-	//Ast.TablaVariablesHTML()
-	fmt.Println("terminamos la tabla html")
+	Ast.TablaVariablesHTML()
 	return Ast.GetPrint()
 }
 
@@ -139,7 +137,7 @@ func handleErrores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	code := data["code"]
-	result := ejecutar(code)
+	result := errores(code)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"result": result})
@@ -160,6 +158,7 @@ func errores(code string) string {
 	for _, inst := range Code {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
 	}
+	Ast.TablaErroresHTML()
 	return Ast.GetPrint()
 }
 
