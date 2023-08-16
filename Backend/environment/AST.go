@@ -2,6 +2,7 @@ package environment
 
 import (
 	list "container/list"
+	"fmt"
 	"strconv"
 )
 
@@ -18,7 +19,7 @@ type AST struct {
 type Variable struct {
 	Name    string
 	Symbols Symbol
-	Ambito  string
+	Mutable bool
 }
 
 type Errores struct {
@@ -85,6 +86,7 @@ func (a *AST) GuardarVariable(variable Variable) {
 				Fila:        strconv.Itoa(e.Value.(Variable).Symbols.Lin),
 				Columna:     strconv.Itoa(e.Value.(Variable).Symbols.Col),
 				Tipo:        "Error Semantico",
+				Ambito:      variable.Symbols.Scope,
 			}
 			a.ErroresHTML(Errores)
 			return
@@ -98,7 +100,7 @@ func (a *AST) ActualizarVariable(nombre string, nuevoValor Symbol) {
 		lista := e.Value.(*list.List)
 		for v := lista.Front(); v != nil; v = v.Next() {
 			variable := v.Value.(Variable)
-			if variable.Name == nombre {
+			if variable.Name == nombre && variable.Mutable {
 				variable.Symbols = nuevoValor
 				return
 			}
@@ -109,6 +111,7 @@ func (a *AST) ActualizarVariable(nombre string, nuevoValor Symbol) {
 		Fila:        strconv.Itoa(nuevoValor.Lin),
 		Columna:     strconv.Itoa(nuevoValor.Col),
 		Tipo:        "Error Semantico",
+		Ambito:      nuevoValor.Scope,
 	}
 	a.ErroresHTML(Errores)
 }
@@ -130,15 +133,35 @@ func (a *AST) ErroresHTML(errores Errores) {
 	a.Lista_Errores.PushBack(errores)
 }
 
-/*
 func (a *AST) TablaVariablesHTML() {
+	fmt.Println("----- Tabla de Simbolos -----")
 	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
 		lista := e.Value.(*list.List)
 		for v := lista.Front(); v != nil; v = v.Next() {
 			variable := v.Value.(Variable)
-			a.SetPrint("")
+			fmt.Println("Nombre:", variable.Name)
+			fmt.Println("Mutable:", variable.Mutable)
+			fmt.Println("Fila:", variable.Symbols.Lin)
+			fmt.Println("Columna:", variable.Symbols.Col)
+			fmt.Println("Valor:", variable.Symbols.Valor)
+			fmt.Println("Tipo:", variable.Symbols.Tipo)
+			fmt.Println("Ambito:", variable.Symbols.Scope)
+			fmt.Println("------------------------------")
 		}
 	}
-	a.SetError("Error: no hay valores")
+	fmt.Println("------------------------------")
 }
-*/
+
+func (a *AST) TablaErroresHTML() {
+	fmt.Println("----- Tabla de Errores -----")
+	for e := a.Lista_Errores.Front(); e != nil; e = e.Next() {
+		errorItem := e.Value.(Errores)
+		fmt.Println("Descripción:", errorItem.Descripcion)
+		fmt.Println("Fila:", errorItem.Fila)
+		fmt.Println("Columna:", errorItem.Columna)
+		fmt.Println("Tipo:", errorItem.Tipo)
+		fmt.Println("Ambito:", errorItem.Ambito)
+		fmt.Println("------------------------------")
+	}
+	fmt.Println("------------------------------")
+}

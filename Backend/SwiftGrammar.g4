@@ -44,7 +44,8 @@ printstmt returns [interfaces.Instruction prnt]
 
 declavarible returns [interfaces.Instruction decvbl]
 : VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-;
+| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, $expr.e)}
+| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo)};
 
 tipodato returns [environment.TipoExpresion tipo]
 : INT { $tipo = environment.INTEGER }
@@ -70,7 +71,12 @@ expr returns [interfaces.Expression e]
             if err!= nil{
                 fmt.Println(err)
             }
-            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
+	        num2 := fmt.Sprintf("%.6f", num)
+            num3,err := strconv.ParseFloat(num2, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num3,environment.FLOAT)
         }else{
             num,err := strconv.Atoi($NUMBER.text)
             if err!= nil{
@@ -89,7 +95,7 @@ expr returns [interfaces.Expression e]
 | CHARACTER 
     { 
         str := $CHARACTER.text
-        $e = expressions.NewPrimitive($FAL.line, $FAL.pos, str[1:len(str)-1], environment.CHARACTER) 
+        $e = expressions.NewPrimitive($CHARACTER.line, $CHARACTER.pos, str[1:len(str)-1], environment.CHARACTER) 
     }
 |ID_VALIDO
     {

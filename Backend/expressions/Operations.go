@@ -48,7 +48,12 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if dominante == environment.FLOAT {
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 + val2}
+				num2 := fmt.Sprintf("%.6f", val1+val2)
+				num3, err := strconv.ParseFloat(num2, 64)
+				if err != nil {
+					fmt.Println(err)
+				}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 			} else if dominante == environment.STRING {
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
@@ -66,7 +71,12 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if dominante == environment.FLOAT {
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 - val2}
+				num2 := fmt.Sprintf("%.6f", val1-val2)
+				num3, err := strconv.ParseFloat(num2, 64)
+				if err != nil {
+					fmt.Println(err)
+				}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 			} else {
 				ast.SetError("ERROR: No es posible restar")
 			}
@@ -79,7 +89,12 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if dominante == environment.FLOAT {
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 * val2}
+				num2 := fmt.Sprintf("%.6f", val1*val2)
+				num3, err := strconv.ParseFloat(num2, 64)
+				if err != nil {
+					fmt.Println(err)
+				}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 			} else {
 				ast.SetError("ERROR: No es posible Multiplicar")
 			}
@@ -98,7 +113,12 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				if val2 != 0 {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: val1 / val2}
+					num2 := fmt.Sprintf("%.6f", val1/val2)
+					num3, err := strconv.ParseFloat(num2, 64)
+					if err != nil {
+						fmt.Println(err)
+					}
+					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 				} else {
 					ast.SetError("ERROR: No es posible dividir en cero")
 				}

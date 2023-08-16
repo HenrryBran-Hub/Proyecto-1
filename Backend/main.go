@@ -19,8 +19,8 @@ type TreeShapeListener struct {
 
 func main() {
 	//Entrada
-	//code := "var Cadena:String = \"hola\" \n var entero:Int = 3.25 \nprint(Cadena + entero)"
-	code := "var Cadena:Int = 25 \n var entero:Int = cadena \nprint(entero + Cadena)"
+	// code := " var entero:Int?\nvar flotante:Float?\n var cadena:String?\n   var boleano:Bool?\nvar character:Character?"
+	code := "var valor: String? //correcto, declaración sin valor"
 	//Leyendo entrada
 	input := antlr.NewInputStream(code)
 	lexer := parser.NewSwiftLexer(input)
@@ -41,7 +41,11 @@ func main() {
 		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
 	}
 	fmt.Println("imprimimos el ast " + Ast.GetPrint())
-	fmt.Println("imprimimos el ast " + Ast.GetErrors())
+	fmt.Println("imprimimos la tabla de simbolos:")
+	Ast.TablaVariablesHTML()
+	fmt.Println("imprimimos el los ERRORES")
+	Ast.TablaErroresHTML()
+
 }
 
 func NewTreeShapeListener() *TreeShapeListener {

@@ -25,10 +25,12 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 		Col:   v.Col,
 		Tipo:  v.Type,
 		Valor: value.Valor,
+		Scope: "Global",
 	}
 	Variable := environment.Variable{
 		Name:    v.Name,
 		Symbols: symbol,
+		Mutable: true,
 	}
 
 	var tipoexp int = -1
@@ -70,15 +72,32 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 		tipoexpstr2 = "nil"
 	}
 
-	if tipoexp != int(v.Type) {
+	if v.Type == 0 && value.Valor == 0 {
+		Variable.Symbols.Tipo = environment.INTEGER
+		tipoexp = 0
+	}
+
+	if v.Type == 1 && tipoexp == 0 {
+		Variable.Symbols.Tipo = environment.FLOAT
+		tipoexp = 1
+	}
+
+	if v.Type == 4 && value.Tipo == 4 {
+		Variable.Symbols.Tipo = environment.CHARACTER
+		tipoexp = 4
+	}
+
+	if tipoexp != int(Variable.Symbols.Tipo) {
 		Errores := environment.Errores{
-			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \n Tipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
+			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \nTipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
+			Ambito:      value.Scope,
 		}
 		ast.ErroresHTML(Errores)
-		return nil
+		Variable.Symbols.Valor = nil
+		Variable.Symbols.Tipo = environment.INTEGER
 	}
 
 	ast.GuardarVariable(Variable)
