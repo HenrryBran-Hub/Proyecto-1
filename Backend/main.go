@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"Backend/environment"
 	"Backend/interfaces"
@@ -16,6 +17,25 @@ import (
 type TreeShapeListener struct {
 	*parser.BaseSwiftGrammarListener
 	Code []interface{}
+}
+
+type MyErrorListener struct {
+	*antlr.DefaultErrorListener
+	errors []string
+}
+
+func NewMyErrorListener() *MyErrorListener {
+	return new(MyErrorListener)
+}
+
+func (l *MyErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+	l.errors = append(l.errors, fmt.Sprintf("%d,%d,%s", line, column, msg))
+}
+
+func (l *MyErrorListener) ReportError(recognizer antlr.Lexer, e antlr.RecognitionException) {
+	pos := recognizer.GetCharPositionInLine()
+	line := recognizer.GetLine()
+	l.errors = append(l.errors, fmt.Sprintf("%d,%d,%s", line, pos, e.GetMessage()))
 }
 
 func main() {
@@ -57,8 +77,21 @@ func ejecutar(code string) string {
 	input := antlr.NewInputStream(code)
 	lexer := parser.NewSwiftLexer(input)
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create a new instance of MyErrorListener
+	errorListener := NewMyErrorListener()
+
+	// Remove default error listeners and add our custom error listener
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+
 	p := parser.NewSwiftGrammarParser(tokens)
 	p.BuildParseTrees = true
+
+	// Remove default error listeners and add our custom error listener
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
 	tree := p.S()
 	var listener *TreeShapeListener = NewTreeShapeListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
@@ -66,10 +99,20 @@ func ejecutar(code string) string {
 	var Ast environment.AST
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
-		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+		if inst == nil {
+			fmt.Println("Error: inst is nil")
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
+			continue
+		}
+		instruction.Ejecutar(&Ast, nil)
 	}
-	fmt.Println("creamos la tabla html ejecutar")
+
 	return Ast.GetPrint()
+
 }
 
 func handleSimbolos(w http.ResponseWriter, r *http.Request) {
@@ -102,8 +145,21 @@ func simbolos(code string) string {
 	input := antlr.NewInputStream(code)
 	lexer := parser.NewSwiftLexer(input)
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create a new instance of MyErrorListener
+	errorListener := NewMyErrorListener()
+
+	// Remove default error listeners and add our custom error listener
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+
 	p := parser.NewSwiftGrammarParser(tokens)
 	p.BuildParseTrees = true
+
+	// Remove default error listeners and add our custom error listener
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
 	tree := p.S()
 	var listener *TreeShapeListener = NewTreeShapeListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
@@ -111,8 +167,18 @@ func simbolos(code string) string {
 	var Ast environment.AST
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
-		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+		if inst == nil {
+			fmt.Println("Error: inst is nil")
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
+			continue
+		}
+		instruction.Ejecutar(&Ast, nil)
 	}
+
 	Ast.TablaVariablesHTML()
 	return Ast.GetPrint()
 }
@@ -147,8 +213,21 @@ func errores(code string) string {
 	input := antlr.NewInputStream(code)
 	lexer := parser.NewSwiftLexer(input)
 	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create a new instance of MyErrorListener
+	errorListener := NewMyErrorListener()
+
+	// Remove default error listeners and add our custom error listener
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+
 	p := parser.NewSwiftGrammarParser(tokens)
 	p.BuildParseTrees = true
+
+	// Remove default error listeners and add our custom error listener
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
 	tree := p.S()
 	var listener *TreeShapeListener = NewTreeShapeListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
@@ -156,7 +235,31 @@ func errores(code string) string {
 	var Ast environment.AST
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
-		inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+		if inst == nil {
+			fmt.Println("Error: inst is nil")
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
+			continue
+		}
+		instruction.Ejecutar(&Ast, nil)
+	}
+
+	if len(errorListener.errors) > 0 {
+		fmt.Println("Errors:")
+		for _, err := range errorListener.errors {
+			subcadena := strings.Split(err, ",")
+			Errores := environment.Errores{
+				Descripcion: subcadena[2],
+				Fila:        subcadena[0],
+				Columna:     subcadena[1],
+				Tipo:        "Error Sintactico",
+				Ambito:      "",
+			}
+			Ast.ErroresHTML(Errores)
+		}
 	}
 	Ast.TablaErroresHTML()
 	return Ast.GetPrint()

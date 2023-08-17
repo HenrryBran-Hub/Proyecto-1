@@ -8,7 +8,7 @@ const App = () => {
   const [code, setCode] = useState('');
   const [currentFile, setCurrentFile] = useState(null);
   const [result, setResult] = useState('');
-  
+
   const handleAbrirClick = () => {
     fileInputRef.current.click();
   };
@@ -40,6 +40,16 @@ const App = () => {
     }
   };
 
+  const handleGuardarComoClick = () => {
+    const blob = new Blob([textarea1Ref.current.value], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'archivo.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleAcercaDeClick = () => {
     alert('Henrry David Bran Velasquez \n201314439');
   };
@@ -51,7 +61,7 @@ const App = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: textarea1Ref.current.value }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         setResult(data.result);
@@ -71,7 +81,7 @@ const App = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: textarea1Ref.current.value }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         setResult(data.result);
@@ -91,7 +101,7 @@ const App = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: textarea1Ref.current.value }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         setResult(data.result);
@@ -115,39 +125,14 @@ const App = () => {
       <nav className="navbar navbar-dark bg-dark">
         <span className="navbar-brand mb-0 h1 text-light">T-Swift IDE</span>
       </nav>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <button
-                id="abrir"
-                className="btn btn-outline-primary"
-                onClick={handleAbrirClick}
-              >
-                Abrir
-              </button>
-            </li>
-            <li className="nav-item">
-              <button
-                id="guardar"
-                className="btn btn-outline-primary"
-                onClick={handleGuardarClick}
-              >
-                Guardar
-              </button>
-            </li>
-            <li className="nav-item">
-              <button
-                id="acerca-de"
-                className="btn btn-outline-primary"
-                onClick={handleAcercaDeClick}
-              >
-                Acerca de
-              </button>
-            </li>
-          </ul>
+      <div className="container-fluid bg-dark text-light">
+      <div className="col-md-12 text-left">
+            <button id="abrir" className="btn btn-outline-primary" onClick={handleAbrirClick}>Abrir</button>
+            <button id="guardar" className="btn btn-outline-primary" onClick={handleGuardarClick}>Guardar</button>
+            <button id="guardar-como" className="btn btn-outline-primary" onClick={handleGuardarComoClick}>GuardarComo</button>
+            <button id="acerca-de" className="btn btn-outline-primary" onClick={handleAcercaDeClick}>Acerca de</button>
         </div>
-      </nav>
+      </div>
       <div className="container-fluid bg-dark text-light">
         <div className="row">
           <div className="col-md-6">
@@ -179,7 +164,7 @@ const App = () => {
         <hr />
         <div className="row">
           <div className="col-md-12 text-center">
-          <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Ejecutar</button>
+            <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Ejecutar</button>
             <button id="mostrar-reportes" className="btn btn-outline-info">Mostrar Reportes</button>
             <button id="simbolos" className="btn btn-outline-warning" onClick={handleSimbolosClick}>Simbolos</button>
             <button id="errores" className="btn btn-outline-danger" onClick={handleErroresClick}>Errores</button>

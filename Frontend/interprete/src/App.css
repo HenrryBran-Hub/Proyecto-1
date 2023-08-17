@@ -42,3 +42,11 @@
   padding: 20px;
   border: 1px solid #1b1a1a;
 }
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #232528; /* Cambia este valor a gris o el tono de gris que prefieras */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
