@@ -59,7 +59,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				r2 := fmt.Sprintf("%v", op2.Valor)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 + r2}
 			} else {
-				ast.SetError("ERROR: No es posible sumar")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "-":
@@ -78,7 +87,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				}
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 			} else {
-				ast.SetError("ERROR: No es posible restar")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible restar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "*":
@@ -96,7 +114,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				}
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 			} else {
-				ast.SetError("ERROR: No es posible Multiplicar")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible multiplicar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "/":
@@ -106,7 +133,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				if op2.Valor.(int) != 0 {
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) / op2.Valor.(int)}
 				} else {
-					ast.SetError("ERROR: No es posible dividir en cero")
+					r1 := fmt.Sprintf("%v", op1.Valor)
+					r2 := fmt.Sprintf("%v", op2.Valor)
+					Errores := environment.Errores{
+						Descripcion: "No es posible dividir entre 0, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+						Fila:        strconv.Itoa(op1.Lin),
+						Columna:     strconv.Itoa(op1.Col),
+						Tipo:        "Error Semantico",
+						Ambito:      op1.Scope,
+					}
+					ast.ErroresHTML(Errores)
 				}
 
 			} else if dominante == environment.FLOAT {
@@ -120,12 +156,48 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 					}
 					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
 				} else {
-					ast.SetError("ERROR: No es posible dividir en cero")
+					r1 := fmt.Sprintf("%v", op1.Valor)
+					r2 := fmt.Sprintf("%v", op2.Valor)
+					Errores := environment.Errores{
+						Descripcion: "No es posible dividir entre 0, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+						Fila:        strconv.Itoa(op1.Lin),
+						Columna:     strconv.Itoa(op1.Col),
+						Tipo:        "Error Semantico",
+						Ambito:      op1.Scope,
+					}
+					ast.ErroresHTML(Errores)
 				}
 			} else {
-				ast.SetError("ERROR: No es posible Dividir")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible dividir los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 
+		}
+	case "%":
+		{
+			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+			if dominante == environment.INTEGER {
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) % op2.Valor.(int)}
+			} else {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible modular los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
+			}
 		}
 	case "<":
 		{
@@ -136,8 +208,25 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2}
+			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
+			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
+				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
 			} else {
-				ast.SetError("ERROR: No es posible comparar <")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(<), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case ">":
@@ -149,8 +238,25 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2}
+			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
+			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
+				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
 			} else {
-				ast.SetError("ERROR: No es posible comparar >")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(>), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "<=":
@@ -162,8 +268,25 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 <= val2}
+			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
+			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
+				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
 			} else {
-				ast.SetError("ERROR: No es posible comparar <=")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(<=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case ">=":
@@ -175,8 +298,25 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 >= val2}
+			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
+			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
+				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
 			} else {
-				ast.SetError("ERROR: No es posible comparar >=")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(>=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "==":
@@ -184,7 +324,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			if op1.Tipo == op2.Tipo {
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor}
 			} else {
-				ast.SetError("ERROR: No es posible comparar == ")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(==), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "!=":
@@ -192,7 +341,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			if op1.Tipo == op2.Tipo {
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor}
 			} else {
-				ast.SetError("ERROR: No es posible comparar !=")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(!=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "&&":
@@ -200,7 +358,16 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			if (op1.Tipo == environment.BOOLEAN) && (op2.Tipo == environment.BOOLEAN) {
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) && op2.Valor.(bool)}
 			} else {
-				ast.SetError("ERROR: tipo no compatible &&")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "Los valores no son compatibles(&&), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	case "||":
@@ -208,7 +375,32 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			if (op1.Tipo == environment.BOOLEAN) && (op2.Tipo == environment.BOOLEAN) {
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) || op2.Valor.(bool)}
 			} else {
-				ast.SetError("ERROR: tipo no compatible ||")
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				r2 := fmt.Sprintf("%v", op2.Valor)
+				Errores := environment.Errores{
+					Descripcion: "Los valores no son compatibles(&&), operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
+			}
+		}
+	case "!":
+		{
+			if op1.Tipo == environment.BOOLEAN {
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: !op1.Valor.(bool)}
+			} else {
+				r1 := fmt.Sprintf("%v", op1.Valor)
+				Errores := environment.Errores{
+					Descripcion: "Los valores no son compatibles(!), operacion1:" + r1 + ".",
+					Fila:        strconv.Itoa(op1.Lin),
+					Columna:     strconv.Itoa(op1.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      op1.Scope,
+				}
+				ast.ErroresHTML(Errores)
 			}
 		}
 	}

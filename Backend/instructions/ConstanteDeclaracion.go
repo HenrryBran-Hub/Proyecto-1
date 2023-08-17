@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-type VariableDeclaracion struct {
+type ConstanteDeclaracion struct {
 	Lin   int
 	Col   int
 	Name  string
@@ -15,11 +15,11 @@ type VariableDeclaracion struct {
 	Value interfaces.Expression
 }
 
-func NewVariableDeclaration(lin int, col int, name string, scope string, tipo environment.TipoExpresion, value interfaces.Expression) VariableDeclaracion {
-	return VariableDeclaracion{lin, col, name, scope, tipo, value}
+func NewConstanteDeclaration(lin int, col int, name string, scope string, tipo environment.TipoExpresion, value interfaces.Expression) ConstanteDeclaracion {
+	return ConstanteDeclaracion{lin, col, name, scope, tipo, value}
 }
 
-func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	value := v.Value.Ejecutar(ast, env)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
@@ -31,8 +31,8 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 	Variable := environment.Variable{
 		Name:        v.Name,
 		Symbols:     symbol,
-		Mutable:     true,
-		TipoSimbolo: "Variable",
+		Mutable:     false,
+		TipoSimbolo: "Constante",
 	}
 
 	var tipoexp int = -1
@@ -74,21 +74,6 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 		tipoexpstr2 = "nil"
 	}
 
-	if v.Type == 0 && value.Valor == 0 {
-		Variable.Symbols.Tipo = environment.INTEGER
-		tipoexp = 0
-	}
-
-	if v.Type == 1 && tipoexp == 0 {
-		Variable.Symbols.Tipo = environment.FLOAT
-		tipoexp = 1
-	}
-
-	if v.Type == 4 && value.Tipo == 4 {
-		Variable.Symbols.Tipo = environment.CHARACTER
-		tipoexp = 4
-	}
-
 	if tipoexp != int(Variable.Symbols.Tipo) {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \nTipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
@@ -98,8 +83,7 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 			Ambito:      value.Scope,
 		}
 		ast.ErroresHTML(Errores)
-		Variable.Symbols.Valor = nil
-		Variable.Symbols.Tipo = environment.INTEGER
+		return nil
 	}
 
 	ast.GuardarVariable(Variable)
