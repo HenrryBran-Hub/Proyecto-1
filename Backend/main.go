@@ -248,7 +248,6 @@ func errores(code string) string {
 	}
 
 	if len(errorListener.errors) > 0 {
-		fmt.Println("Errors:")
 		for _, err := range errorListener.errors {
 			subcadena := strings.Split(err, ",")
 			Errores := environment.Errores{

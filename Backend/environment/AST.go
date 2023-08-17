@@ -21,9 +21,10 @@ type AST struct {
 }
 
 type Variable struct {
-	Name    string
-	Symbols Symbol
-	Mutable bool
+	Name        string
+	Symbols     Symbol
+	Mutable     bool
+	TipoSimbolo string
 }
 
 type Errores struct {
@@ -99,19 +100,24 @@ func (a *AST) GuardarVariable(variable Variable) {
 	a.Lista_Variables.PushBack(variable)
 }
 
-func (a *AST) ActualizarVariable(nombre string, nuevoValor Symbol) {
+func (a *AST) ActualizarVariable(mariable *Variable, nuevoValor Symbol) {
 	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
 		lista := e.Value.(*list.List)
 		for v := lista.Front(); v != nil; v = v.Next() {
-			variable := v.Value.(Variable)
-			if variable.Name == nombre && variable.Mutable {
-				variable.Symbols = nuevoValor
+			if v.Value.(Variable).Name == mariable.Name && mariable.Mutable {
+				variable := v.Value.(Variable)
+				variable.Symbols.Col = nuevoValor.Col
+				variable.Symbols.Lin = nuevoValor.Lin
+				variable.Symbols.Scope = nuevoValor.Scope
+				variable.Symbols.Tipo = nuevoValor.Tipo
+				variable.Symbols.Valor = nuevoValor.Valor
+				v.Value = variable
 				return
 			}
 		}
 	}
 	Errores := Errores{
-		Descripcion: "La variale que esta intentando modificar no existe: \n Variable: " + nombre,
+		Descripcion: "La variale que esta intentando modificar no existe: \n Variable: " + mariable.Name,
 		Fila:        strconv.Itoa(nuevoValor.Lin),
 		Columna:     strconv.Itoa(nuevoValor.Col),
 		Tipo:        "Error Semantico",
@@ -213,7 +219,7 @@ func (a *AST) TablaVariablesHTML() {
 			fmt.Fprintf(file, `
    					<tr>
    						<td>%d</td>
-						<td>Variable</td>
+						<td>%s</td>
    						<td>%s</td>
    						<td>%t</td>
    						<td>%d</td>
@@ -223,6 +229,7 @@ func (a *AST) TablaVariablesHTML() {
    						<td>%s</td>
    					</tr>`,
 				rowNumber,
+				variable.TipoSimbolo,
 				variable.Name,
 				variable.Mutable,
 				variable.Symbols.Lin,
@@ -244,6 +251,7 @@ func (a *AST) TablaVariablesHTML() {
 	// Open the HTML file in the default web browser
 	open.Start("TablaDeSimbolos.html")
 }
+
 func (a *AST) TablaErroresHTML() {
 	// Create a new HTML file
 	file, err := os.Create("TablaErrores.html")

@@ -1,100 +1,108 @@
 lexer grammar SwiftLexer;
 
-// --------------- TOKENS 
-// TIPOS DE DATOS
-INT:        'Int';
-FLOAT:      'Float';
-STRING:     'String';
-BOOL:       'Bool';
-CHARACT:    'Character';
+// --------------- TOKENS TIPOS DE DATOS
+INT: 'Int';
+FLOAT: 'Float';
+STRING: 'String';
+BOOL: 'Bool';
+CHARACT: 'Character';
 
 // reserved words
-TRU:        'true';
-FAL:        'false';
-VAR:        'var';
-LET:        'let';
-NULO:       'nil';
-IF:         'if';
-ELSE:       'else';
-SWITCH:     'switch';
-CASE:       'case';
-DEFAULT:    'default';
-BREAK:      'breack';
-CONTINUE:   'continue';
-FOR:        'for';
-IN:         'in';
-RANGO:      '...';
-WHILE:      'while';
-GUARD:      'guard';
-RETURN:     'return';
-FUNCION:    'func';
-PRINT:      'print';
-INOUT:      'inout';
-APPEND:     'append';
-REMOVE:     'remove';
+TRU: 'true';
+FAL: 'false';
+VAR: 'var';
+LET: 'Let';
+NULO: 'nil';
+IF: 'if';
+ELSE: 'else';
+SWITCH: 'switch';
+CASE: 'case';
+DEFAULT: 'default';
+BREAK: 'breack';
+CONTINUE: 'continue';
+FOR: 'for';
+IN: 'in';
+RANGO: '...';
+WHILE: 'while';
+GUARD: 'guard';
+RETURN: 'return';
+FUNCION: 'func';
+PRINT: 'print';
+INOUT: 'inout';
+APPEND: 'append';
+REMOVE: 'remove';
 REMOVELAST: 'removeLast';
-COUNT:      'count';
-ISEMPTY:      'isEmpty';
-AT:         'at';
-REPEATING:  'repeating';
-STRUCT:     'struct';
-MUTATING:   'mutating';
+COUNT: 'count';
+ISEMPTY: 'isEmpty';
+AT: 'at';
+REPEATING: 'repeating';
+STRUCT: 'struct';
+MUTATING: 'mutating';
 
 // primitives
 NUMBER: [0-9]+ ('.' [0-9]+)?;
-CADENA: '"' ( ~'"' )* '"';
-ID_VALIDO: ([a-zA-Z_])[a-zA-Z0-9_]*;
-CHARACTER: '\'' ( ESCAPE | ~['\\\r\n] ) '\'';
+CADENA: '"' ( ~'"')* '"';
+ID_VALIDO: ([a-zA-Z_]) [a-zA-Z0-9_]*;
+CHARACTER: '\'' ( ESCAPE | ~['\\\r\n]) '\'';
 fragment ESCAPE: '\\' [\\'tnr];
 WS: [ \t\r\n]+ -> skip;
 
 // SIMBOLOS
 
-IG:             '=';
-DOS_PUNTOS:     ':';
-PUNTOCOMA:      ';';
-CIERRE_INTE:    '?';
-PARIZQ:         '(';
-PARDER:         ')';
+IG: '=';
+DOS_PUNTOS: ':';
+PUNTOCOMA: ';';
+CIERRE_INTE: '?';
+PARIZQ: '(';
+PARDER: ')';
 
-DIF:            '!=';
-IG_IG:          '==';
-NOT:            '!';
-OR:             '||';
-AND:            '&&';
+DIF: '!=';
+IG_IG: '==';
+NOT: '!';
+OR: '||';
+AND: '&&';
 
-MAY_IG:         '>=';
-MEN_IG:         '<=';
-MAYOR:          '>';
-MENOR:          '<';
+MAY_IG: '>=';
+MEN_IG: '<=';
+MAYOR: '>';
+MENOR: '<';
 
-MODULO:         '%';
-MUL:            '*';
-DIV:            '/';
-ADD:            '+';
-SUB:            '-';
+MODULO: '%';
+MUL: '*';
+DIV: '/';
+ADD: '+';
+SUB: '-';
 
-SUMA:           '+=';
-RESTA:          '-=';
+SUMA: '+=';
+RESTA: '-=';
 
-LLAVEIZQ:       '{';
-LLAVEDER:       '}';
-RETORNO:        '->';
-COMA:           ',';
-PUNTO:          '.';
-GUIONBAJO:      '_';
+LLAVEIZQ: '{';
+LLAVEDER: '}';
+RETORNO: '->';
+COMA: ',';
+PUNTO: '.';
+GUIONBAJO: '_';
 
-CORCHIZQ:       '[';
-CORCHDER:       ']';
-
+CORCHIZQ: '[';
+CORCHDER: ']';
 
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
-COMMENT : '/*' .*? '*/' -> skip;
-LINE_COMMENT : '//' ~[\r\n]* -> skip;
+COMMENT: '/*' .*? '*/' -> skip;
+LINE_COMMENT: '//' ~[\r\n]* -> skip;
 
-fragment
-ESC_SEQ
-    :   '\\' ('\\'|'@'|'['|']'|'.'|'#'|'+'|'-'|'!'|':'|' ')
-    ;
+fragment ESC_SEQ:
+	'\\' (
+		'\\'
+		| '@'
+		| '['
+		| ']'
+		| '.'
+		| '#'
+		| '+'
+		| '-'
+		| '!'
+		| ':'
+		| ' '
+	);
 

@@ -5,20 +5,20 @@ import (
 	"Backend/interfaces"
 )
 
-type VariableDeclaracionSinTipo struct {
+type ConstanteDeclaracionSinTipo struct {
 	Lin   int
 	Col   int
 	Name  string
-	Scope string
 	Type  environment.TipoExpresion
 	Value interfaces.Expression
+	Scope string
 }
 
-func NewVariableDeclaracionSinTipo(lin int, col int, name string, scope string, value interfaces.Expression) VariableDeclaracionSinTipo {
-	return VariableDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Scope: scope, Value: value}
+func NewConstanteDeclaracionSinTipo(lin int, col int, name string, scope string, value interfaces.Expression) ConstanteDeclaracionSinTipo {
+	return ConstanteDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Value: value, Scope: scope}
 }
 
-func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	value := v.Value.Ejecutar(ast, env)
 	symbol := environment.Symbol{
 		Lin:   value.Lin,
@@ -30,8 +30,8 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface
 	Variable := environment.Variable{
 		Name:        v.Name,
 		Symbols:     symbol,
-		Mutable:     true,
-		TipoSimbolo: "Variable",
+		Mutable:     false,
+		TipoSimbolo: "Constante",
 	}
 
 	ast.GuardarVariable(Variable)
