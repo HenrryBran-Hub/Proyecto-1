@@ -190,5 +190,5 @@ expr returns [interfaces.Expression e]
 sentenciaifelse returns [interfaces.Instruction myIfElse]
 : IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
 | IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
-;
-//| IF expr LLAVEIZQ blockinterno LLAVEDER ELSE ifelsecontrol {};
+| IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = instructions.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)};
+

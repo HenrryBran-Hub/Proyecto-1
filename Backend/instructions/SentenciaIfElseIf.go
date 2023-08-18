@@ -6,19 +6,19 @@ import (
 	"strconv"
 )
 
-type SentenciaIfElse struct {
+type SentenciaIfElseIf struct {
 	Lin       int
 	Col       int
 	Expresion interfaces.Expression
 	Ifop      []interface{}
-	Elseop    []interface{}
+	Elseop    interfaces.Instruction
 }
 
-func NewSentenciaIfElse(lin int, col int, expresion interfaces.Expression, Ifop []interface{}, Elseop []interface{}) SentenciaIfElse {
-	return SentenciaIfElse{lin, col, expresion, Ifop, Elseop}
+func NewSentenciaIfElseIf(lin int, col int, expresion interfaces.Expression, Ifop []interface{}, Elseop interfaces.Instruction) SentenciaIfElseIf {
+	return SentenciaIfElseIf{lin, col, expresion, Ifop, Elseop}
 }
 
-func (v SentenciaIfElse) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	var condicion environment.Symbol
 	condicion = v.Expresion.Ejecutar(ast, env)
 	if condicion.Tipo == environment.BOOLEAN {
@@ -35,21 +35,12 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, env interface{}) interfa
 				instruction.Ejecutar(ast, env)
 			}
 		} else {
-			for _, inst := range v.Elseop {
-				if inst == nil {
-					continue
-				}
-				instruction, ok := inst.(interfaces.Instruction)
-				if !ok {
-					continue
-				}
-				instruction.Ejecutar(ast, env)
-			}
+			v.Elseop.Ejecutar(ast, env)
 		}
 		ast.DisminuirAmbito()
 	} else {
 		Errores := environment.Errores{
-			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if-else tiene que ser un tipo boleano.",
+			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if tiene que ser un tipo boleano.",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",

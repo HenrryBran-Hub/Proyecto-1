@@ -68,7 +68,7 @@ func swiftgrammarParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 73, 336, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 73, 345, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 4, 1, 38, 8, 1, 11, 1, 12, 1, 39, 1, 1, 1,
@@ -99,14 +99,15 @@ func swiftgrammarParserInit() {
 		1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1,
 		14, 1, 14, 1, 14, 1, 14, 5, 14, 311, 8, 14, 10, 14, 12, 14, 314, 9, 14,
 		1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1,
-		15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 3, 15, 334, 8, 15,
-		1, 15, 0, 1, 28, 16, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26,
-		28, 30, 0, 5, 1, 0, 57, 58, 1, 0, 59, 60, 2, 0, 52, 52, 54, 54, 2, 0, 53,
-		53, 55, 55, 1, 0, 47, 48, 368, 0, 32, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4,
-		70, 1, 0, 0, 0, 6, 73, 1, 0, 0, 0, 8, 106, 1, 0, 0, 0, 10, 108, 1, 0, 0,
-		0, 12, 135, 1, 0, 0, 0, 14, 151, 1, 0, 0, 0, 16, 168, 1, 0, 0, 0, 18, 170,
-		1, 0, 0, 0, 20, 197, 1, 0, 0, 0, 22, 213, 1, 0, 0, 0, 24, 230, 1, 0, 0,
-		0, 26, 242, 1, 0, 0, 0, 28, 268, 1, 0, 0, 0, 30, 333, 1, 0, 0, 0, 32, 33,
+		15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15,
+		1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 3, 15, 343, 8, 15, 1, 15, 0,
+		1, 28, 16, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 0,
+		5, 1, 0, 57, 58, 1, 0, 59, 60, 2, 0, 52, 52, 54, 54, 2, 0, 53, 53, 55,
+		55, 1, 0, 47, 48, 378, 0, 32, 1, 0, 0, 0, 2, 37, 1, 0, 0, 0, 4, 70, 1,
+		0, 0, 0, 6, 73, 1, 0, 0, 0, 8, 106, 1, 0, 0, 0, 10, 108, 1, 0, 0, 0, 12,
+		135, 1, 0, 0, 0, 14, 151, 1, 0, 0, 0, 16, 168, 1, 0, 0, 0, 18, 170, 1,
+		0, 0, 0, 20, 197, 1, 0, 0, 0, 22, 213, 1, 0, 0, 0, 24, 230, 1, 0, 0, 0,
+		26, 242, 1, 0, 0, 0, 28, 268, 1, 0, 0, 0, 30, 342, 1, 0, 0, 0, 32, 33,
 		3, 2, 1, 0, 33, 34, 5, 0, 0, 1, 34, 35, 6, 0, -1, 0, 35, 1, 1, 0, 0, 0,
 		36, 38, 3, 4, 2, 0, 37, 36, 1, 0, 0, 0, 38, 39, 1, 0, 0, 0, 39, 37, 1,
 		0, 0, 0, 39, 40, 1, 0, 0, 0, 40, 41, 1, 0, 0, 0, 41, 42, 6, 1, -1, 0, 42,
@@ -210,13 +211,16 @@ func swiftgrammarParserInit() {
 		314, 1, 0, 0, 0, 312, 310, 1, 0, 0, 0, 312, 313, 1, 0, 0, 0, 313, 29, 1,
 		0, 0, 0, 314, 312, 1, 0, 0, 0, 315, 316, 5, 11, 0, 0, 316, 317, 3, 28,
 		14, 0, 317, 318, 5, 63, 0, 0, 318, 319, 3, 6, 3, 0, 319, 320, 5, 64, 0,
-		0, 320, 321, 6, 15, -1, 0, 321, 334, 1, 0, 0, 0, 322, 323, 5, 11, 0, 0,
+		0, 320, 321, 6, 15, -1, 0, 321, 343, 1, 0, 0, 0, 322, 323, 5, 11, 0, 0,
 		323, 324, 3, 28, 14, 0, 324, 325, 5, 63, 0, 0, 325, 326, 3, 6, 3, 0, 326,
 		327, 5, 64, 0, 0, 327, 328, 5, 12, 0, 0, 328, 329, 5, 63, 0, 0, 329, 330,
-		3, 6, 3, 0, 330, 331, 5, 64, 0, 0, 331, 332, 6, 15, -1, 0, 332, 334, 1,
-		0, 0, 0, 333, 315, 1, 0, 0, 0, 333, 322, 1, 0, 0, 0, 334, 31, 1, 0, 0,
-		0, 23, 39, 45, 51, 57, 63, 70, 75, 81, 87, 93, 99, 106, 135, 151, 168,
-		197, 213, 230, 242, 268, 310, 312, 333,
+		3, 6, 3, 0, 330, 331, 5, 64, 0, 0, 331, 332, 6, 15, -1, 0, 332, 343, 1,
+		0, 0, 0, 333, 334, 5, 11, 0, 0, 334, 335, 3, 28, 14, 0, 335, 336, 5, 63,
+		0, 0, 336, 337, 3, 6, 3, 0, 337, 338, 5, 64, 0, 0, 338, 339, 5, 12, 0,
+		0, 339, 340, 3, 30, 15, 0, 340, 341, 6, 15, -1, 0, 341, 343, 1, 0, 0, 0,
+		342, 315, 1, 0, 0, 0, 342, 322, 1, 0, 0, 0, 342, 333, 1, 0, 0, 0, 343,
+		31, 1, 0, 0, 0, 23, 39, 45, 51, 57, 63, 70, 75, 81, 87, 93, 99, 106, 135,
+		151, 168, 197, 213, 230, 242, 268, 310, 312, 342,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -5543,6 +5547,9 @@ type ISentenciaifelseContext interface {
 	// GetElseop returns the elseop rule contexts.
 	GetElseop() IBlockinternoContext
 
+	// Get_sentenciaifelse returns the _sentenciaifelse rule contexts.
+	Get_sentenciaifelse() ISentenciaifelseContext
+
 	// Set_expr sets the _expr rule contexts.
 	Set_expr(IExprContext)
 
@@ -5554,6 +5561,9 @@ type ISentenciaifelseContext interface {
 
 	// SetElseop sets the elseop rule contexts.
 	SetElseop(IBlockinternoContext)
+
+	// Set_sentenciaifelse sets the _sentenciaifelse rule contexts.
+	Set_sentenciaifelse(ISentenciaifelseContext)
 
 	// GetMyIfElse returns the myIfElse attribute.
 	GetMyIfElse() interfaces.Instruction
@@ -5571,6 +5581,7 @@ type ISentenciaifelseContext interface {
 	AllLLAVEDER() []antlr.TerminalNode
 	LLAVEDER(i int) antlr.TerminalNode
 	ELSE() antlr.TerminalNode
+	Sentenciaifelse() ISentenciaifelseContext
 
 	// IsSentenciaifelseContext differentiates from other interfaces.
 	IsSentenciaifelseContext()
@@ -5578,13 +5589,14 @@ type ISentenciaifelseContext interface {
 
 type SentenciaifelseContext struct {
 	antlr.BaseParserRuleContext
-	parser        antlr.Parser
-	myIfElse      interfaces.Instruction
-	_IF           antlr.Token
-	_expr         IExprContext
-	_blockinterno IBlockinternoContext
-	ifop          IBlockinternoContext
-	elseop        IBlockinternoContext
+	parser           antlr.Parser
+	myIfElse         interfaces.Instruction
+	_IF              antlr.Token
+	_expr            IExprContext
+	_blockinterno    IBlockinternoContext
+	ifop             IBlockinternoContext
+	elseop           IBlockinternoContext
+	_sentenciaifelse ISentenciaifelseContext
 }
 
 func NewEmptySentenciaifelseContext() *SentenciaifelseContext {
@@ -5626,6 +5638,10 @@ func (s *SentenciaifelseContext) GetIfop() IBlockinternoContext { return s.ifop 
 
 func (s *SentenciaifelseContext) GetElseop() IBlockinternoContext { return s.elseop }
 
+func (s *SentenciaifelseContext) Get_sentenciaifelse() ISentenciaifelseContext {
+	return s._sentenciaifelse
+}
+
 func (s *SentenciaifelseContext) Set_expr(v IExprContext) { s._expr = v }
 
 func (s *SentenciaifelseContext) Set_blockinterno(v IBlockinternoContext) { s._blockinterno = v }
@@ -5633,6 +5649,10 @@ func (s *SentenciaifelseContext) Set_blockinterno(v IBlockinternoContext) { s._b
 func (s *SentenciaifelseContext) SetIfop(v IBlockinternoContext) { s.ifop = v }
 
 func (s *SentenciaifelseContext) SetElseop(v IBlockinternoContext) { s.elseop = v }
+
+func (s *SentenciaifelseContext) Set_sentenciaifelse(v ISentenciaifelseContext) {
+	s._sentenciaifelse = v
+}
 
 func (s *SentenciaifelseContext) GetMyIfElse() interfaces.Instruction { return s.myIfElse }
 
@@ -5719,6 +5739,22 @@ func (s *SentenciaifelseContext) ELSE() antlr.TerminalNode {
 	return s.GetToken(SwiftGrammarParserELSE, 0)
 }
 
+func (s *SentenciaifelseContext) Sentenciaifelse() ISentenciaifelseContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ISentenciaifelseContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ISentenciaifelseContext)
+}
+
 func (s *SentenciaifelseContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -5742,7 +5778,7 @@ func (s *SentenciaifelseContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *SwiftGrammarParser) Sentenciaifelse() (localctx ISentenciaifelseContext) {
 	localctx = NewSentenciaifelseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 30, SwiftGrammarParserRULE_sentenciaifelse)
-	p.SetState(333)
+	p.SetState(342)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5893,6 +5929,78 @@ func (p *SwiftGrammarParser) Sentenciaifelse() (localctx ISentenciaifelseContext
 				return localctx.(*SentenciaifelseContext).Get_IF().GetColumn()
 			}
 		}()), localctx.(*SentenciaifelseContext).Get_expr().GetE(), localctx.(*SentenciaifelseContext).GetIfop().GetBlkint(), localctx.(*SentenciaifelseContext).GetElseop().GetBlkint())
+
+	case 3:
+		p.EnterOuterAlt(localctx, 3)
+		{
+			p.SetState(333)
+
+			var _m = p.Match(SwiftGrammarParserIF)
+
+			localctx.(*SentenciaifelseContext)._IF = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(334)
+
+			var _x = p.expr(0)
+
+			localctx.(*SentenciaifelseContext)._expr = _x
+		}
+		{
+			p.SetState(335)
+			p.Match(SwiftGrammarParserLLAVEIZQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(336)
+
+			var _x = p.Blockinterno()
+
+			localctx.(*SentenciaifelseContext)._blockinterno = _x
+		}
+		{
+			p.SetState(337)
+			p.Match(SwiftGrammarParserLLAVEDER)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(338)
+			p.Match(SwiftGrammarParserELSE)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(339)
+
+			var _x = p.Sentenciaifelse()
+
+			localctx.(*SentenciaifelseContext)._sentenciaifelse = _x
+		}
+		localctx.(*SentenciaifelseContext).myIfElse = instructions.NewSentenciaIfElseIf((func() int {
+			if localctx.(*SentenciaifelseContext).Get_IF() == nil {
+				return 0
+			} else {
+				return localctx.(*SentenciaifelseContext).Get_IF().GetLine()
+			}
+		}()), (func() int {
+			if localctx.(*SentenciaifelseContext).Get_IF() == nil {
+				return 0
+			} else {
+				return localctx.(*SentenciaifelseContext).Get_IF().GetColumn()
+			}
+		}()), localctx.(*SentenciaifelseContext).Get_expr().GetE(), localctx.(*SentenciaifelseContext).Get_blockinterno().GetBlkint(), localctx.(*SentenciaifelseContext).Get_sentenciaifelse().GetMyIfElse())
 
 	case antlr.ATNInvalidAltNumber:
 		goto errorExit
