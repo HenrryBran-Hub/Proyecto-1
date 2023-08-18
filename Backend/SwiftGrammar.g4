@@ -39,7 +39,39 @@ instruction returns [interfaces.Instruction inst]
 | declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
+| sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 ;
+
+// LISTA DE INSTRUCCIONES LOCALES
+blockinterno returns [[]interface{} blkint]
+@init{
+    $blkint = []interface{}{}
+    var listInt []IInstructionintContext
+  }
+: insint+=instructionint+
+    {
+        listInt = localctx.(*BlockinternoContext).GetInsint()
+        for _, e := range listInt {
+            $blkint = append($blkint, e.GetInsint())
+        }
+    }
+;
+
+
+// LISTA DE INSTRUCCIONES GENERALES O GLOBALES
+instructionint returns [interfaces.Instruction insint]
+: printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
+| declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
+| declaconstanteint (PUNTOCOMA)? { $insint = $declaconstanteint.deccon}
+| asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
+| sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
+;
+
+/////////////////////////
+/////////////////////////
+///     GENERALES     ///
+/////////////////////////
+/////////////////////////
 
 // FUNCION PRINT
 printstmt returns [interfaces.Instruction prnt]
@@ -62,6 +94,35 @@ asignacionvariable returns [interfaces.Instruction asgvbl]
 : ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
+
+/////////////////////////
+/////////////////////////
+///     LOCALES       ///
+/////////////////////////
+/////////////////////////
+
+// FUNCION PRINT
+printstmtint returns [interfaces.Instruction prnt]
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
+;
+
+// DECLARACION DE VARIABLES
+declavaribleint returns [interfaces.Instruction decvbl]
+: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local",$tipodato.tipo, $expr.e)}
+| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local", $expr.e)}
+| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local", $tipodato.tipo)};
+
+// DECLARACION DE CONSTANTES
+declaconstanteint returns [interfaces.Instruction deccon]
+: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, "Local", $tipodato.tipo, $expr.e)}
+| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, "Local", $expr.e)};
+
+// ASIGNACION DE VARIABLES
+asignacionvariableint returns [interfaces.Instruction asgvbl]
+: ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
+| ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
+| ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
+
 
 // TIPOS DE DATOS
 tipodato returns [environment.TipoExpresion tipo]
@@ -122,4 +183,12 @@ expr returns [interfaces.Expression e]
         id := $ID_VALIDO.text
         $e = instructions.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
     }
+|NULO {$e = expressions.NewPrimitive($NULO.line, $NULO.pos, $NULO.text,environment.NULL)}
 ;
+
+// CREACION DE IF-ELSE
+sentenciaifelse returns [interfaces.Instruction myIfElse]
+: IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
+| IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
+;
+//| IF expr LLAVEIZQ blockinterno LLAVEDER ELSE ifelsecontrol {};

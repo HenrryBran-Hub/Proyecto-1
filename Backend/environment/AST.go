@@ -11,13 +11,14 @@ import (
 )
 
 type AST struct {
-	Instructions    []interface{}
-	Print           string
-	Errors          string
-	Pila_Variables  *list.List
-	Lista_Variables *list.List
-	Lista_Errores   *list.List
-	Variables       Variable
+	Instructions        []interface{}
+	Print               string
+	Errors              string
+	Pila_Variables      *list.List
+	Lista_Variables     *list.List
+	Lista_VariablesHTML *list.List
+	Lista_Errores       *list.List
+	Variables           Variable
 }
 
 type Variable struct {
@@ -68,6 +69,7 @@ func (a *AST) SetError(ToErr string) {
 func (a *AST) IniciarAmbito() {
 	a.Pila_Variables = list.New()
 	a.Lista_Variables = list.New()
+	a.Lista_VariablesHTML = list.New()
 	a.Pila_Variables.PushBack(a.Lista_Variables)
 	a.Lista_Errores = list.New()
 }
@@ -98,6 +100,7 @@ func (a *AST) GuardarVariable(variable Variable) {
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
+	a.Lista_VariablesHTML.PushBack(variable)
 }
 
 func (a *AST) ActualizarVariable(mariable *Variable, nuevoValor Symbol) {
@@ -197,26 +200,24 @@ func (a *AST) TablaVariablesHTML() {
 	   		</tr>`)
 
 	rowNumber := 1
-	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
-		lista := e.Value.(*list.List)
-		for v := lista.Front(); v != nil; v = v.Next() {
-			variable := v.Value.(Variable)
-			var tipoexpstr string
-			switch variable.Symbols.Tipo {
-			case 0:
-				tipoexpstr = "Int"
-			case 1:
-				tipoexpstr = "Float"
-			case 2:
-				tipoexpstr = "String"
-			case 3:
-				tipoexpstr = "Boolean"
-			case 4:
-				tipoexpstr = "Character"
-			default:
-				tipoexpstr = "nil"
-			}
-			fmt.Fprintf(file, `
+	for e := a.Lista_VariablesHTML.Front(); e != nil; e = e.Next() {
+		variable := e.Value.(Variable)
+		var tipoexpstr string
+		switch variable.Symbols.Tipo {
+		case 0:
+			tipoexpstr = "Int"
+		case 1:
+			tipoexpstr = "Float"
+		case 2:
+			tipoexpstr = "String"
+		case 3:
+			tipoexpstr = "Boolean"
+		case 4:
+			tipoexpstr = "Character"
+		default:
+			tipoexpstr = "nil"
+		}
+		fmt.Fprintf(file, `
    					<tr>
    						<td>%d</td>
 						<td>%s</td>
@@ -228,18 +229,17 @@ func (a *AST) TablaVariablesHTML() {
    						<td>%s</td>
    						<td>%s</td>
    					</tr>`,
-				rowNumber,
-				variable.TipoSimbolo,
-				variable.Name,
-				variable.Mutable,
-				variable.Symbols.Lin,
-				variable.Symbols.Col,
-				variable.Symbols.Valor,
-				tipoexpstr,
-				variable.Symbols.Scope,
-			)
-			rowNumber++
-		}
+			rowNumber,
+			variable.TipoSimbolo,
+			variable.Name,
+			variable.Mutable,
+			variable.Symbols.Lin,
+			variable.Symbols.Col,
+			variable.Symbols.Valor,
+			tipoexpstr,
+			variable.Symbols.Scope,
+		)
+		rowNumber++
 	}
 
 	// Write the HTML footer
