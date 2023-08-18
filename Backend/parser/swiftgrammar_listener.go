@@ -16,6 +16,12 @@ type SwiftGrammarListener interface {
 	// EnterInstruction is called when entering the instruction production.
 	EnterInstruction(c *InstructionContext)
 
+	// EnterBlockinterno is called when entering the blockinterno production.
+	EnterBlockinterno(c *BlockinternoContext)
+
+	// EnterInstructionint is called when entering the instructionint production.
+	EnterInstructionint(c *InstructionintContext)
+
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
 
@@ -28,11 +34,26 @@ type SwiftGrammarListener interface {
 	// EnterAsignacionvariable is called when entering the asignacionvariable production.
 	EnterAsignacionvariable(c *AsignacionvariableContext)
 
+	// EnterPrintstmtint is called when entering the printstmtint production.
+	EnterPrintstmtint(c *PrintstmtintContext)
+
+	// EnterDeclavaribleint is called when entering the declavaribleint production.
+	EnterDeclavaribleint(c *DeclavaribleintContext)
+
+	// EnterDeclaconstanteint is called when entering the declaconstanteint production.
+	EnterDeclaconstanteint(c *DeclaconstanteintContext)
+
+	// EnterAsignacionvariableint is called when entering the asignacionvariableint production.
+	EnterAsignacionvariableint(c *AsignacionvariableintContext)
+
 	// EnterTipodato is called when entering the tipodato production.
 	EnterTipodato(c *TipodatoContext)
 
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
+
+	// EnterSentenciaifelse is called when entering the sentenciaifelse production.
+	EnterSentenciaifelse(c *SentenciaifelseContext)
 
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
@@ -42,6 +63,12 @@ type SwiftGrammarListener interface {
 
 	// ExitInstruction is called when exiting the instruction production.
 	ExitInstruction(c *InstructionContext)
+
+	// ExitBlockinterno is called when exiting the blockinterno production.
+	ExitBlockinterno(c *BlockinternoContext)
+
+	// ExitInstructionint is called when exiting the instructionint production.
+	ExitInstructionint(c *InstructionintContext)
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)
@@ -55,9 +82,24 @@ type SwiftGrammarListener interface {
 	// ExitAsignacionvariable is called when exiting the asignacionvariable production.
 	ExitAsignacionvariable(c *AsignacionvariableContext)
 
+	// ExitPrintstmtint is called when exiting the printstmtint production.
+	ExitPrintstmtint(c *PrintstmtintContext)
+
+	// ExitDeclavaribleint is called when exiting the declavaribleint production.
+	ExitDeclavaribleint(c *DeclavaribleintContext)
+
+	// ExitDeclaconstanteint is called when exiting the declaconstanteint production.
+	ExitDeclaconstanteint(c *DeclaconstanteintContext)
+
+	// ExitAsignacionvariableint is called when exiting the asignacionvariableint production.
+	ExitAsignacionvariableint(c *AsignacionvariableintContext)
+
 	// ExitTipodato is called when exiting the tipodato production.
 	ExitTipodato(c *TipodatoContext)
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
+
+	// ExitSentenciaifelse is called when exiting the sentenciaifelse production.
+	ExitSentenciaifelse(c *SentenciaifelseContext)
 }

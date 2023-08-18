@@ -38,6 +38,18 @@ func (s *BaseSwiftGrammarListener) EnterInstruction(ctx *InstructionContext) {}
 // ExitInstruction is called when production instruction is exited.
 func (s *BaseSwiftGrammarListener) ExitInstruction(ctx *InstructionContext) {}
 
+// EnterBlockinterno is called when production blockinterno is entered.
+func (s *BaseSwiftGrammarListener) EnterBlockinterno(ctx *BlockinternoContext) {}
+
+// ExitBlockinterno is called when production blockinterno is exited.
+func (s *BaseSwiftGrammarListener) ExitBlockinterno(ctx *BlockinternoContext) {}
+
+// EnterInstructionint is called when production instructionint is entered.
+func (s *BaseSwiftGrammarListener) EnterInstructionint(ctx *InstructionintContext) {}
+
+// ExitInstructionint is called when production instructionint is exited.
+func (s *BaseSwiftGrammarListener) ExitInstructionint(ctx *InstructionintContext) {}
+
 // EnterPrintstmt is called when production printstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 
@@ -62,6 +74,30 @@ func (s *BaseSwiftGrammarListener) EnterAsignacionvariable(ctx *Asignacionvariab
 // ExitAsignacionvariable is called when production asignacionvariable is exited.
 func (s *BaseSwiftGrammarListener) ExitAsignacionvariable(ctx *AsignacionvariableContext) {}
 
+// EnterPrintstmtint is called when production printstmtint is entered.
+func (s *BaseSwiftGrammarListener) EnterPrintstmtint(ctx *PrintstmtintContext) {}
+
+// ExitPrintstmtint is called when production printstmtint is exited.
+func (s *BaseSwiftGrammarListener) ExitPrintstmtint(ctx *PrintstmtintContext) {}
+
+// EnterDeclavaribleint is called when production declavaribleint is entered.
+func (s *BaseSwiftGrammarListener) EnterDeclavaribleint(ctx *DeclavaribleintContext) {}
+
+// ExitDeclavaribleint is called when production declavaribleint is exited.
+func (s *BaseSwiftGrammarListener) ExitDeclavaribleint(ctx *DeclavaribleintContext) {}
+
+// EnterDeclaconstanteint is called when production declaconstanteint is entered.
+func (s *BaseSwiftGrammarListener) EnterDeclaconstanteint(ctx *DeclaconstanteintContext) {}
+
+// ExitDeclaconstanteint is called when production declaconstanteint is exited.
+func (s *BaseSwiftGrammarListener) ExitDeclaconstanteint(ctx *DeclaconstanteintContext) {}
+
+// EnterAsignacionvariableint is called when production asignacionvariableint is entered.
+func (s *BaseSwiftGrammarListener) EnterAsignacionvariableint(ctx *AsignacionvariableintContext) {}
+
+// ExitAsignacionvariableint is called when production asignacionvariableint is exited.
+func (s *BaseSwiftGrammarListener) ExitAsignacionvariableint(ctx *AsignacionvariableintContext) {}
+
 // EnterTipodato is called when production tipodato is entered.
 func (s *BaseSwiftGrammarListener) EnterTipodato(ctx *TipodatoContext) {}
 
@@ -73,3 +109,9 @@ func (s *BaseSwiftGrammarListener) EnterExpr(ctx *ExprContext) {}
 
 // ExitExpr is called when production expr is exited.
 func (s *BaseSwiftGrammarListener) ExitExpr(ctx *ExprContext) {}
+
+// EnterSentenciaifelse is called when production sentenciaifelse is entered.
+func (s *BaseSwiftGrammarListener) EnterSentenciaifelse(ctx *SentenciaifelseContext) {}
+
+// ExitSentenciaifelse is called when production sentenciaifelse is exited.
+func (s *BaseSwiftGrammarListener) ExitSentenciaifelse(ctx *SentenciaifelseContext) {}
