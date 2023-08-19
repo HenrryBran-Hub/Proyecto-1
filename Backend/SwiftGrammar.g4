@@ -42,6 +42,7 @@ instruction returns [interfaces.Instruction inst]
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 | switchcontrol { $inst = $switchcontrol.mySwitch}
 | whilecontrol { $inst = $whilecontrol.whict}
+| forcontrol { $inst = $forcontrol.forct}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -69,6 +70,7 @@ instructionint returns [interfaces.Instruction insint]
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
+| forcontrol { $insint = $forcontrol.forct}
 ;
 
 /////////////////////////
@@ -149,6 +151,27 @@ expr returns [interfaces.Expression e]
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=MODULO right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PARIZQ expr PARDER { $e = $expr.e }
+| SUB NUMBER                             
+    {
+        if (strings.Contains($NUMBER.text,".")){
+            num,err := strconv.ParseFloat($NUMBER.text, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+	        num2 := fmt.Sprintf("%.6f", num)
+            num3,err := strconv.ParseFloat(num2, 64);
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,-num3,environment.FLOAT)
+        }else{
+            num,err := strconv.Atoi($NUMBER.text)
+            if err!= nil{
+                fmt.Println(err)
+            }
+            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,-num,environment.INTEGER)
+        }
+    }
 | NUMBER                             
     {
         if (strings.Contains($NUMBER.text,".")){
@@ -230,3 +253,10 @@ bloquecase returns [interfaces.Instruction blocas]
 // CREACION DEL WHILE
 whilecontrol returns [interfaces.Instruction whict]
 : WHILE expr LLAVEIZQ blockinterno LLAVEDER { $whict = instructions.NewSentenciaWhile($WHILE.line, $WHILE.pos, $expr.e, $blockinterno.blkint)};
+
+//CREACION DEL FOR
+forcontrol returns [interfaces.Instruction forct]
+: FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)};
+
+//| FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER {}
+ 
