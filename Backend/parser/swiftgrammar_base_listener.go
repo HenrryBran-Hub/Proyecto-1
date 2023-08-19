@@ -115,3 +115,21 @@ func (s *BaseSwiftGrammarListener) EnterSentenciaifelse(ctx *SentenciaifelseCont
 
 // ExitSentenciaifelse is called when production sentenciaifelse is exited.
 func (s *BaseSwiftGrammarListener) ExitSentenciaifelse(ctx *SentenciaifelseContext) {}
+
+// EnterSwitchcontrol is called when production switchcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterSwitchcontrol(ctx *SwitchcontrolContext) {}
+
+// ExitSwitchcontrol is called when production switchcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitSwitchcontrol(ctx *SwitchcontrolContext) {}
+
+// EnterBlockcase is called when production blockcase is entered.
+func (s *BaseSwiftGrammarListener) EnterBlockcase(ctx *BlockcaseContext) {}
+
+// ExitBlockcase is called when production blockcase is exited.
+func (s *BaseSwiftGrammarListener) ExitBlockcase(ctx *BlockcaseContext) {}
+
+// EnterBloquecase is called when production bloquecase is entered.
+func (s *BaseSwiftGrammarListener) EnterBloquecase(ctx *BloquecaseContext) {}
+
+// ExitBloquecase is called when production bloquecase is exited.
+func (s *BaseSwiftGrammarListener) ExitBloquecase(ctx *BloquecaseContext) {}
