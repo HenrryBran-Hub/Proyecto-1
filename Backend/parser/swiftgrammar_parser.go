@@ -6358,7 +6358,7 @@ func (p *SwiftGrammarParser) Switchcontrol() (localctx ISwitchcontrolContext) {
 	{
 		p.SetState(359)
 
-		var _x = p.Blockcase(localctx.(*SwitchcontrolContext).Get_expr().GetE())
+		var _x = p.Blockcase()
 
 		localctx.(*SwitchcontrolContext)._blockcase = _x
 	}
@@ -6408,7 +6408,7 @@ func (p *SwiftGrammarParser) Switchcontrol() (localctx ISwitchcontrolContext) {
 	}
 
 	if localctx.(*SwitchcontrolContext).Get_DEFAULT() != nil {
-		localctx.(*SwitchcontrolContext).mySwitch = instructions.NewSentenciaSwitch((func() int {
+		localctx.(*SwitchcontrolContext).mySwitch = instructions.NewSentenciaSwitchDefault((func() int {
 			if localctx.(*SwitchcontrolContext).Get_SWITCH() == nil {
 				return 0
 			} else {
@@ -6420,7 +6420,7 @@ func (p *SwiftGrammarParser) Switchcontrol() (localctx ISwitchcontrolContext) {
 			} else {
 				return localctx.(*SwitchcontrolContext).Get_SWITCH().GetColumn()
 			}
-		}()), localctx.(*SwitchcontrolContext).Get_blockcase().GetBlkcase(), localctx.(*SwitchcontrolContext).Get_blockinterno().GetBlkint())
+		}()), localctx.(*SwitchcontrolContext).Get_expr().GetE(), localctx.(*SwitchcontrolContext).Get_blockcase().GetBlkcase(), localctx.(*SwitchcontrolContext).Get_blockinterno().GetBlkint())
 	} else {
 		localctx.(*SwitchcontrolContext).mySwitch = instructions.NewSentenciaSwitch((func() int {
 			if localctx.(*SwitchcontrolContext).Get_SWITCH() == nil {
@@ -6434,7 +6434,7 @@ func (p *SwiftGrammarParser) Switchcontrol() (localctx ISwitchcontrolContext) {
 			} else {
 				return localctx.(*SwitchcontrolContext).Get_SWITCH().GetColumn()
 			}
-		}()), localctx.(*SwitchcontrolContext).Get_blockcase().GetBlkcase(), localctx.(*SwitchcontrolContext).Get_blockcase().GetBlkcase())
+		}()), localctx.(*SwitchcontrolContext).Get_expr().GetE(), localctx.(*SwitchcontrolContext).Get_blockcase().GetBlkcase())
 	}
 
 errorExit:
@@ -6469,14 +6469,8 @@ type IBlockcaseContext interface {
 	// SetBlocas sets the blocas rule context list.
 	SetBlocas([]IBloquecaseContext)
 
-	// GetExprAttr returns the exprAttr attribute.
-	GetExprAttr() interfaces.Expression
-
 	// GetBlkcase returns the blkcase attribute.
 	GetBlkcase() []interface{}
-
-	// SetExprAttr sets the exprAttr attribute.
-	SetExprAttr(interfaces.Expression)
 
 	// SetBlkcase sets the blkcase attribute.
 	SetBlkcase([]interface{})
@@ -6492,7 +6486,6 @@ type IBlockcaseContext interface {
 type BlockcaseContext struct {
 	antlr.BaseParserRuleContext
 	parser      antlr.Parser
-	exprAttr    interfaces.Expression
 	blkcase     []interface{}
 	_bloquecase IBloquecaseContext
 	blocas      []IBloquecaseContext
@@ -6512,15 +6505,13 @@ func InitEmptyBlockcaseContext(p *BlockcaseContext) {
 
 func (*BlockcaseContext) IsBlockcaseContext() {}
 
-func NewBlockcaseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int, exprAttr interfaces.Expression) *BlockcaseContext {
+func NewBlockcaseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BlockcaseContext {
 	var p = new(BlockcaseContext)
 
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = SwiftGrammarParserRULE_blockcase
-
-	p.exprAttr = exprAttr
 
 	return p
 }
@@ -6535,11 +6526,7 @@ func (s *BlockcaseContext) GetBlocas() []IBloquecaseContext { return s.blocas }
 
 func (s *BlockcaseContext) SetBlocas(v []IBloquecaseContext) { s.blocas = v }
 
-func (s *BlockcaseContext) GetExprAttr() interfaces.Expression { return s.exprAttr }
-
 func (s *BlockcaseContext) GetBlkcase() []interface{} { return s.blkcase }
-
-func (s *BlockcaseContext) SetExprAttr(v interfaces.Expression) { s.exprAttr = v }
 
 func (s *BlockcaseContext) SetBlkcase(v []interface{}) { s.blkcase = v }
 
@@ -6604,8 +6591,8 @@ func (s *BlockcaseContext) ExitRule(listener antlr.ParseTreeListener) {
 	}
 }
 
-func (p *SwiftGrammarParser) Blockcase(exprAttr interfaces.Expression) (localctx IBlockcaseContext) {
-	localctx = NewBlockcaseContext(p, p.GetParserRuleContext(), p.GetState(), exprAttr)
+func (p *SwiftGrammarParser) Blockcase() (localctx IBlockcaseContext) {
+	localctx = NewBlockcaseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 34, SwiftGrammarParserRULE_blockcase)
 
 	localctx.(*BlockcaseContext).blkcase = []interface{}{}
@@ -6625,7 +6612,7 @@ func (p *SwiftGrammarParser) Blockcase(exprAttr interfaces.Expression) (localctx
 		{
 			p.SetState(368)
 
-			var _x = p.Bloquecase(exprAttr)
+			var _x = p.Bloquecase()
 
 			localctx.(*BlockcaseContext)._bloquecase = _x
 		}
@@ -6682,14 +6669,8 @@ type IBloquecaseContext interface {
 	// Set_blockinterno sets the _blockinterno rule contexts.
 	Set_blockinterno(IBlockinternoContext)
 
-	// GetExprAttr returns the exprAttr attribute.
-	GetExprAttr() interfaces.Expression
-
 	// GetBlocas returns the blocas attribute.
 	GetBlocas() interfaces.Instruction
-
-	// SetExprAttr sets the exprAttr attribute.
-	SetExprAttr(interfaces.Expression)
 
 	// SetBlocas sets the blocas attribute.
 	SetBlocas(interfaces.Instruction)
@@ -6707,7 +6688,6 @@ type IBloquecaseContext interface {
 type BloquecaseContext struct {
 	antlr.BaseParserRuleContext
 	parser        antlr.Parser
-	exprAttr      interfaces.Expression
 	blocas        interfaces.Instruction
 	_CASE         antlr.Token
 	_expr         IExprContext
@@ -6728,15 +6708,13 @@ func InitEmptyBloquecaseContext(p *BloquecaseContext) {
 
 func (*BloquecaseContext) IsBloquecaseContext() {}
 
-func NewBloquecaseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int, exprAttr interfaces.Expression) *BloquecaseContext {
+func NewBloquecaseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BloquecaseContext {
 	var p = new(BloquecaseContext)
 
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = SwiftGrammarParserRULE_bloquecase
-
-	p.exprAttr = exprAttr
 
 	return p
 }
@@ -6755,11 +6733,7 @@ func (s *BloquecaseContext) Set_expr(v IExprContext) { s._expr = v }
 
 func (s *BloquecaseContext) Set_blockinterno(v IBlockinternoContext) { s._blockinterno = v }
 
-func (s *BloquecaseContext) GetExprAttr() interfaces.Expression { return s.exprAttr }
-
 func (s *BloquecaseContext) GetBlocas() interfaces.Instruction { return s.blocas }
-
-func (s *BloquecaseContext) SetExprAttr(v interfaces.Expression) { s.exprAttr = v }
 
 func (s *BloquecaseContext) SetBlocas(v interfaces.Instruction) { s.blocas = v }
 
@@ -6823,8 +6797,8 @@ func (s *BloquecaseContext) ExitRule(listener antlr.ParseTreeListener) {
 	}
 }
 
-func (p *SwiftGrammarParser) Bloquecase(exprAttr interfaces.Expression) (localctx IBloquecaseContext) {
-	localctx = NewBloquecaseContext(p, p.GetParserRuleContext(), p.GetState(), exprAttr)
+func (p *SwiftGrammarParser) Bloquecase() (localctx IBloquecaseContext) {
+	localctx = NewBloquecaseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 36, SwiftGrammarParserRULE_bloquecase)
 	p.EnterOuterAlt(localctx, 1)
 	{
@@ -6873,7 +6847,7 @@ func (p *SwiftGrammarParser) Bloquecase(exprAttr interfaces.Expression) (localct
 		} else {
 			return localctx.(*BloquecaseContext).Get_CASE().GetColumn()
 		}
-	}()), localctx.(*BloquecaseContext).Get_expr().GetE(), localctx.(*BloquecaseContext).exprAttr, localctx.(*BloquecaseContext).Get_blockinterno().GetBlkint())
+	}()), localctx.(*BloquecaseContext).Get_expr().GetE(), localctx.(*BloquecaseContext).Get_blockinterno().GetBlkint())
 
 errorExit:
 	if p.HasError() {

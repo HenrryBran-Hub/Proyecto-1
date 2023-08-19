@@ -196,21 +196,21 @@ sentenciaifelse returns [interfaces.Instruction myIfElse]
 
 // CREACION DEL SWITCH
 switchcontrol returns [interfaces.Instruction mySwitch]
-: SWITCH expr LLAVEIZQ blockcase[$expr.e] (DEFAULT DOS_PUNTOS blockinterno)? LLAVEDER 
+: SWITCH expr LLAVEIZQ blockcase (DEFAULT DOS_PUNTOS blockinterno)? LLAVEDER 
 {
     if ($DEFAULT != nil) {
-        $mySwitch = instructions.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $blockcase.blkcase, $blockinterno.blkint)
+        $mySwitch = instructions.NewSentenciaSwitchDefault($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase, $blockinterno.blkint)
     } else {
-        $mySwitch = instructions.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $blockcase.blkcase, $blockcase.blkcase)
+        $mySwitch = instructions.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase)
     }
 };
 
-blockcase[interfaces.Expression exprAttr] returns [[]interface{} blkcase]
+blockcase returns [[]interface{} blkcase]
 @init{
     $blkcase = []interface{}{}
     var listInt []IBloquecaseContext
 }
-: blocas+=bloquecase[exprAttr]+
+: blocas+=bloquecase+
 {
     listInt = localctx.(*BlockcaseContext).GetBlocas()
     for _, e := range listInt {
@@ -219,8 +219,8 @@ blockcase[interfaces.Expression exprAttr] returns [[]interface{} blkcase]
 }
 ;
 
-bloquecase[interfaces.Expression exprAttr] returns [interfaces.Instruction blocas]
+bloquecase returns [interfaces.Instruction blocas]
 : CASE expr DOS_PUNTOS blockinterno 
 {
-    $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $exprAttr, $blockinterno.blkint)
+    $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
 };

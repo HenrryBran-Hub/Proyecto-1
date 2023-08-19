@@ -1738,7 +1738,7 @@ public class SwiftGrammarParser extends Parser {
 			setState(358);
 			match(LLAVEIZQ);
 			setState(359);
-			((SwitchcontrolContext)_localctx).blockcase = blockcase(((SwitchcontrolContext)_localctx).expr.e);
+			((SwitchcontrolContext)_localctx).blockcase = blockcase();
 			setState(363);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1757,9 +1757,9 @@ public class SwiftGrammarParser extends Parser {
 			match(LLAVEDER);
 
 			    if (((SwitchcontrolContext)_localctx).DEFAULT != nil) {
-			        _localctx.mySwitch = instructions.NewSentenciaSwitch((((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getLine():0), (((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getCharPositionInLine():0), ((SwitchcontrolContext)_localctx).blockcase.blkcase, ((SwitchcontrolContext)_localctx).blockinterno.blkint)
+			        _localctx.mySwitch = instructions.NewSentenciaSwitchDefault((((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getLine():0), (((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getCharPositionInLine():0), ((SwitchcontrolContext)_localctx).expr.e, ((SwitchcontrolContext)_localctx).blockcase.blkcase, ((SwitchcontrolContext)_localctx).blockinterno.blkint)
 			    } else {
-			        _localctx.mySwitch = instructions.NewSentenciaSwitch((((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getLine():0), (((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getCharPositionInLine():0), ((SwitchcontrolContext)_localctx).blockcase.blkcase, ((SwitchcontrolContext)_localctx).blockcase.blkcase)
+			        _localctx.mySwitch = instructions.NewSentenciaSwitch((((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getLine():0), (((SwitchcontrolContext)_localctx).SWITCH!=null?((SwitchcontrolContext)_localctx).SWITCH.getCharPositionInLine():0), ((SwitchcontrolContext)_localctx).expr.e, ((SwitchcontrolContext)_localctx).blockcase.blkcase)
 			    }
 
 			}
@@ -1776,7 +1776,6 @@ public class SwiftGrammarParser extends Parser {
 	}
 
 	public static class BlockcaseContext extends ParserRuleContext {
-		public interfaces.Expression exprAttr;
 		public []interface{} blkcase;
 		public BloquecaseContext bloquecase;
 		public List<BloquecaseContext> blocas = new ArrayList<BloquecaseContext>();
@@ -1786,16 +1785,14 @@ public class SwiftGrammarParser extends Parser {
 		public BloquecaseContext bloquecase(int i) {
 			return getRuleContext(BloquecaseContext.class,i);
 		}
-		public BlockcaseContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public BlockcaseContext(ParserRuleContext parent, int invokingState, interfaces.Expression exprAttr) {
+		public BlockcaseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.exprAttr = exprAttr;
 		}
 		@Override public int getRuleIndex() { return RULE_blockcase; }
 	}
 
-	public final BlockcaseContext blockcase(interfaces.Expression exprAttr) throws RecognitionException {
-		BlockcaseContext _localctx = new BlockcaseContext(_ctx, getState(), exprAttr);
+	public final BlockcaseContext blockcase() throws RecognitionException {
+		BlockcaseContext _localctx = new BlockcaseContext(_ctx, getState());
 		enterRule(_localctx, 34, RULE_blockcase);
 
 		    _localctx.blkcase = []interface{}{}
@@ -1812,7 +1809,7 @@ public class SwiftGrammarParser extends Parser {
 				{
 				{
 				setState(368);
-				((BlockcaseContext)_localctx).bloquecase = bloquecase(exprAttr);
+				((BlockcaseContext)_localctx).bloquecase = bloquecase();
 				((BlockcaseContext)_localctx).blocas.add(((BlockcaseContext)_localctx).bloquecase);
 				}
 				}
@@ -1840,7 +1837,6 @@ public class SwiftGrammarParser extends Parser {
 	}
 
 	public static class BloquecaseContext extends ParserRuleContext {
-		public interfaces.Expression exprAttr;
 		public interfaces.Instruction blocas;
 		public Token CASE;
 		public ExprContext expr;
@@ -1853,16 +1849,14 @@ public class SwiftGrammarParser extends Parser {
 		public BlockinternoContext blockinterno() {
 			return getRuleContext(BlockinternoContext.class,0);
 		}
-		public BloquecaseContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public BloquecaseContext(ParserRuleContext parent, int invokingState, interfaces.Expression exprAttr) {
+		public BloquecaseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.exprAttr = exprAttr;
 		}
 		@Override public int getRuleIndex() { return RULE_bloquecase; }
 	}
 
-	public final BloquecaseContext bloquecase(interfaces.Expression exprAttr) throws RecognitionException {
-		BloquecaseContext _localctx = new BloquecaseContext(_ctx, getState(), exprAttr);
+	public final BloquecaseContext bloquecase() throws RecognitionException {
+		BloquecaseContext _localctx = new BloquecaseContext(_ctx, getState());
 		enterRule(_localctx, 36, RULE_bloquecase);
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1876,7 +1870,7 @@ public class SwiftGrammarParser extends Parser {
 			setState(378);
 			((BloquecaseContext)_localctx).blockinterno = blockinterno();
 
-			    _localctx.blocas=instructions.NewSentenciaSwitchCase((((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getLine():0) ,(((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getCharPositionInLine():0), ((BloquecaseContext)_localctx).expr.e, _localctx.exprAttr, ((BloquecaseContext)_localctx).blockinterno.blkint)
+			    _localctx.blocas=instructions.NewSentenciaSwitchCase((((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getLine():0) ,(((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getCharPositionInLine():0), ((BloquecaseContext)_localctx).expr.e, ((BloquecaseContext)_localctx).blockinterno.blkint)
 
 			}
 		}
