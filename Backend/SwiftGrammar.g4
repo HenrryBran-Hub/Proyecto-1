@@ -40,6 +40,7 @@ instruction returns [interfaces.Instruction inst]
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
+| switchcontrol { $inst = $switchcontrol.mySwitch}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -58,13 +59,14 @@ blockinterno returns [[]interface{} blkint]
 ;
 
 
-// LISTA DE INSTRUCCIONES GENERALES O GLOBALES
+// LISTA DE INSTRUCCIONES LOCALES
 instructionint returns [interfaces.Instruction insint]
 : printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
 | declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
 | declaconstanteint (PUNTOCOMA)? { $insint = $declaconstanteint.deccon}
 | asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
+| switchcontrol { $insint = $switchcontrol.mySwitch}
 ;
 
 /////////////////////////
@@ -192,3 +194,33 @@ sentenciaifelse returns [interfaces.Instruction myIfElse]
 | IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
 | IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = instructions.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)};
 
+// CREACION DEL SWITCH
+switchcontrol returns [interfaces.Instruction mySwitch]
+: SWITCH expr LLAVEIZQ blockcase (DEFAULT DOS_PUNTOS blockinterno)? LLAVEDER 
+{
+    if ($DEFAULT != nil) {
+        $mySwitch = instructions.NewSentenciaSwitchDefault($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase, $blockinterno.blkint)
+    } else {
+        $mySwitch = instructions.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase)
+    }
+};
+
+blockcase returns [[]interface{} blkcase]
+@init{
+    $blkcase = []interface{}{}
+    var listInt []IBloquecaseContext
+}
+: blocas+=bloquecase+
+{
+    listInt = localctx.(*BlockcaseContext).GetBlocas()
+    for _, e := range listInt {
+        $blkcase = append($blkcase, e.GetBlocas())
+    }
+}
+;
+
+bloquecase returns [interfaces.Instruction blocas]
+: CASE expr DOS_PUNTOS blockinterno 
+{
+    $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
+};

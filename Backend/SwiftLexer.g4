@@ -11,7 +11,7 @@ CHARACT: 'Character';
 TRU: 'true';
 FAL: 'false';
 VAR: 'var';
-LET: 'Let';
+LET: 'let';
 NULO: 'nil';
 IF: 'if';
 ELSE: 'else';

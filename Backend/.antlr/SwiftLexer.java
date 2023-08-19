@@ -53,7 +53,7 @@ public class SwiftLexer extends Lexer {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'Int'", "'Float'", "'String'", "'Bool'", "'Character'", "'true'", 
-			"'false'", "'var'", "'Let'", "'nil'", "'if'", "'else'", "'switch'", "'case'", 
+			"'false'", "'var'", "'let'", "'nil'", "'if'", "'else'", "'switch'", "'case'", 
 			"'default'", "'breack'", "'continue'", "'for'", "'in'", "'...'", "'while'", 
 			"'guard'", "'return'", "'func'", "'print'", "'inout'", "'append'", "'remove'", 
 			"'removeLast'", "'count'", "'isEmpty'", "'at'", "'repeating'", "'struct'", 
@@ -218,7 +218,7 @@ public class SwiftLexer extends Lexer {
 		"\2\2\u00bc\u00bd\7g\2\2\u00bd\16\3\2\2\2\u00be\u00bf\7h\2\2\u00bf\u00c0"+
 		"\7c\2\2\u00c0\u00c1\7n\2\2\u00c1\u00c2\7u\2\2\u00c2\u00c3\7g\2\2\u00c3"+
 		"\20\3\2\2\2\u00c4\u00c5\7x\2\2\u00c5\u00c6\7c\2\2\u00c6\u00c7\7t\2\2\u00c7"+
-		"\22\3\2\2\2\u00c8\u00c9\7N\2\2\u00c9\u00ca\7g\2\2\u00ca\u00cb\7v\2\2\u00cb"+
+		"\22\3\2\2\2\u00c8\u00c9\7n\2\2\u00c9\u00ca\7g\2\2\u00ca\u00cb\7v\2\2\u00cb"+
 		"\24\3\2\2\2\u00cc\u00cd\7p\2\2\u00cd\u00ce\7k\2\2\u00ce\u00cf\7n\2\2\u00cf"+
 		"\26\3\2\2\2\u00d0\u00d1\7k\2\2\u00d1\u00d2\7h\2\2\u00d2\30\3\2\2\2\u00d3"+
 		"\u00d4\7g\2\2\u00d4\u00d5\7n\2\2\u00d5\u00d6\7u\2\2\u00d6\u00d7\7g\2\2"+
