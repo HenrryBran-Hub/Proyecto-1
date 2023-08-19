@@ -41,6 +41,7 @@ instruction returns [interfaces.Instruction inst]
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 | switchcontrol { $inst = $switchcontrol.mySwitch}
+| whilecontrol { $inst = $whilecontrol.whict}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -67,6 +68,7 @@ instructionint returns [interfaces.Instruction insint]
 | asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 | switchcontrol { $insint = $switchcontrol.mySwitch}
+| whilecontrol { $insint = $whilecontrol.whict}
 ;
 
 /////////////////////////
@@ -224,3 +226,7 @@ bloquecase returns [interfaces.Instruction blocas]
 {
     $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
 };
+
+// CREACION DEL WHILE
+whilecontrol returns [interfaces.Instruction whict]
+: WHILE expr LLAVEIZQ blockinterno LLAVEDER { $whict = instructions.NewSentenciaWhile($WHILE.line, $WHILE.pos, $expr.e, $blockinterno.blkint)};
