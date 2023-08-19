@@ -64,6 +64,9 @@ type SwiftGrammarListener interface {
 	// EnterBloquecase is called when entering the bloquecase production.
 	EnterBloquecase(c *BloquecaseContext)
 
+	// EnterWhilecontrol is called when entering the whilecontrol production.
+	EnterWhilecontrol(c *WhilecontrolContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -120,4 +123,7 @@ type SwiftGrammarListener interface {
 
 	// ExitBloquecase is called when exiting the bloquecase production.
 	ExitBloquecase(c *BloquecaseContext)
+
+	// ExitWhilecontrol is called when exiting the whilecontrol production.
+	ExitWhilecontrol(c *WhilecontrolContext)
 }

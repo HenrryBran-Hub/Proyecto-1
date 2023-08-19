@@ -133,3 +133,9 @@ func (s *BaseSwiftGrammarListener) EnterBloquecase(ctx *BloquecaseContext) {}
 
 // ExitBloquecase is called when production bloquecase is exited.
 func (s *BaseSwiftGrammarListener) ExitBloquecase(ctx *BloquecaseContext) {}
+
+// EnterWhilecontrol is called when production whilecontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterWhilecontrol(ctx *WhilecontrolContext) {}
+
+// ExitWhilecontrol is called when production whilecontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitWhilecontrol(ctx *WhilecontrolContext) {}

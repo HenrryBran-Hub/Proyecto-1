@@ -25,8 +25,8 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, env interface{}) interfa
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
 		//valida el tipo
 		if Variable.Symbols.Tipo == environment.INTEGER {
-			val1, _ := strconv.ParseInt(fmt.Sprintf("%v", Variable.Symbols.Valor), 10, 64)
-			val2, _ := strconv.ParseInt(fmt.Sprintf("%v", value.Valor), 10, 64)
+			val1, _ := Variable.Symbols.Valor.(int)
+			val2, _ := value.Valor.(int)
 			num2 := val1 - val2
 			symbol := environment.Symbol{
 				Lin:   v.Lin,
