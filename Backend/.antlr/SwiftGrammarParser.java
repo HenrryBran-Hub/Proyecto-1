@@ -2019,6 +2019,7 @@ public class SwiftGrammarParser extends Parser {
 		public ExprContext left;
 		public ExprContext right;
 		public BlockinternoContext blockinterno;
+		public ExprContext expr;
 		public TerminalNode FOR() { return getToken(SwiftGrammarParser.FOR, 0); }
 		public TerminalNode ID_VALIDO() { return getToken(SwiftGrammarParser.ID_VALIDO, 0); }
 		public TerminalNode IN() { return getToken(SwiftGrammarParser.IN, 0); }
@@ -2044,27 +2045,53 @@ public class SwiftGrammarParser extends Parser {
 		ForcontrolContext _localctx = new ForcontrolContext(_ctx, getState());
 		enterRule(_localctx, 40, RULE_forcontrol);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(407);
-			((ForcontrolContext)_localctx).FOR = match(FOR);
-			setState(408);
-			((ForcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-			setState(409);
-			match(IN);
-			setState(410);
-			((ForcontrolContext)_localctx).left = expr(0);
-			setState(411);
-			match(RANGO);
-			setState(412);
-			((ForcontrolContext)_localctx).right = expr(0);
-			setState(413);
-			match(LLAVEIZQ);
-			setState(414);
-			((ForcontrolContext)_localctx).blockinterno = blockinterno();
-			setState(415);
-			match(LLAVEDER);
-			 _localctx.forct = instructions.NewSentenciaForRango((((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getLine():0), (((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getCharPositionInLine():0), (((ForcontrolContext)_localctx).ID_VALIDO!=null?((ForcontrolContext)_localctx).ID_VALIDO.getText():null), ((ForcontrolContext)_localctx).left.e, ((ForcontrolContext)_localctx).right.e,((ForcontrolContext)_localctx).blockinterno.blkint)
+			setState(427);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(407);
+				((ForcontrolContext)_localctx).FOR = match(FOR);
+				setState(408);
+				((ForcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
+				setState(409);
+				match(IN);
+				setState(410);
+				((ForcontrolContext)_localctx).left = expr(0);
+				setState(411);
+				match(RANGO);
+				setState(412);
+				((ForcontrolContext)_localctx).right = expr(0);
+				setState(413);
+				match(LLAVEIZQ);
+				setState(414);
+				((ForcontrolContext)_localctx).blockinterno = blockinterno();
+				setState(415);
+				match(LLAVEDER);
+				 _localctx.forct = instructions.NewSentenciaForRango((((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getLine():0), (((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getCharPositionInLine():0), (((ForcontrolContext)_localctx).ID_VALIDO!=null?((ForcontrolContext)_localctx).ID_VALIDO.getText():null), ((ForcontrolContext)_localctx).left.e, ((ForcontrolContext)_localctx).right.e,((ForcontrolContext)_localctx).blockinterno.blkint)
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(418);
+				((ForcontrolContext)_localctx).FOR = match(FOR);
+				setState(419);
+				((ForcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
+				setState(420);
+				match(IN);
+				setState(421);
+				((ForcontrolContext)_localctx).expr = expr(0);
+				setState(422);
+				match(LLAVEIZQ);
+				setState(423);
+				((ForcontrolContext)_localctx).blockinterno = blockinterno();
+				setState(424);
+				match(LLAVEDER);
+				 _localctx.forct = instructions.NewSentenciaForCadena((((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getLine():0), (((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getCharPositionInLine():0), (((ForcontrolContext)_localctx).ID_VALIDO!=null?((ForcontrolContext)_localctx).ID_VALIDO.getText():null), ((ForcontrolContext)_localctx).expr.e, ((ForcontrolContext)_localctx).blockinterno.blkint)
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -2108,7 +2135,7 @@ public class SwiftGrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3K\u01a5\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3K\u01b0\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\3\2\3\2\3\2\3\2\3\3\6\3\62\n"+
@@ -2137,45 +2164,46 @@ public class SwiftGrammarParser extends Parser {
 		"\3\22\3\22\3\22\3\22\3\22\5\22\u0181\n\22\3\22\3\22\3\22\3\23\6\23\u0187"+
 		"\n\23\r\23\16\23\u0188\3\23\3\23\3\24\3\24\3\24\3\24\3\24\3\24\3\25\3"+
 		"\25\3\25\3\25\3\25\3\25\3\25\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3"+
-		"\26\3\26\3\26\3\26\2\3\36\27\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \""+
-		"$&(*\2\7\3\2;<\3\2=>\4\2\66\6688\4\2\67\6799\3\2\61\62\2\u01ca\2,\3\2"+
-		"\2\2\4\61\3\2\2\2\6[\3\2\2\2\b^\3\2\2\2\n\u0088\3\2\2\2\f\u008a\3\2\2"+
-		"\2\16\u00a5\3\2\2\2\20\u00b5\3\2\2\2\22\u00c6\3\2\2\2\24\u00c8\3\2\2\2"+
-		"\26\u00e3\3\2\2\2\30\u00f3\3\2\2\2\32\u0104\3\2\2\2\34\u0110\3\2\2\2\36"+
-		"\u012d\3\2\2\2 \u0177\3\2\2\2\"\u0179\3\2\2\2$\u0186\3\2\2\2&\u018c\3"+
-		"\2\2\2(\u0192\3\2\2\2*\u0199\3\2\2\2,-\5\4\3\2-.\7\2\2\3./\b\2\1\2/\3"+
-		"\3\2\2\2\60\62\5\6\4\2\61\60\3\2\2\2\62\63\3\2\2\2\63\61\3\2\2\2\63\64"+
-		"\3\2\2\2\64\65\3\2\2\2\65\66\b\3\1\2\66\5\3\2\2\2\679\5\f\7\28:\7-\2\2"+
-		"98\3\2\2\29:\3\2\2\2:;\3\2\2\2;<\b\4\1\2<\\\3\2\2\2=?\5\16\b\2>@\7-\2"+
-		"\2?>\3\2\2\2?@\3\2\2\2@A\3\2\2\2AB\b\4\1\2B\\\3\2\2\2CE\5\20\t\2DF\7-"+
-		"\2\2ED\3\2\2\2EF\3\2\2\2FG\3\2\2\2GH\b\4\1\2H\\\3\2\2\2IK\5\22\n\2JL\7"+
-		"-\2\2KJ\3\2\2\2KL\3\2\2\2LM\3\2\2\2MN\b\4\1\2N\\\3\2\2\2OP\5 \21\2PQ\b"+
-		"\4\1\2Q\\\3\2\2\2RS\5\"\22\2ST\b\4\1\2T\\\3\2\2\2UV\5(\25\2VW\b\4\1\2"+
-		"W\\\3\2\2\2XY\5*\26\2YZ\b\4\1\2Z\\\3\2\2\2[\67\3\2\2\2[=\3\2\2\2[C\3\2"+
-		"\2\2[I\3\2\2\2[O\3\2\2\2[R\3\2\2\2[U\3\2\2\2[X\3\2\2\2\\\7\3\2\2\2]_\5"+
-		"\n\6\2^]\3\2\2\2_`\3\2\2\2`^\3\2\2\2`a\3\2\2\2ab\3\2\2\2bc\b\5\1\2c\t"+
-		"\3\2\2\2df\5\24\13\2eg\7-\2\2fe\3\2\2\2fg\3\2\2\2gh\3\2\2\2hi\b\6\1\2"+
-		"i\u0089\3\2\2\2jl\5\26\f\2km\7-\2\2lk\3\2\2\2lm\3\2\2\2mn\3\2\2\2no\b"+
-		"\6\1\2o\u0089\3\2\2\2pr\5\30\r\2qs\7-\2\2rq\3\2\2\2rs\3\2\2\2st\3\2\2"+
-		"\2tu\b\6\1\2u\u0089\3\2\2\2vx\5\32\16\2wy\7-\2\2xw\3\2\2\2xy\3\2\2\2y"+
-		"z\3\2\2\2z{\b\6\1\2{\u0089\3\2\2\2|}\5 \21\2}~\b\6\1\2~\u0089\3\2\2\2"+
-		"\177\u0080\5\"\22\2\u0080\u0081\b\6\1\2\u0081\u0089\3\2\2\2\u0082\u0083"+
-		"\5(\25\2\u0083\u0084\b\6\1\2\u0084\u0089\3\2\2\2\u0085\u0086\5*\26\2\u0086"+
-		"\u0087\b\6\1\2\u0087\u0089\3\2\2\2\u0088d\3\2\2\2\u0088j\3\2\2\2\u0088"+
-		"p\3\2\2\2\u0088v\3\2\2\2\u0088|\3\2\2\2\u0088\177\3\2\2\2\u0088\u0082"+
-		"\3\2\2\2\u0088\u0085\3\2\2\2\u0089\13\3\2\2\2\u008a\u008b\7\33\2\2\u008b"+
-		"\u008c\7/\2\2\u008c\u008d\5\36\20\2\u008d\u008e\7\60\2\2\u008e\u008f\b"+
-		"\7\1\2\u008f\r\3\2\2\2\u0090\u0091\7\n\2\2\u0091\u0092\7(\2\2\u0092\u0093"+
-		"\7,\2\2\u0093\u0094\5\34\17\2\u0094\u0095\7+\2\2\u0095\u0096\5\36\20\2"+
-		"\u0096\u0097\b\b\1\2\u0097\u00a6\3\2\2\2\u0098\u0099\7\n\2\2\u0099\u009a"+
-		"\7(\2\2\u009a\u009b\7+\2\2\u009b\u009c\5\36\20\2\u009c\u009d\b\b\1\2\u009d"+
-		"\u00a6\3\2\2\2\u009e\u009f\7\n\2\2\u009f\u00a0\7(\2\2\u00a0\u00a1\7,\2"+
-		"\2\u00a1\u00a2\5\34\17\2\u00a2\u00a3\7.\2\2\u00a3\u00a4\b\b\1\2\u00a4"+
-		"\u00a6\3\2\2\2\u00a5\u0090\3\2\2\2\u00a5\u0098\3\2\2\2\u00a5\u009e\3\2"+
-		"\2\2\u00a6\17\3\2\2\2\u00a7\u00a8\7\13\2\2\u00a8\u00a9\7(\2\2\u00a9\u00aa"+
-		"\7,\2\2\u00aa\u00ab\5\34\17\2\u00ab\u00ac\7+\2\2\u00ac\u00ad\5\36\20\2"+
-		"\u00ad\u00ae\b\t\1\2\u00ae\u00b6\3\2\2\2\u00af\u00b0\7\13\2\2\u00b0\u00b1"+
-		"\7(\2\2\u00b1\u00b2\7+\2\2\u00b2\u00b3\5\36\20\2\u00b3\u00b4\b\t\1\2\u00b4"+
+		"\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u01ae"+
+		"\n\26\3\26\2\3\36\27\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*\2\7"+
+		"\3\2;<\3\2=>\4\2\66\6688\4\2\67\6799\3\2\61\62\2\u01d6\2,\3\2\2\2\4\61"+
+		"\3\2\2\2\6[\3\2\2\2\b^\3\2\2\2\n\u0088\3\2\2\2\f\u008a\3\2\2\2\16\u00a5"+
+		"\3\2\2\2\20\u00b5\3\2\2\2\22\u00c6\3\2\2\2\24\u00c8\3\2\2\2\26\u00e3\3"+
+		"\2\2\2\30\u00f3\3\2\2\2\32\u0104\3\2\2\2\34\u0110\3\2\2\2\36\u012d\3\2"+
+		"\2\2 \u0177\3\2\2\2\"\u0179\3\2\2\2$\u0186\3\2\2\2&\u018c\3\2\2\2(\u0192"+
+		"\3\2\2\2*\u01ad\3\2\2\2,-\5\4\3\2-.\7\2\2\3./\b\2\1\2/\3\3\2\2\2\60\62"+
+		"\5\6\4\2\61\60\3\2\2\2\62\63\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64\65"+
+		"\3\2\2\2\65\66\b\3\1\2\66\5\3\2\2\2\679\5\f\7\28:\7-\2\298\3\2\2\29:\3"+
+		"\2\2\2:;\3\2\2\2;<\b\4\1\2<\\\3\2\2\2=?\5\16\b\2>@\7-\2\2?>\3\2\2\2?@"+
+		"\3\2\2\2@A\3\2\2\2AB\b\4\1\2B\\\3\2\2\2CE\5\20\t\2DF\7-\2\2ED\3\2\2\2"+
+		"EF\3\2\2\2FG\3\2\2\2GH\b\4\1\2H\\\3\2\2\2IK\5\22\n\2JL\7-\2\2KJ\3\2\2"+
+		"\2KL\3\2\2\2LM\3\2\2\2MN\b\4\1\2N\\\3\2\2\2OP\5 \21\2PQ\b\4\1\2Q\\\3\2"+
+		"\2\2RS\5\"\22\2ST\b\4\1\2T\\\3\2\2\2UV\5(\25\2VW\b\4\1\2W\\\3\2\2\2XY"+
+		"\5*\26\2YZ\b\4\1\2Z\\\3\2\2\2[\67\3\2\2\2[=\3\2\2\2[C\3\2\2\2[I\3\2\2"+
+		"\2[O\3\2\2\2[R\3\2\2\2[U\3\2\2\2[X\3\2\2\2\\\7\3\2\2\2]_\5\n\6\2^]\3\2"+
+		"\2\2_`\3\2\2\2`^\3\2\2\2`a\3\2\2\2ab\3\2\2\2bc\b\5\1\2c\t\3\2\2\2df\5"+
+		"\24\13\2eg\7-\2\2fe\3\2\2\2fg\3\2\2\2gh\3\2\2\2hi\b\6\1\2i\u0089\3\2\2"+
+		"\2jl\5\26\f\2km\7-\2\2lk\3\2\2\2lm\3\2\2\2mn\3\2\2\2no\b\6\1\2o\u0089"+
+		"\3\2\2\2pr\5\30\r\2qs\7-\2\2rq\3\2\2\2rs\3\2\2\2st\3\2\2\2tu\b\6\1\2u"+
+		"\u0089\3\2\2\2vx\5\32\16\2wy\7-\2\2xw\3\2\2\2xy\3\2\2\2yz\3\2\2\2z{\b"+
+		"\6\1\2{\u0089\3\2\2\2|}\5 \21\2}~\b\6\1\2~\u0089\3\2\2\2\177\u0080\5\""+
+		"\22\2\u0080\u0081\b\6\1\2\u0081\u0089\3\2\2\2\u0082\u0083\5(\25\2\u0083"+
+		"\u0084\b\6\1\2\u0084\u0089\3\2\2\2\u0085\u0086\5*\26\2\u0086\u0087\b\6"+
+		"\1\2\u0087\u0089\3\2\2\2\u0088d\3\2\2\2\u0088j\3\2\2\2\u0088p\3\2\2\2"+
+		"\u0088v\3\2\2\2\u0088|\3\2\2\2\u0088\177\3\2\2\2\u0088\u0082\3\2\2\2\u0088"+
+		"\u0085\3\2\2\2\u0089\13\3\2\2\2\u008a\u008b\7\33\2\2\u008b\u008c\7/\2"+
+		"\2\u008c\u008d\5\36\20\2\u008d\u008e\7\60\2\2\u008e\u008f\b\7\1\2\u008f"+
+		"\r\3\2\2\2\u0090\u0091\7\n\2\2\u0091\u0092\7(\2\2\u0092\u0093\7,\2\2\u0093"+
+		"\u0094\5\34\17\2\u0094\u0095\7+\2\2\u0095\u0096\5\36\20\2\u0096\u0097"+
+		"\b\b\1\2\u0097\u00a6\3\2\2\2\u0098\u0099\7\n\2\2\u0099\u009a\7(\2\2\u009a"+
+		"\u009b\7+\2\2\u009b\u009c\5\36\20\2\u009c\u009d\b\b\1\2\u009d\u00a6\3"+
+		"\2\2\2\u009e\u009f\7\n\2\2\u009f\u00a0\7(\2\2\u00a0\u00a1\7,\2\2\u00a1"+
+		"\u00a2\5\34\17\2\u00a2\u00a3\7.\2\2\u00a3\u00a4\b\b\1\2\u00a4\u00a6\3"+
+		"\2\2\2\u00a5\u0090\3\2\2\2\u00a5\u0098\3\2\2\2\u00a5\u009e\3\2\2\2\u00a6"+
+		"\17\3\2\2\2\u00a7\u00a8\7\13\2\2\u00a8\u00a9\7(\2\2\u00a9\u00aa\7,\2\2"+
+		"\u00aa\u00ab\5\34\17\2\u00ab\u00ac\7+\2\2\u00ac\u00ad\5\36\20\2\u00ad"+
+		"\u00ae\b\t\1\2\u00ae\u00b6\3\2\2\2\u00af\u00b0\7\13\2\2\u00b0\u00b1\7"+
+		"(\2\2\u00b1\u00b2\7+\2\2\u00b2\u00b3\5\36\20\2\u00b3\u00b4\b\t\1\2\u00b4"+
 		"\u00b6\3\2\2\2\u00b5\u00a7\3\2\2\2\u00b5\u00af\3\2\2\2\u00b6\21\3\2\2"+
 		"\2\u00b7\u00b8\7(\2\2\u00b8\u00b9\7+\2\2\u00b9\u00ba\5\36\20\2\u00ba\u00bb"+
 		"\b\n\1\2\u00bb\u00c7\3\2\2\2\u00bc\u00bd\7(\2\2\u00bd\u00be\7?\2\2\u00be"+
@@ -2253,8 +2281,12 @@ public class SwiftGrammarParser extends Parser {
 		"\1\2\u0198)\3\2\2\2\u0199\u019a\7\24\2\2\u019a\u019b\7(\2\2\u019b\u019c"+
 		"\7\25\2\2\u019c\u019d\5\36\20\2\u019d\u019e\7\26\2\2\u019e\u019f\5\36"+
 		"\20\2\u019f\u01a0\7A\2\2\u01a0\u01a1\5\b\5\2\u01a1\u01a2\7B\2\2\u01a2"+
-		"\u01a3\b\26\1\2\u01a3+\3\2\2\2\33\639?EK[`flrx\u0088\u00a5\u00b5\u00c6"+
-		"\u00e3\u00f3\u0104\u0110\u012d\u0157\u0159\u0177\u0180\u0188";
+		"\u01a3\b\26\1\2\u01a3\u01ae\3\2\2\2\u01a4\u01a5\7\24\2\2\u01a5\u01a6\7"+
+		"(\2\2\u01a6\u01a7\7\25\2\2\u01a7\u01a8\5\36\20\2\u01a8\u01a9\7A\2\2\u01a9"+
+		"\u01aa\5\b\5\2\u01aa\u01ab\7B\2\2\u01ab\u01ac\b\26\1\2\u01ac\u01ae\3\2"+
+		"\2\2\u01ad\u0199\3\2\2\2\u01ad\u01a4\3\2\2\2\u01ae+\3\2\2\2\34\639?EK"+
+		"[`flrx\u0088\u00a5\u00b5\u00c6\u00e3\u00f3\u0104\u0110\u012d\u0157\u0159"+
+		"\u0177\u0180\u0188\u01ad";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -69,7 +69,7 @@ func swiftgrammarParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 73, 419, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 73, 430, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 1,
@@ -109,15 +109,16 @@ func swiftgrammarParserInit() {
 		17, 389, 8, 17, 11, 17, 12, 17, 390, 1, 17, 1, 17, 1, 18, 1, 18, 1, 18,
 		1, 18, 1, 18, 1, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1,
 		20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20,
-		1, 20, 0, 1, 28, 21, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26,
-		28, 30, 32, 34, 36, 38, 40, 0, 5, 1, 0, 57, 58, 1, 0, 59, 60, 2, 0, 52,
-		52, 54, 54, 2, 0, 53, 53, 55, 55, 1, 0, 47, 48, 456, 0, 42, 1, 0, 0, 0,
-		2, 47, 1, 0, 0, 0, 4, 89, 1, 0, 0, 0, 6, 92, 1, 0, 0, 0, 8, 134, 1, 0,
-		0, 0, 10, 136, 1, 0, 0, 0, 12, 163, 1, 0, 0, 0, 14, 179, 1, 0, 0, 0, 16,
-		196, 1, 0, 0, 0, 18, 198, 1, 0, 0, 0, 20, 225, 1, 0, 0, 0, 22, 241, 1,
-		0, 0, 0, 24, 258, 1, 0, 0, 0, 26, 270, 1, 0, 0, 0, 28, 299, 1, 0, 0, 0,
-		30, 373, 1, 0, 0, 0, 32, 375, 1, 0, 0, 0, 34, 388, 1, 0, 0, 0, 36, 394,
-		1, 0, 0, 0, 38, 400, 1, 0, 0, 0, 40, 407, 1, 0, 0, 0, 42, 43, 3, 2, 1,
+		1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 3, 20, 428,
+		8, 20, 1, 20, 0, 1, 28, 21, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22,
+		24, 26, 28, 30, 32, 34, 36, 38, 40, 0, 5, 1, 0, 57, 58, 1, 0, 59, 60, 2,
+		0, 52, 52, 54, 54, 2, 0, 53, 53, 55, 55, 1, 0, 47, 48, 468, 0, 42, 1, 0,
+		0, 0, 2, 47, 1, 0, 0, 0, 4, 89, 1, 0, 0, 0, 6, 92, 1, 0, 0, 0, 8, 134,
+		1, 0, 0, 0, 10, 136, 1, 0, 0, 0, 12, 163, 1, 0, 0, 0, 14, 179, 1, 0, 0,
+		0, 16, 196, 1, 0, 0, 0, 18, 198, 1, 0, 0, 0, 20, 225, 1, 0, 0, 0, 22, 241,
+		1, 0, 0, 0, 24, 258, 1, 0, 0, 0, 26, 270, 1, 0, 0, 0, 28, 299, 1, 0, 0,
+		0, 30, 373, 1, 0, 0, 0, 32, 375, 1, 0, 0, 0, 34, 388, 1, 0, 0, 0, 36, 394,
+		1, 0, 0, 0, 38, 400, 1, 0, 0, 0, 40, 427, 1, 0, 0, 0, 42, 43, 3, 2, 1,
 		0, 43, 44, 5, 0, 0, 1, 44, 45, 6, 0, -1, 0, 45, 1, 1, 0, 0, 0, 46, 48,
 		3, 4, 2, 0, 47, 46, 1, 0, 0, 0, 48, 49, 1, 0, 0, 0, 49, 47, 1, 0, 0, 0,
 		49, 50, 1, 0, 0, 0, 50, 51, 1, 0, 0, 0, 51, 52, 6, 1, -1, 0, 52, 3, 1,
@@ -251,9 +252,13 @@ func swiftgrammarParserInit() {
 		0, 0, 405, 406, 6, 19, -1, 0, 406, 39, 1, 0, 0, 0, 407, 408, 5, 18, 0,
 		0, 408, 409, 5, 38, 0, 0, 409, 410, 5, 19, 0, 0, 410, 411, 3, 28, 14, 0,
 		411, 412, 5, 20, 0, 0, 412, 413, 3, 28, 14, 0, 413, 414, 5, 63, 0, 0, 414,
-		415, 3, 6, 3, 0, 415, 416, 5, 64, 0, 0, 416, 417, 6, 20, -1, 0, 417, 41,
-		1, 0, 0, 0, 25, 49, 55, 61, 67, 73, 89, 94, 100, 106, 112, 118, 134, 163,
-		179, 196, 225, 241, 258, 270, 299, 341, 343, 373, 382, 390,
+		415, 3, 6, 3, 0, 415, 416, 5, 64, 0, 0, 416, 417, 6, 20, -1, 0, 417, 428,
+		1, 0, 0, 0, 418, 419, 5, 18, 0, 0, 419, 420, 5, 38, 0, 0, 420, 421, 5,
+		19, 0, 0, 421, 422, 3, 28, 14, 0, 422, 423, 5, 63, 0, 0, 423, 424, 3, 6,
+		3, 0, 424, 425, 5, 64, 0, 0, 425, 426, 6, 20, -1, 0, 426, 428, 1, 0, 0,
+		0, 427, 407, 1, 0, 0, 0, 427, 418, 1, 0, 0, 0, 428, 41, 1, 0, 0, 0, 26,
+		49, 55, 61, 67, 73, 89, 94, 100, 106, 112, 118, 134, 163, 179, 196, 225,
+		241, 258, 270, 299, 341, 343, 373, 382, 390, 427,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -7377,6 +7382,9 @@ type IForcontrolContext interface {
 	// Get_blockinterno returns the _blockinterno rule contexts.
 	Get_blockinterno() IBlockinternoContext
 
+	// Get_expr returns the _expr rule contexts.
+	Get_expr() IExprContext
+
 	// SetLeft sets the left rule contexts.
 	SetLeft(IExprContext)
 
@@ -7385,6 +7393,9 @@ type IForcontrolContext interface {
 
 	// Set_blockinterno sets the _blockinterno rule contexts.
 	Set_blockinterno(IBlockinternoContext)
+
+	// Set_expr sets the _expr rule contexts.
+	Set_expr(IExprContext)
 
 	// GetForct returns the forct attribute.
 	GetForct() interfaces.Instruction
@@ -7416,6 +7427,7 @@ type ForcontrolContext struct {
 	left          IExprContext
 	right         IExprContext
 	_blockinterno IBlockinternoContext
+	_expr         IExprContext
 }
 
 func NewEmptyForcontrolContext() *ForcontrolContext {
@@ -7459,11 +7471,15 @@ func (s *ForcontrolContext) GetRight() IExprContext { return s.right }
 
 func (s *ForcontrolContext) Get_blockinterno() IBlockinternoContext { return s._blockinterno }
 
+func (s *ForcontrolContext) Get_expr() IExprContext { return s._expr }
+
 func (s *ForcontrolContext) SetLeft(v IExprContext) { s.left = v }
 
 func (s *ForcontrolContext) SetRight(v IExprContext) { s.right = v }
 
 func (s *ForcontrolContext) Set_blockinterno(v IBlockinternoContext) { s._blockinterno = v }
+
+func (s *ForcontrolContext) Set_expr(v IExprContext) { s._expr = v }
 
 func (s *ForcontrolContext) GetForct() interfaces.Instruction { return s.forct }
 
@@ -7573,101 +7589,195 @@ func (s *ForcontrolContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *SwiftGrammarParser) Forcontrol() (localctx IForcontrolContext) {
 	localctx = NewForcontrolContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 40, SwiftGrammarParserRULE_forcontrol)
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(407)
-
-		var _m = p.Match(SwiftGrammarParserFOR)
-
-		localctx.(*ForcontrolContext)._FOR = _m
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
+	p.SetState(427)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
 	}
-	{
-		p.SetState(408)
 
-		var _m = p.Match(SwiftGrammarParserID_VALIDO)
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 25, p.GetParserRuleContext()) {
+	case 1:
+		p.EnterOuterAlt(localctx, 1)
+		{
+			p.SetState(407)
 
-		localctx.(*ForcontrolContext)._ID_VALIDO = _m
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(409)
-		p.Match(SwiftGrammarParserIN)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(410)
+			var _m = p.Match(SwiftGrammarParserFOR)
 
-		var _x = p.expr(0)
+			localctx.(*ForcontrolContext)._FOR = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(408)
 
-		localctx.(*ForcontrolContext).left = _x
-	}
-	{
-		p.SetState(411)
-		p.Match(SwiftGrammarParserRANGO)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(412)
+			var _m = p.Match(SwiftGrammarParserID_VALIDO)
 
-		var _x = p.expr(0)
+			localctx.(*ForcontrolContext)._ID_VALIDO = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(409)
+			p.Match(SwiftGrammarParserIN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(410)
 
-		localctx.(*ForcontrolContext).right = _x
-	}
-	{
-		p.SetState(413)
-		p.Match(SwiftGrammarParserLLAVEIZQ)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(414)
+			var _x = p.expr(0)
 
-		var _x = p.Blockinterno()
+			localctx.(*ForcontrolContext).left = _x
+		}
+		{
+			p.SetState(411)
+			p.Match(SwiftGrammarParserRANGO)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(412)
 
-		localctx.(*ForcontrolContext)._blockinterno = _x
+			var _x = p.expr(0)
+
+			localctx.(*ForcontrolContext).right = _x
+		}
+		{
+			p.SetState(413)
+			p.Match(SwiftGrammarParserLLAVEIZQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(414)
+
+			var _x = p.Blockinterno()
+
+			localctx.(*ForcontrolContext)._blockinterno = _x
+		}
+		{
+			p.SetState(415)
+			p.Match(SwiftGrammarParserLLAVEDER)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*ForcontrolContext).forct = instructions.NewSentenciaForRango((func() int {
+			if localctx.(*ForcontrolContext).Get_FOR() == nil {
+				return 0
+			} else {
+				return localctx.(*ForcontrolContext).Get_FOR().GetLine()
+			}
+		}()), (func() int {
+			if localctx.(*ForcontrolContext).Get_FOR() == nil {
+				return 0
+			} else {
+				return localctx.(*ForcontrolContext).Get_FOR().GetColumn()
+			}
+		}()), (func() string {
+			if localctx.(*ForcontrolContext).Get_ID_VALIDO() == nil {
+				return ""
+			} else {
+				return localctx.(*ForcontrolContext).Get_ID_VALIDO().GetText()
+			}
+		}()), localctx.(*ForcontrolContext).GetLeft().GetE(), localctx.(*ForcontrolContext).GetRight().GetE(), localctx.(*ForcontrolContext).Get_blockinterno().GetBlkint())
+
+	case 2:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(418)
+
+			var _m = p.Match(SwiftGrammarParserFOR)
+
+			localctx.(*ForcontrolContext)._FOR = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(419)
+
+			var _m = p.Match(SwiftGrammarParserID_VALIDO)
+
+			localctx.(*ForcontrolContext)._ID_VALIDO = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(420)
+			p.Match(SwiftGrammarParserIN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(421)
+
+			var _x = p.expr(0)
+
+			localctx.(*ForcontrolContext)._expr = _x
+		}
+		{
+			p.SetState(422)
+			p.Match(SwiftGrammarParserLLAVEIZQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(423)
+
+			var _x = p.Blockinterno()
+
+			localctx.(*ForcontrolContext)._blockinterno = _x
+		}
+		{
+			p.SetState(424)
+			p.Match(SwiftGrammarParserLLAVEDER)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*ForcontrolContext).forct = instructions.NewSentenciaForCadena((func() int {
+			if localctx.(*ForcontrolContext).Get_FOR() == nil {
+				return 0
+			} else {
+				return localctx.(*ForcontrolContext).Get_FOR().GetLine()
+			}
+		}()), (func() int {
+			if localctx.(*ForcontrolContext).Get_FOR() == nil {
+				return 0
+			} else {
+				return localctx.(*ForcontrolContext).Get_FOR().GetColumn()
+			}
+		}()), (func() string {
+			if localctx.(*ForcontrolContext).Get_ID_VALIDO() == nil {
+				return ""
+			} else {
+				return localctx.(*ForcontrolContext).Get_ID_VALIDO().GetText()
+			}
+		}()), localctx.(*ForcontrolContext).Get_expr().GetE(), localctx.(*ForcontrolContext).Get_blockinterno().GetBlkint())
+
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
-	{
-		p.SetState(415)
-		p.Match(SwiftGrammarParserLLAVEDER)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	localctx.(*ForcontrolContext).forct = instructions.NewSentenciaForRango((func() int {
-		if localctx.(*ForcontrolContext).Get_FOR() == nil {
-			return 0
-		} else {
-			return localctx.(*ForcontrolContext).Get_FOR().GetLine()
-		}
-	}()), (func() int {
-		if localctx.(*ForcontrolContext).Get_FOR() == nil {
-			return 0
-		} else {
-			return localctx.(*ForcontrolContext).Get_FOR().GetColumn()
-		}
-	}()), (func() string {
-		if localctx.(*ForcontrolContext).Get_ID_VALIDO() == nil {
-			return ""
-		} else {
-			return localctx.(*ForcontrolContext).Get_ID_VALIDO().GetText()
-		}
-	}()), localctx.(*ForcontrolContext).GetLeft().GetE(), localctx.(*ForcontrolContext).GetRight().GetE(), localctx.(*ForcontrolContext).Get_blockinterno().GetBlkint())
 
 errorExit:
 	if p.HasError() {
