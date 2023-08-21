@@ -259,3 +259,59 @@ forcontrol returns [interfaces.Instruction forct]
 : FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
 | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)};
  
+ //CREACION DE GUARD
+guardcontrol returns [interfaces.Instruction guct]
+:GUARD expr ELSE LLAVEIZQ blockinterno (continuee|breakk|retorno) (PUNTOCOMA)? LLAVEDER {};
+
+//CREACION DEL RETURN
+continuee returns [interfaces.Instruction coct]
+: CONTINUE {};
+
+//CREACION DEL RETURN
+breakk returns [interfaces.Instruction brct]
+: BREAK {};
+
+//CREACION DEL RETURN
+retorno returns [interfaces.Instruction rect]
+: RETURN (expr)? {};
+
+/*
+//CREACION DEL VECTOR (pendiente)
+vectorcontrol:
+	VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER definicionvector {};
+
+definicionvector:
+	IG CORCHIZQ listaexpresion CORCHDER {}
+	| CORCHIZQ tipodato CORCHDER CORCHIZQ CORCHDER {}
+	| PARIZQ PARDER {}
+	| ID_VALIDO {};
+
+listaexpresion: expresion (COMA listaexpresion)* {};
+
+vectoragregar:
+	ID_VALIDO PUNTO APPEND PARIZQ expresion PARDER {}
+	| ID_VALIDO CORCHIZQ expresion CORCHDER IG ID_VALIDO CORCHIZQ expresion CORCHDER {};
+
+vectorremover:
+	ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER {}
+	| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expresion PARDER {};
+
+vectorvacio: ID_VALIDO PUNTO ISEMPTY {};
+
+vectorcount: ID_VALIDO PUNTO COUNT {};
+
+vectoraccess: ID_VALIDO CORCHIZQ expresion CORCHDER {};
+
+//CREACION DE EMBEBIDAS
+printcontrol
+	returns[interfaces.Instruction prnt]:
+	PRINT PARIZQ expresion PARDER { 
+            $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expresion.e)
+    };
+
+intembebida: INT PARIZQ expresion PARDER {};
+
+floatembebida: FLOAT PARIZQ expresion PARDER {};
+
+stringembebida: STRING PARIZQ expresion PARDER {};
+*/
