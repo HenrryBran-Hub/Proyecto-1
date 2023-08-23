@@ -18,7 +18,7 @@ ELSE: 'else';
 SWITCH: 'switch';
 CASE: 'case';
 DEFAULT: 'default';
-BREAK: 'breack';
+BREAK: 'break';
 CONTINUE: 'continue';
 FOR: 'for';
 IN: 'in';

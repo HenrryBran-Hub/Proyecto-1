@@ -32,6 +32,53 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 					continue
 				}
 				instruction.Ejecutar(ast, env)
+				tamanio := ast.Pila_Variables.Len()
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					if tamanio > 1 {
+						ast.DisminuirAmbito()
+						symbol := environment.Symbol{
+							Lin:   v.Lin,
+							Col:   v.Col,
+							Tipo:  environment.BOOLEAN,
+							Valor: true,
+							Scope: "Local",
+						}
+						Variable := environment.Variable{
+							Name:        "Break",
+							Symbols:     symbol,
+							Mutable:     false,
+							TipoSimbolo: "Sentencia de Transferencia",
+						}
+						ast.GuardarVariable(Variable)
+					}
+					return nil
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					if tamanio > 1 {
+						ast.DisminuirAmbito()
+						symbol := environment.Symbol{
+							Lin:   v.Lin,
+							Col:   v.Col,
+							Tipo:  environment.BOOLEAN,
+							Valor: true,
+							Scope: "Local",
+						}
+						Variable := environment.Variable{
+							Name:        "Return",
+							Symbols:     symbol,
+							Mutable:     false,
+							TipoSimbolo: "Sentencia de Transferencia",
+						}
+						ast.GuardarVariable(Variable)
+					}
+					return nil
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					continue
+				}
 			}
 			condicion = v.Expresion.Ejecutar(ast, env)
 		}
