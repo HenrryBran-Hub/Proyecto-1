@@ -164,8 +164,8 @@ func (s *BaseSwiftGrammarListener) EnterBreakk(ctx *BreakkContext) {}
 // ExitBreakk is called when production breakk is exited.
 func (s *BaseSwiftGrammarListener) ExitBreakk(ctx *BreakkContext) {}
 
-// EnterRetorno is called when production retorno is entered.
-func (s *BaseSwiftGrammarListener) EnterRetorno(ctx *RetornoContext) {}
+// EnterRetornos is called when production retornos is entered.
+func (s *BaseSwiftGrammarListener) EnterRetornos(ctx *RetornosContext) {}
 
-// ExitRetorno is called when production retorno is exited.
-func (s *BaseSwiftGrammarListener) ExitRetorno(ctx *RetornoContext) {}
+// ExitRetornos is called when production retornos is exited.
+func (s *BaseSwiftGrammarListener) ExitRetornos(ctx *RetornosContext) {}

@@ -75,7 +75,7 @@ instructionint returns [interfaces.Instruction insint]
 | guardcontrol { $insint = $guardcontrol.guct}
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
-| retorno (PUNTOCOMA)? { $insint = $retorno.rect }
+| retornos (PUNTOCOMA)? { $insint = $retornos.rect }
 ;
 
 /////////////////////////
@@ -277,14 +277,14 @@ breakk returns [interfaces.Instruction brkct]
 : BREAK { $brkct = instructions.NewTransferenciaBreak($BREAK.line, $BREAK.pos)};
 
 //CREACION DEL RETURN
-retorno returns [interfaces.Instruction rect]
-: RETURN (op=expr)?
+retornos returns [interfaces.Instruction rect]
+: RETURN
 {
-    if ($op.e != nil) {
-        $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
-    } else {
-        $rect = instructions.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
-    }
+    $rect = instructions.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
+}
+| RETURN op=expr
+{
+    $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
 };
 
 /*

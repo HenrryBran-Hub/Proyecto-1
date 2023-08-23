@@ -18,8 +18,8 @@ func NewTransferenciaReturnExp(lin int, col int, value interfaces.Expression) Tr
 func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	value := v.Value.Ejecutar(ast, env)
 	symbol := environment.Symbol{
-		Lin:   value.Lin,
-		Col:   value.Col,
+		Lin:   v.Lin,
+		Col:   v.Col,
 		Tipo:  value.Tipo,
 		Valor: value.Valor,
 		Scope: "Local",
@@ -27,7 +27,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, env interface{}) 
 	Variable := environment.Variable{
 		Name:        "ReturnExp",
 		Symbols:     symbol,
-		Mutable:     true,
+		Mutable:     false,
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
 

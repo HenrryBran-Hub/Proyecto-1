@@ -100,6 +100,9 @@ func (a *AST) GuardarVariable(variable Variable) {
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
+	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
+		return
+	}
 	a.Lista_VariablesHTML.PushBack(variable)
 }
 

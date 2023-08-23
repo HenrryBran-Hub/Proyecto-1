@@ -79,8 +79,8 @@ type SwiftGrammarListener interface {
 	// EnterBreakk is called when entering the breakk production.
 	EnterBreakk(c *BreakkContext)
 
-	// EnterRetorno is called when entering the retorno production.
-	EnterRetorno(c *RetornoContext)
+	// EnterRetornos is called when entering the retornos production.
+	EnterRetornos(c *RetornosContext)
 
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
@@ -154,6 +154,6 @@ type SwiftGrammarListener interface {
 	// ExitBreakk is called when exiting the breakk production.
 	ExitBreakk(c *BreakkContext)
 
-	// ExitRetorno is called when exiting the retorno production.
-	ExitRetorno(c *RetornoContext)
+	// ExitRetornos is called when exiting the retornos production.
+	ExitRetornos(c *RetornosContext)
 }
