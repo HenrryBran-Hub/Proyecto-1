@@ -61,7 +61,9 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 		Mutable:     true,
 		TipoSimbolo: "Variable",
 	}
-	ast.AumentarAmbito()
+	ast.AumentarAmbito("For Rango")
+	var retornable int = 0
+	var reexp environment.Symbol
 	ast.GuardarVariable(Variable)
 	for i := left.Valor.(int); i <= right.Valor.(int); i++ {
 		for _, inst := range v.slice {
@@ -73,6 +75,29 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 				continue
 			}
 			instruction.Ejecutar(ast, env)
+			bvari := ast.GetVariable("Break")
+			if bvari != nil {
+				retornable = 1
+				break
+			}
+			rvari := ast.GetVariable("Return")
+			if rvari != nil {
+				retornable = 2
+				break
+			}
+			revari := ast.GetVariable("ReturnExp")
+			if revari != nil {
+				retornable = 3
+				reexp = revari.Symbols
+				break
+			}
+			cvari := ast.GetVariable("Continue")
+			if cvari != nil {
+				continue
+			}
+		}
+		if retornable == 1 || retornable == 2 || retornable == 3 {
+			break
 		}
 		vari := ast.GetVariable(v.Id)
 		symbol := environment.Symbol{
@@ -80,7 +105,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Col:   vari.Symbols.Col,
 			Tipo:  environment.INTEGER,
 			Valor: vari.Symbols.Valor.(int) + 1,
-			Scope: "Local",
 		}
 		Variable := environment.Variable{
 			Name:        vari.Name,
@@ -91,6 +115,49 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 		ast.ActualizarVariable(&Variable, symbol)
 	}
 	ast.DisminuirAmbito()
-
+	tamanio := ast.Pila_Variables.Len()
+	if tamanio > 1 {
+		if retornable == 2 {
+			symbol := environment.Symbol{
+				Lin:   v.Lin,
+				Col:   v.Col,
+				Tipo:  environment.BOOLEAN,
+				Valor: true,
+			}
+			Variable := environment.Variable{
+				Name:        "Return",
+				Symbols:     symbol,
+				Mutable:     false,
+				TipoSimbolo: "Sentencia de Transferencia",
+			}
+			ast.GuardarVariable(Variable)
+		}
+		if retornable == 3 {
+			symbol := environment.Symbol{
+				Lin:   v.Lin,
+				Col:   v.Col,
+				Tipo:  reexp.Tipo,
+				Valor: reexp.Valor,
+				Scope: reexp.Scope,
+			}
+			Variable := environment.Variable{
+				Name:        "ReturnExp",
+				Symbols:     symbol,
+				Mutable:     false,
+				TipoSimbolo: "Sentencia de Transferencia",
+			}
+			ast.GuardarVariable(Variable)
+		}
+	}
+	if tamanio == 1 && retornable == 3 {
+		Errores := environment.Errores{
+			Descripcion: "Estas retornando un valor fuera de una funcion",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      "For Rango",
+		}
+		ast.ErroresHTML(Errores)
+	}
 	return nil
 }

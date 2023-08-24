@@ -18,6 +18,7 @@ type AST struct {
 	Lista_Variables     *list.List
 	Lista_VariablesHTML *list.List
 	Lista_Errores       *list.List
+	Lista_Ambitos_Var   *list.List
 	Variables           Variable
 }
 
@@ -72,20 +73,30 @@ func (a *AST) IniciarAmbito() {
 	a.Lista_VariablesHTML = list.New()
 	a.Pila_Variables.PushBack(a.Lista_Variables)
 	a.Lista_Errores = list.New()
+	a.Lista_Ambitos_Var = list.New()
 }
 
-func (a *AST) AumentarAmbito() {
+func (a *AST) AumentarAmbito(ambito string) {
 	nuevaLista := list.New()
 	a.Pila_Variables.PushFront(nuevaLista)
 	a.Lista_Variables = nuevaLista
+	a.Lista_Ambitos_Var.PushBack(ambito)
 }
 
 func (a *AST) DisminuirAmbito() {
 	a.Pila_Variables.Remove(a.Pila_Variables.Front())
 	a.Lista_Variables = a.Pila_Variables.Front().Value.(*list.List)
+	if a.Lista_Ambitos_Var.Len() > 0 {
+		a.Lista_Ambitos_Var.Remove(a.Lista_Ambitos_Var.Back())
+	}
 }
 
 func (a *AST) GuardarVariable(variable Variable) {
+	var lastScope string
+	if a.Lista_Ambitos_Var.Len() > 0 {
+		lastScope = a.Lista_Ambitos_Var.Back().Value.(string)
+		variable.Symbols.Scope = lastScope
+	}
 	for e := a.Lista_Variables.Front(); e != nil; e = e.Next() {
 		if e.Value.(Variable).Name == variable.Name {
 			Errores := Errores{
@@ -100,6 +111,9 @@ func (a *AST) GuardarVariable(variable Variable) {
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
+	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
+		return
+	}
 	a.Lista_VariablesHTML.PushBack(variable)
 }
 
@@ -331,4 +345,24 @@ func (a *AST) TablaErroresHTML() {
 
 	// Open the HTML file in the default web browser
 	open.Start("TablaErrores.html")
+}
+
+func (a *AST) removeFromListFromBack(valor int) {
+	for e := 0; e < valor; e++ {
+		lastElement := a.Lista_VariablesHTML.Back()
+		if lastElement != nil {
+			a.Lista_VariablesHTML.Remove(lastElement)
+		}
+	}
+}
+
+func (a *AST) LimpiarLista() {
+	numElementsToRemove := a.Lista_Variables.Len()
+	for i := 0; i < numElementsToRemove; i++ {
+		lastElement := a.Lista_Variables.Back()
+		if lastElement != nil {
+			a.Lista_Variables.Remove(lastElement)
+		}
+	}
+	a.removeFromListFromBack(numElementsToRemove)
 }

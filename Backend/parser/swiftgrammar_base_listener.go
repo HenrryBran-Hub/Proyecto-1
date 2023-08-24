@@ -145,3 +145,27 @@ func (s *BaseSwiftGrammarListener) EnterForcontrol(ctx *ForcontrolContext) {}
 
 // ExitForcontrol is called when production forcontrol is exited.
 func (s *BaseSwiftGrammarListener) ExitForcontrol(ctx *ForcontrolContext) {}
+
+// EnterGuardcontrol is called when production guardcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterGuardcontrol(ctx *GuardcontrolContext) {}
+
+// ExitGuardcontrol is called when production guardcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitGuardcontrol(ctx *GuardcontrolContext) {}
+
+// EnterContinuee is called when production continuee is entered.
+func (s *BaseSwiftGrammarListener) EnterContinuee(ctx *ContinueeContext) {}
+
+// ExitContinuee is called when production continuee is exited.
+func (s *BaseSwiftGrammarListener) ExitContinuee(ctx *ContinueeContext) {}
+
+// EnterBreakk is called when production breakk is entered.
+func (s *BaseSwiftGrammarListener) EnterBreakk(ctx *BreakkContext) {}
+
+// ExitBreakk is called when production breakk is exited.
+func (s *BaseSwiftGrammarListener) ExitBreakk(ctx *BreakkContext) {}
+
+// EnterRetornos is called when production retornos is entered.
+func (s *BaseSwiftGrammarListener) EnterRetornos(ctx *RetornosContext) {}
+
+// ExitRetornos is called when production retornos is exited.
+func (s *BaseSwiftGrammarListener) ExitRetornos(ctx *RetornosContext) {}

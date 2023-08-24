@@ -43,6 +43,7 @@ instruction returns [interfaces.Instruction inst]
 | switchcontrol { $inst = $switchcontrol.mySwitch}
 | whilecontrol { $inst = $whilecontrol.whict}
 | forcontrol { $inst = $forcontrol.forct}
+| guardcontrol { $inst = $guardcontrol.guct}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -71,6 +72,10 @@ instructionint returns [interfaces.Instruction insint]
 | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
 | forcontrol { $insint = $forcontrol.forct}
+| guardcontrol { $insint = $guardcontrol.guct}
+| continuee (PUNTOCOMA)? { $insint = $continuee.coct}
+| breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
+| retornos (PUNTOCOMA)? { $insint = $retornos.rect }
 ;
 
 /////////////////////////
@@ -81,8 +86,7 @@ instructionint returns [interfaces.Instruction insint]
 
 // FUNCION PRINT
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
-;
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
 
 // DECLARACION DE VARIABLES
 declavarible returns [interfaces.Instruction decvbl]
@@ -109,8 +113,7 @@ asignacionvariable returns [interfaces.Instruction asgvbl]
 
 // FUNCION PRINT
 printstmtint returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
-;
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
 
 // DECLARACION DE VARIABLES
 declavaribleint returns [interfaces.Instruction decvbl]
@@ -136,12 +139,12 @@ tipodato returns [environment.TipoExpresion tipo]
 | FLOAT { $tipo = environment.FLOAT }
 | STRING { $tipo = environment.STRING }
 | BOOL { $tipo = environment.BOOLEAN }
-| CHARACT { $tipo = environment.CHARACTER }
-;
+| CHARACT { $tipo = environment.CHARACTER };
 
 // EXPRESION
 expr returns [interfaces.Expression e]
 : op=NOT right=expr { $e = expressions.NewOperation($right.start.GetLine(), $right.start.GetColumn(), $right.e, $op.text, $right.e) }
+| left=expr op=MODULO right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(ADD|SUB) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(MAY_IG|MAYOR) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
@@ -149,7 +152,6 @@ expr returns [interfaces.Expression e]
 | left=expr op=(IG_IG|DIF) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
-| left=expr op=MODULO right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PARIZQ expr PARDER { $e = $expr.e }
 | SUB NUMBER                             
     {
@@ -259,3 +261,69 @@ forcontrol returns [interfaces.Instruction forct]
 : FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
 | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)};
  
+ //CREACION DE GUARD
+guardcontrol returns [interfaces.Instruction guct]
+:GUARD expr ELSE LLAVEIZQ blockinterno LLAVEDER  
+{ 
+    $guct = instructions.NewSentenciaGuard($GUARD.line, $GUARD.pos, $expr.e, $blockinterno.blkint)
+};
+
+//CREACION DEL CONTINUE
+continuee returns [interfaces.Instruction coct]
+: CONTINUE {$coct = instructions.NewTransferenciaContinue($CONTINUE.line, $CONTINUE.pos)};
+
+//CREACION DEL BREAK
+breakk returns [interfaces.Instruction brkct]
+: BREAK { $brkct = instructions.NewTransferenciaBreak($BREAK.line, $BREAK.pos)};
+
+//CREACION DEL RETURN
+retornos returns [interfaces.Instruction rect]
+: RETURN
+{
+    $rect = instructions.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
+}
+| RETURN op=expr
+{
+    $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
+};
+
+/*
+//CREACION DEL VECTOR (pendiente)
+vectorcontrol:
+	VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER definicionvector {};
+
+definicionvector:
+	IG CORCHIZQ listaexpresion CORCHDER {}
+	| CORCHIZQ tipodato CORCHDER CORCHIZQ CORCHDER {}
+	| PARIZQ PARDER {}
+	| ID_VALIDO {};
+
+listaexpresion: expresion (COMA listaexpresion)* {};
+
+vectoragregar:
+	ID_VALIDO PUNTO APPEND PARIZQ expresion PARDER {}
+	| ID_VALIDO CORCHIZQ expresion CORCHDER IG ID_VALIDO CORCHIZQ expresion CORCHDER {};
+
+vectorremover:
+	ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER {}
+	| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expresion PARDER {};
+
+vectorvacio: ID_VALIDO PUNTO ISEMPTY {};
+
+vectorcount: ID_VALIDO PUNTO COUNT {};
+
+vectoraccess: ID_VALIDO CORCHIZQ expresion CORCHDER {};
+
+//CREACION DE EMBEBIDAS
+printcontrol
+	returns[interfaces.Instruction prnt]:
+	PRINT PARIZQ expresion PARDER { 
+            $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expresion.e)
+    };
+
+intembebida: INT PARIZQ expresion PARDER {};
+
+floatembebida: FLOAT PARIZQ expresion PARDER {};
+
+stringembebida: STRING PARIZQ expresion PARDER {};
+*/

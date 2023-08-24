@@ -70,6 +70,18 @@ type SwiftGrammarListener interface {
 	// EnterForcontrol is called when entering the forcontrol production.
 	EnterForcontrol(c *ForcontrolContext)
 
+	// EnterGuardcontrol is called when entering the guardcontrol production.
+	EnterGuardcontrol(c *GuardcontrolContext)
+
+	// EnterContinuee is called when entering the continuee production.
+	EnterContinuee(c *ContinueeContext)
+
+	// EnterBreakk is called when entering the breakk production.
+	EnterBreakk(c *BreakkContext)
+
+	// EnterRetornos is called when entering the retornos production.
+	EnterRetornos(c *RetornosContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -132,4 +144,16 @@ type SwiftGrammarListener interface {
 
 	// ExitForcontrol is called when exiting the forcontrol production.
 	ExitForcontrol(c *ForcontrolContext)
+
+	// ExitGuardcontrol is called when exiting the guardcontrol production.
+	ExitGuardcontrol(c *GuardcontrolContext)
+
+	// ExitContinuee is called when exiting the continuee production.
+	ExitContinuee(c *ContinueeContext)
+
+	// ExitBreakk is called when exiting the breakk production.
+	ExitBreakk(c *BreakkContext)
+
+	// ExitRetornos is called when exiting the retornos production.
+	ExitRetornos(c *RetornosContext)
 }
