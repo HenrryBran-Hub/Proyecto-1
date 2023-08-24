@@ -25,7 +25,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 	if condicion.Tipo == environment.BOOLEAN {
 		for condicion.Valor.(bool) {
 
-			ast.AumentarAmbito()
+			ast.AumentarAmbito("While")
 			var continueflag bool = false
 			breakPosition := -1
 			for i, inst := range v.slice {

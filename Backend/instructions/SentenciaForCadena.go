@@ -37,7 +37,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 			Mutable:     true,
 			TipoSimbolo: "Variable",
 		}
-		ast.AumentarAmbito()
+		ast.AumentarAmbito("For Cadena")
 		var retornable int = 0
 		var reexp environment.Symbol
 		ast.GuardarVariable(Variable)

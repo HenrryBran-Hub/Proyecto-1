@@ -23,7 +23,7 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 	condicion = v.Expresion.Ejecutar(ast, env)
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.AumentarAmbito()
+	ast.AumentarAmbito("If-Else If")
 	if condicion.Tipo == environment.BOOLEAN {
 		if condicion.Valor.(bool) {
 

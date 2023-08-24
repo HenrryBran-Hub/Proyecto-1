@@ -22,7 +22,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 	condicion = v.Expresion.Ejecutar(ast, env)
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.AumentarAmbito()
+	ast.AumentarAmbito("If")
 	if condicion.Tipo == environment.BOOLEAN {
 		if condicion.Valor.(bool) {
 			for _, inst := range v.slice {

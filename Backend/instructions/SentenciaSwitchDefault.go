@@ -26,7 +26,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 		valorcase := switchCase.Exp1.Ejecutar(ast, env)
 		valorswitch := v.Expresion.Ejecutar(ast, env)
 		if valorcase.Valor == valorswitch.Valor && valorcase.Tipo == valorswitch.Tipo {
-			ast.AumentarAmbito()
+			ast.AumentarAmbito("Switch Default")
 			for _, inst := range switchCase.Case {
 				if inst == nil {
 					continue
@@ -107,7 +107,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 		}
 	}
 
-	ast.AumentarAmbito()
+	ast.AumentarAmbito("Switch Default")
 	for _, inst := range v.Default {
 		if inst == nil {
 			continue

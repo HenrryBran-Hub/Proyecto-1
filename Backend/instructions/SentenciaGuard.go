@@ -27,7 +27,7 @@ func (v SentenciaGuard) Ejecutar(ast *environment.AST, env interface{}) interfac
 		if condicion.Tipo == environment.BOOLEAN {
 			var retornable int = 0
 			var reexp environment.Symbol
-			ast.AumentarAmbito()
+			ast.AumentarAmbito("Guard")
 			if condicion.Valor.(bool) == false {
 				for _, inst := range v.slice {
 					if inst == nil {

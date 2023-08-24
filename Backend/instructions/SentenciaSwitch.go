@@ -25,7 +25,7 @@ func (v SentenciaSwitch) Ejecutar(ast *environment.AST, env interface{}) interfa
 		valorcase := switchCase.Exp1.Ejecutar(ast, env)
 		valorswitch := v.Expresion.Ejecutar(ast, env)
 		if valorcase.Valor == valorswitch.Valor && valorcase.Tipo == valorswitch.Tipo {
-			ast.AumentarAmbito()
+			ast.AumentarAmbito("Switch")
 			for _, inst := range switchCase.Case {
 				if inst == nil {
 					continue

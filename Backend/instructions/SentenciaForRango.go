@@ -61,7 +61,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 		Mutable:     true,
 		TipoSimbolo: "Variable",
 	}
-	ast.AumentarAmbito()
+	ast.AumentarAmbito("For Rango")
 	var retornable int = 0
 	var reexp environment.Symbol
 	ast.GuardarVariable(Variable)
@@ -105,7 +105,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Col:   vari.Symbols.Col,
 			Tipo:  environment.INTEGER,
 			Valor: vari.Symbols.Valor.(int) + 1,
-			Scope: "Local",
 		}
 		Variable := environment.Variable{
 			Name:        vari.Name,
@@ -124,7 +123,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 				Col:   v.Col,
 				Tipo:  environment.BOOLEAN,
 				Valor: true,
-				Scope: "Local",
 			}
 			Variable := environment.Variable{
 				Name:        "Return",
