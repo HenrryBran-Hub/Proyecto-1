@@ -335,3 +335,23 @@ func (a *AST) TablaErroresHTML() {
 	// Open the HTML file in the default web browser
 	open.Start("TablaErrores.html")
 }
+
+func (a *AST) removeFromListFromBack(valor int) {
+	for e := 0; e < valor; e++ {
+		lastElement := a.Pila_Variables.Back()
+		if lastElement != nil {
+			a.Lista_VariablesHTML.Remove(lastElement)
+		}
+	}
+}
+
+func (a *AST) LimpiarLista() {
+	numElementsToRemove := a.Lista_Variables.Len()
+	for i := 0; i < numElementsToRemove; i++ {
+		lastElement := a.Lista_Variables.Back()
+		if lastElement != nil {
+			a.Lista_Variables.Remove(lastElement)
+		}
+	}
+	a.removeFromListFromBack(numElementsToRemove)
+}

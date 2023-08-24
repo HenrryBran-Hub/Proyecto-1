@@ -112,6 +112,16 @@ func (v SentenciaGuard) Ejecutar(ast *environment.AST, env interface{}) interfac
 					ast.GuardarVariable(Variable)
 				}
 			}
+			if tamanio == 1 && retornable == 3 {
+				Errores := environment.Errores{
+					Descripcion: "Estas retornando un valor fuera de una funcion",
+					Fila:        strconv.Itoa(v.Lin),
+					Columna:     strconv.Itoa(v.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      condicion.Scope,
+				}
+				ast.ErroresHTML(Errores)
+			}
 		} else {
 			Errores := environment.Errores{
 				Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del guard tiene que ser un tipo boleano.",

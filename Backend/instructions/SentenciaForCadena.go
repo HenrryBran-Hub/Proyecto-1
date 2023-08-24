@@ -38,6 +38,8 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 			TipoSimbolo: "Variable",
 		}
 		ast.AumentarAmbito()
+		var retornable int = 0
+		var reexp environment.Symbol
 		ast.GuardarVariable(Variable)
 
 		if cadena.Tipo == environment.STRING {
@@ -70,10 +72,75 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 						continue
 					}
 					instruction.Ejecutar(ast, env)
+					bvari := ast.GetVariable("Break")
+					if bvari != nil {
+						retornable = 1
+						break
+					}
+					rvari := ast.GetVariable("Return")
+					if rvari != nil {
+						retornable = 2
+						break
+					}
+					revari := ast.GetVariable("ReturnExp")
+					if revari != nil {
+						retornable = 3
+						reexp = revari.Symbols
+						break
+					}
+					cvari := ast.GetVariable("Continue")
+					if cvari != nil {
+						continue
+					}
 				}
 			}
 		}
 		ast.DisminuirAmbito()
+		tamanio := ast.Pila_Variables.Len()
+		if tamanio > 1 {
+			if retornable == 2 {
+				symbol := environment.Symbol{
+					Lin:   v.Lin,
+					Col:   v.Col,
+					Tipo:  environment.BOOLEAN,
+					Valor: true,
+					Scope: "Local",
+				}
+				Variable := environment.Variable{
+					Name:        "Return",
+					Symbols:     symbol,
+					Mutable:     false,
+					TipoSimbolo: "Sentencia de Transferencia",
+				}
+				ast.GuardarVariable(Variable)
+			}
+			if retornable == 3 {
+				symbol := environment.Symbol{
+					Lin:   v.Lin,
+					Col:   v.Col,
+					Tipo:  reexp.Tipo,
+					Valor: reexp.Valor,
+					Scope: reexp.Scope,
+				}
+				Variable := environment.Variable{
+					Name:        "ReturnExp",
+					Symbols:     symbol,
+					Mutable:     false,
+					TipoSimbolo: "Sentencia de Transferencia",
+				}
+				ast.GuardarVariable(Variable)
+			}
+		}
+		if tamanio == 1 && retornable == 3 {
+			Errores := environment.Errores{
+				Descripcion: "Estas retornando un valor fuera de una funcion",
+				Fila:        strconv.Itoa(v.Lin),
+				Columna:     strconv.Itoa(v.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      "For Cadena",
+			}
+			ast.ErroresHTML(Errores)
+		}
 	} else {
 		Errores := environment.Errores{
 			Descripcion: "El for que se esta ejecutando solo funciona con arreglos unidimensionales",
