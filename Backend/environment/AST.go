@@ -338,7 +338,7 @@ func (a *AST) TablaErroresHTML() {
 
 func (a *AST) removeFromListFromBack(valor int) {
 	for e := 0; e < valor; e++ {
-		lastElement := a.Pila_Variables.Back()
+		lastElement := a.Lista_VariablesHTML.Back()
 		if lastElement != nil {
 			a.Lista_VariablesHTML.Remove(lastElement)
 		}

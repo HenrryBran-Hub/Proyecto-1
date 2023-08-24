@@ -24,13 +24,10 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 	var retornable int = 0
 	var reexp environment.Symbol
 	ast.AumentarAmbito()
-	ast.AumentarAmbito()
 	if condicion.Tipo == environment.BOOLEAN {
-		var continueflag bool = false
-		breakPosition := -1
 		if condicion.Valor.(bool) {
 
-			for i, inst := range v.Ifop {
+			for _, inst := range v.Ifop {
 				if inst == nil {
 					continue
 				}
@@ -42,62 +39,22 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					breakPosition = i
 					break
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					breakPosition = i
 					break
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					breakPosition = i
 					break
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continueflag = true
-					breakPosition = i
-					break
-				}
-			}
-
-			if continueflag {
-				for i := breakPosition; i < len(v.Ifop); i++ {
-					inst := v.Ifop[i]
-					if inst == nil {
-						continue
-					}
-					instruction, ok := inst.(interfaces.Instruction)
-					if !ok {
-						continue
-					}
-					instruction.Ejecutar(ast, env)
-					bvari := ast.GetVariable("Break")
-					if bvari != nil {
-						retornable = 1
-						break
-					}
-					rvari := ast.GetVariable("Return")
-					if rvari != nil {
-						retornable = 2
-						break
-					}
-					revari := ast.GetVariable("ReturnExp")
-					if revari != nil {
-						retornable = 3
-						reexp = revari.Symbols
-						break
-					}
-					cvari := ast.GetVariable("Continue")
-					if cvari != nil {
-						continueflag = true
-						break
-					}
+					continue
 				}
 			}
 
@@ -115,10 +72,6 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 			if revari != nil {
 				retornable = 3
 				reexp = revari.Symbols
-			}
-			cvari := ast.GetVariable("Continue")
-			if cvari != nil {
-				continueflag = true
 			}
 		}
 	} else {
@@ -176,22 +129,6 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 			}
 			Variable := environment.Variable{
 				Name:        "ReturnExp",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-		if retornable == 4 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: reexp.Scope,
-			}
-			Variable := environment.Variable{
-				Name:        "Continue",
 				Symbols:     symbol,
 				Mutable:     false,
 				TipoSimbolo: "Sentencia de Transferencia",

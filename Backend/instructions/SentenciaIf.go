@@ -25,9 +25,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 	ast.AumentarAmbito()
 	if condicion.Tipo == environment.BOOLEAN {
 		if condicion.Valor.(bool) {
-			var continueflag bool = false
-			breakPosition := -1
-			for i, inst := range v.slice {
+			for _, inst := range v.slice {
 				if inst == nil {
 					continue
 				}
@@ -39,62 +37,22 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					breakPosition = i
 					break
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					breakPosition = i
 					break
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					breakPosition = i
 					break
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continueflag = true
-					breakPosition = i
-					break
-				}
-			}
-
-			if continueflag {
-				for i := breakPosition; i < len(v.slice); i++ {
-					inst := v.slice[i]
-					if inst == nil {
-						continue
-					}
-					instruction, ok := inst.(interfaces.Instruction)
-					if !ok {
-						continue
-					}
-					instruction.Ejecutar(ast, env)
-					bvari := ast.GetVariable("Break")
-					if bvari != nil {
-						retornable = 1
-						break
-					}
-					rvari := ast.GetVariable("Return")
-					if rvari != nil {
-						retornable = 2
-						break
-					}
-					revari := ast.GetVariable("ReturnExp")
-					if revari != nil {
-						retornable = 3
-						reexp = revari.Symbols
-						break
-					}
-					cvari := ast.GetVariable("Continue")
-					if cvari != nil {
-						continueflag = true
-						break
-					}
+					continue
 				}
 			}
 		}

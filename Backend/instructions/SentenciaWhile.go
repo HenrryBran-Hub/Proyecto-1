@@ -22,11 +22,10 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 	condicion = v.Expresion.Ejecutar(ast, env)
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.AumentarAmbito()
-	tamaniofor := len(v.slice)
-	var auxtamaniofor int = 0
 	if condicion.Tipo == environment.BOOLEAN {
 		for condicion.Valor.(bool) {
+
+			ast.AumentarAmbito()
 			var continueflag bool = false
 			breakPosition := -1
 			for i, inst := range v.slice {
@@ -66,7 +65,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 			}
 
 			if continueflag {
-				for i := breakPosition; i < len(v.slice); i++ {
+				for i := breakPosition + 1; i < len(v.slice); i++ {
 					inst := v.slice[i]
 					if inst == nil {
 						continue
@@ -98,11 +97,6 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 						break
 					}
 				}
-			}
-
-			auxtamaniofor += 1
-			if auxtamaniofor != tamaniofor {
-				ast.LimpiarLista()
 			}
 
 			if retornable == 1 || retornable == 2 || retornable == 3 {
