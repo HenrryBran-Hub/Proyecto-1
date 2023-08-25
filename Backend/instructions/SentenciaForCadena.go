@@ -29,7 +29,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 			Col:   v.Col,
 			Tipo:  environment.CHARACTER,
 			Valor: nil,
-			Scope: "Local",
+			Scope: ast.ObtenerAmbito(),
 		}
 		Variable := environment.Variable{
 			Name:        v.Id,
@@ -52,7 +52,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 					Col:   vari.Symbols.Col,
 					Tipo:  environment.CHARACTER,
 					Valor: character,
-					Scope: "Local",
+					Scope: ast.ObtenerAmbito(),
 				}
 				Variable := environment.Variable{
 					Name:        vari.Name,
@@ -104,7 +104,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 					Col:   v.Col,
 					Tipo:  environment.BOOLEAN,
 					Valor: true,
-					Scope: "Local",
+					Scope: ast.ObtenerAmbito(),
 				}
 				Variable := environment.Variable{
 					Name:        "Return",
@@ -120,7 +120,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 					Col:   v.Col,
 					Tipo:  reexp.Tipo,
 					Valor: reexp.Valor,
-					Scope: reexp.Scope,
+					Scope: ast.ObtenerAmbito(),
 				}
 				Variable := environment.Variable{
 					Name:        "ReturnExp",
@@ -147,7 +147,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      cadena.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil

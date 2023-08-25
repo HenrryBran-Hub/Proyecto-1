@@ -33,7 +33,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 				Col:   v.Col,
 				Tipo:  Variable.Symbols.Tipo,
 				Valor: num2,
-				Scope: Variable.Symbols.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			ast.ActualizarVariable(Variable, symbol)
 			return nil
@@ -50,7 +50,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 				Col:   v.Col,
 				Tipo:  Variable.Symbols.Tipo,
 				Valor: num3,
-				Scope: Variable.Symbols.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			ast.ActualizarVariable(Variable, symbol)
 			return nil
@@ -63,7 +63,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 				Col:   v.Col,
 				Tipo:  Variable.Symbols.Tipo,
 				Valor: str,
-				Scope: Variable.Symbols.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			ast.ActualizarVariable(Variable, symbol)
 			return nil
@@ -73,7 +73,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 				Fila:        strconv.Itoa(value.Lin),
 				Columna:     strconv.Itoa(value.Col),
 				Tipo:        "Error Semantico",
-				Ambito:      value.Scope,
+				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
 			Variable.Symbols.Valor = nil
@@ -87,7 +87,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 			Fila:        strconv.Itoa(value.Lin),
 			Columna:     strconv.Itoa(value.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -108,7 +108,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 				Col:   v.Col,
 				Tipo:  Variable.Symbols.Tipo,
 				Valor: num3,
-				Scope: Variable.Symbols.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			ast.ActualizarVariable(Variable, symbol)
 			return nil
@@ -121,7 +121,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 			Fila:        strconv.Itoa(value.Lin),
 			Columna:     strconv.Itoa(value.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -165,7 +165,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 			Fila:        strconv.Itoa(value.Lin),
 			Columna:     strconv.Itoa(value.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		Variable.Symbols.Valor = nil

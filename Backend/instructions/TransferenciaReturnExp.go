@@ -22,7 +22,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, env interface{}) 
 		Col:   v.Col,
 		Tipo:  value.Tipo,
 		Valor: value.Valor,
-		Scope: "Local",
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        "ReturnExp",

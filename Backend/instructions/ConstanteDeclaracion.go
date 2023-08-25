@@ -10,13 +10,12 @@ type ConstanteDeclaracion struct {
 	Lin   int
 	Col   int
 	Name  string
-	Scope string
 	Type  environment.TipoExpresion
 	Value interfaces.Expression
 }
 
-func NewConstanteDeclaration(lin int, col int, name string, scope string, tipo environment.TipoExpresion, value interfaces.Expression) ConstanteDeclaracion {
-	return ConstanteDeclaracion{lin, col, name, scope, tipo, value}
+func NewConstanteDeclaration(lin int, col int, name string, tipo environment.TipoExpresion, value interfaces.Expression) ConstanteDeclaracion {
+	return ConstanteDeclaracion{lin, col, name, tipo, value}
 }
 
 func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
@@ -26,7 +25,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, env interface{}) in
 		Col:   v.Col,
 		Tipo:  v.Type,
 		Valor: value.Valor,
-		Scope: v.Scope,
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -80,7 +79,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, env interface{}) in
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
