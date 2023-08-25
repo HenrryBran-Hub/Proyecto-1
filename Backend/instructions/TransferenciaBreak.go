@@ -19,7 +19,7 @@ func (v TransferenciaBreak) Ejecutar(ast *environment.AST, env interface{}) inte
 		Col:   v.Col,
 		Tipo:  environment.BOOLEAN,
 		Valor: true,
-		Scope: "Local",
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        "Break",

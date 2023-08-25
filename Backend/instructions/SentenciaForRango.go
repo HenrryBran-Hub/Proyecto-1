@@ -30,7 +30,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      left.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -42,7 +42,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      left.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -53,7 +53,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 		Col:   v.Col,
 		Tipo:  environment.INTEGER,
 		Valor: left.Valor,
-		Scope: "Local",
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        v.Id,
@@ -138,7 +138,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 				Col:   v.Col,
 				Tipo:  reexp.Tipo,
 				Valor: reexp.Valor,
-				Scope: reexp.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "ReturnExp",
@@ -155,7 +155,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      "For Rango",
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 	}

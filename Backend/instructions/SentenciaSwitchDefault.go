@@ -66,7 +66,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 						Col:   v.Col,
 						Tipo:  environment.BOOLEAN,
 						Valor: true,
-						Scope: "Local",
+						Scope: ast.ObtenerAmbito(),
 					}
 					Variable := environment.Variable{
 						Name:        "Return",
@@ -82,7 +82,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 						Col:   v.Col,
 						Tipo:  reexp.Tipo,
 						Valor: reexp.Valor,
-						Scope: reexp.Scope,
+						Scope: ast.ObtenerAmbito(),
 					}
 					Variable := environment.Variable{
 						Name:        "ReturnExp",
@@ -147,7 +147,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 				Col:   v.Col,
 				Tipo:  environment.BOOLEAN,
 				Valor: true,
-				Scope: "Local",
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "Return",
@@ -163,7 +163,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 				Col:   v.Col,
 				Tipo:  reexp.Tipo,
 				Valor: reexp.Valor,
-				Scope: reexp.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "ReturnExp",
@@ -180,7 +180,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, env interface{}) 
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      "Switch Default",
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 	}

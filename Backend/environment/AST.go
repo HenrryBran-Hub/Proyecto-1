@@ -19,6 +19,9 @@ type AST struct {
 	Lista_VariablesHTML *list.List
 	Lista_Errores       *list.List
 	Lista_Ambitos_Var   *list.List
+	Lista_Arreglos      *list.List
+	Pila_Arreglos       *list.List
+	Lista_VectorHTML    *list.List
 	Variables           Variable
 }
 
@@ -27,6 +30,15 @@ type Variable struct {
 	Symbols     Symbol
 	Mutable     bool
 	TipoSimbolo string
+}
+
+type Vector struct {
+	Name        string
+	Symbols     Symbol
+	Mutable     bool
+	TipoSimbolo string
+	Elements    *list.List
+	Size        int
 }
 
 type Errores struct {
@@ -74,6 +86,11 @@ func (a *AST) IniciarAmbito() {
 	a.Pila_Variables.PushBack(a.Lista_Variables)
 	a.Lista_Errores = list.New()
 	a.Lista_Ambitos_Var = list.New()
+	a.Pila_Arreglos = list.New()
+	a.Lista_Arreglos = list.New()
+	a.Pila_Arreglos.PushBack(a.Lista_Arreglos)
+	a.Lista_VectorHTML = list.New()
+	a.Lista_Ambitos_Var.PushFront("Global")
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -81,6 +98,9 @@ func (a *AST) AumentarAmbito(ambito string) {
 	a.Pila_Variables.PushFront(nuevaLista)
 	a.Lista_Variables = nuevaLista
 	a.Lista_Ambitos_Var.PushBack(ambito)
+	nuevaArreglos := list.New()
+	a.Pila_Arreglos.PushFront(nuevaArreglos)
+	a.Lista_Arreglos = nuevaArreglos
 }
 
 func (a *AST) DisminuirAmbito() {
@@ -89,14 +109,11 @@ func (a *AST) DisminuirAmbito() {
 	if a.Lista_Ambitos_Var.Len() > 0 {
 		a.Lista_Ambitos_Var.Remove(a.Lista_Ambitos_Var.Back())
 	}
+	a.Pila_Arreglos.Remove(a.Pila_Arreglos.Front())
+	a.Lista_Arreglos = a.Pila_Arreglos.Front().Value.(*list.List)
 }
 
 func (a *AST) GuardarVariable(variable Variable) {
-	var lastScope string
-	if a.Lista_Ambitos_Var.Len() > 0 {
-		lastScope = a.Lista_Ambitos_Var.Back().Value.(string)
-		variable.Symbols.Scope = lastScope
-	}
 	for e := a.Lista_Variables.Front(); e != nil; e = e.Next() {
 		if e.Value.(Variable).Name == variable.Name {
 			Errores := Errores{
@@ -115,6 +132,32 @@ func (a *AST) GuardarVariable(variable Variable) {
 		return
 	}
 	a.Lista_VariablesHTML.PushBack(variable)
+}
+
+func (a *AST) ObtenerAmbito() string {
+	var lastScope string
+	if a.Lista_Ambitos_Var.Len() > 0 {
+		lastScope = a.Lista_Ambitos_Var.Back().Value.(string)
+	}
+	return lastScope
+}
+
+func (a *AST) GuardarArreglo(vector Vector) {
+	for e := a.Lista_Arreglos.Front(); e != nil; e = e.Next() {
+		if e.Value.(Vector).Name == vector.Name {
+			Errores := Errores{
+				Descripcion: "La variale que esta intentando guardar ya existe en este ambito: \n Variable: " + vector.Name,
+				Fila:        strconv.Itoa(e.Value.(Variable).Symbols.Lin),
+				Columna:     strconv.Itoa(e.Value.(Variable).Symbols.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      vector.Symbols.Scope,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	a.Lista_Arreglos.PushBack(vector)
+	a.Lista_VectorHTML.PushBack(vector)
 }
 
 func (a *AST) ActualizarVariable(mariable *Variable, nuevoValor Symbol) {
@@ -150,6 +193,41 @@ func (a *AST) GetVariable(nombre string) *Variable {
 			variable := v.Value.(Variable)
 			if variable.Name == nombre {
 				return &variable
+			}
+		}
+	}
+	return nil
+}
+
+func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
+	for e := a.Pila_Arreglos.Front(); e != nil; e = e.Next() {
+		lista := e.Value.(*list.List)
+		for v := lista.Front(); v != nil; v = v.Next() {
+			if v.Value.(Vector).Name == nombre && v.Value.(Vector).Mutable {
+				vector := v.Value.(Vector)
+				vector.Elements = nuevoValor.Elements
+				v.Value = vector
+				return
+			}
+		}
+	}
+	Errores := Errores{
+		Descripcion: "El arreglo que está intentando modificar no existe: \n Arreglo: " + nombre,
+		Fila:        strconv.Itoa(nuevoValor.Symbols.Lin),
+		Columna:     strconv.Itoa(nuevoValor.Symbols.Col),
+		Tipo:        "Error Semantico",
+		Ambito:      nuevoValor.Symbols.Scope,
+	}
+	a.ErroresHTML(Errores)
+}
+
+func (a *AST) GetArreglo(nombre string) *Vector {
+	for e := a.Pila_Arreglos.Front(); e != nil; e = e.Next() {
+		lista := e.Value.(*list.List)
+		for v := lista.Front(); v != nil; v = v.Next() {
+			vector := v.Value.(Vector)
+			if vector.Name == nombre {
+				return &vector
 			}
 		}
 	}
@@ -252,6 +330,59 @@ func (a *AST) TablaVariablesHTML() {
 			variable.Symbols.Valor,
 			tipoexpstr,
 			variable.Symbols.Scope,
+		)
+		rowNumber++
+	}
+
+	for e := a.Lista_VectorHTML.Front(); e != nil; e = e.Next() {
+		vector := e.Value.(Vector)
+		var tipoexpstr string
+		switch vector.Symbols.Tipo {
+		case 0:
+			tipoexpstr = "Int"
+		case 1:
+			tipoexpstr = "Float"
+		case 2:
+			tipoexpstr = "String"
+		case 3:
+			tipoexpstr = "Boolean"
+		case 4:
+			tipoexpstr = "Character"
+		default:
+			tipoexpstr = "nil"
+		}
+
+		var acumulado string
+		for element := vector.Elements.Front(); element != nil; element = element.Next() {
+			symbolo := element.Value.(Symbol)
+			stringValue := fmt.Sprintf("%v", symbolo.Valor)
+			acumulado += stringValue
+			if element.Next() != nil {
+				acumulado += ","
+			}
+		}
+
+		fmt.Fprintf(file, `
+   					<tr>
+   						<td>%d</td>
+						<td>%s</td>
+   						<td>%s</td>
+   						<td>%t</td>
+   						<td>%d</td>
+   						<td>%d</td>
+   						<td>%v</td>
+   						<td>%s</td>
+   						<td>%s</td>
+   					</tr>`,
+			rowNumber,
+			vector.TipoSimbolo,
+			vector.Name,
+			vector.Mutable,
+			vector.Symbols.Lin,
+			vector.Symbols.Col,
+			acumulado,
+			tipoexpstr,
+			vector.Symbols.Scope,
 		)
 		rowNumber++
 	}

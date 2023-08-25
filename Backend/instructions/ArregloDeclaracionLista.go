@@ -1,0 +1,72 @@
+package instructions
+
+import (
+	"Backend/environment"
+	"Backend/interfaces"
+	"container/list"
+	"strconv"
+)
+
+type ArregloDeclaracionLista struct {
+	Lin   int
+	Col   int
+	Name  string
+	Type  environment.TipoExpresion
+	Valor interfaces.Expression
+	Lista []interface{}
+}
+
+func NewArregloDeclaracionLista(lin int, col int, name string, tipo environment.TipoExpresion, value interfaces.Expression, values []interface{}) ArregloDeclaracionLista {
+	return ArregloDeclaracionLista{lin, col, name, tipo, value, values}
+}
+
+func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+	listavalores := list.New()
+	value := v.Valor.Ejecutar(ast, env)
+	listavalores.PushBack(value)
+	for _, inst := range v.Lista {
+		if inst == nil {
+			continue
+		}
+		instruction, ok := inst.(interfaces.Expression)
+		if !ok {
+			continue
+		}
+		values := instruction.Ejecutar(ast, env)
+		listavalores.PushBack(values)
+	}
+
+	for e := listavalores.Front(); e != nil; e = e.Next() {
+		symbol := e.Value.(environment.Symbol)
+		if symbol.Tipo != v.Type {
+			Errores := environment.Errores{
+				Descripcion: "Existen parametros que no son compatibles con el tipo de arreglo definido",
+				Fila:        strconv.Itoa(symbol.Lin),
+				Columna:     strconv.Itoa(symbol.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      ast.ObtenerAmbito(),
+			}
+			ast.ErroresHTML(Errores)
+			return nil
+		}
+	}
+
+	symbol := environment.Symbol{
+		Lin:   v.Lin,
+		Col:   v.Col,
+		Tipo:  v.Type,
+		Valor: nil,
+		Scope: ast.ObtenerAmbito(),
+	}
+	vector := environment.Vector{
+		Name:        v.Name,
+		Symbols:     symbol,
+		Mutable:     true,
+		Elements:    listavalores,
+		Size:        listavalores.Len(),
+		TipoSimbolo: "Vector",
+	}
+
+	ast.GuardarArreglo(vector)
+	return nil
+}

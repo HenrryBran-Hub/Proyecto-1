@@ -82,6 +82,30 @@ type SwiftGrammarListener interface {
 	// EnterRetornos is called when entering the retornos production.
 	EnterRetornos(c *RetornosContext)
 
+	// EnterVectorcontrol is called when entering the vectorcontrol production.
+	EnterVectorcontrol(c *VectorcontrolContext)
+
+	// EnterBlockparams is called when entering the blockparams production.
+	EnterBlockparams(c *BlockparamsContext)
+
+	// EnterBloqueparams is called when entering the bloqueparams production.
+	EnterBloqueparams(c *BloqueparamsContext)
+
+	// EnterVectoragregar is called when entering the vectoragregar production.
+	EnterVectoragregar(c *VectoragregarContext)
+
+	// EnterVectorremover is called when entering the vectorremover production.
+	EnterVectorremover(c *VectorremoverContext)
+
+	// EnterVectorvacio is called when entering the vectorvacio production.
+	EnterVectorvacio(c *VectorvacioContext)
+
+	// EnterVectorcount is called when entering the vectorcount production.
+	EnterVectorcount(c *VectorcountContext)
+
+	// EnterVectoraccess is called when entering the vectoraccess production.
+	EnterVectoraccess(c *VectoraccessContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -156,4 +180,28 @@ type SwiftGrammarListener interface {
 
 	// ExitRetornos is called when exiting the retornos production.
 	ExitRetornos(c *RetornosContext)
+
+	// ExitVectorcontrol is called when exiting the vectorcontrol production.
+	ExitVectorcontrol(c *VectorcontrolContext)
+
+	// ExitBlockparams is called when exiting the blockparams production.
+	ExitBlockparams(c *BlockparamsContext)
+
+	// ExitBloqueparams is called when exiting the bloqueparams production.
+	ExitBloqueparams(c *BloqueparamsContext)
+
+	// ExitVectoragregar is called when exiting the vectoragregar production.
+	ExitVectoragregar(c *VectoragregarContext)
+
+	// ExitVectorremover is called when exiting the vectorremover production.
+	ExitVectorremover(c *VectorremoverContext)
+
+	// ExitVectorvacio is called when exiting the vectorvacio production.
+	ExitVectorvacio(c *VectorvacioContext)
+
+	// ExitVectorcount is called when exiting the vectorcount production.
+	ExitVectorcount(c *VectorcountContext)
+
+	// ExitVectoraccess is called when exiting the vectoraccess production.
+	ExitVectoraccess(c *VectoraccessContext)
 }

@@ -44,6 +44,7 @@ instruction returns [interfaces.Instruction inst]
 | whilecontrol { $inst = $whilecontrol.whict}
 | forcontrol { $inst = $forcontrol.forct}
 | guardcontrol { $inst = $guardcontrol.guct}
+| vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -76,6 +77,7 @@ instructionint returns [interfaces.Instruction insint]
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
 | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
+| vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 ;
 
 /////////////////////////
@@ -90,14 +92,14 @@ printstmt returns [interfaces.Instruction prnt]
 
 // DECLARACION DE VARIABLES
 declavarible returns [interfaces.Instruction decvbl]
-: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, "Global",$tipodato.tipo, $expr.e)}
-| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, "Global", $expr.e)}
-| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, "Global", $tipodato.tipo)};
+: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
+| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, $expr.e)}
+| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo)};
 
 // DECLARACION DE CONSTANTES
 declaconstante returns [interfaces.Instruction deccon]
-: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, "Global", $tipodato.tipo, $expr.e)}
-| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, "Global", $expr.e)};
+: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
+| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)};
 
 // ASIGNACION DE VARIABLES
 asignacionvariable returns [interfaces.Instruction asgvbl]
@@ -117,14 +119,14 @@ printstmtint returns [interfaces.Instruction prnt]
 
 // DECLARACION DE VARIABLES
 declavaribleint returns [interfaces.Instruction decvbl]
-: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local",$tipodato.tipo, $expr.e)}
-| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local", $expr.e)}
-| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, "Local", $tipodato.tipo)};
+: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
+| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, $expr.e)}
+| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo)};
 
 // DECLARACION DE CONSTANTES
 declaconstanteint returns [interfaces.Instruction deccon]
-: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, "Local", $tipodato.tipo, $expr.e)}
-| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, "Local", $expr.e)};
+: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
+| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)};
 
 // ASIGNACION DE VARIABLES
 asignacionvariableint returns [interfaces.Instruction asgvbl]
@@ -287,33 +289,49 @@ retornos returns [interfaces.Instruction rect]
     $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
 };
 
-/*
+
 //CREACION DEL VECTOR (pendiente)
-vectorcontrol:
-	VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER definicionvector {};
+vectorcontrol returns [interfaces.Instruction vect]
+: VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ expr blockparams CORCHDER { $vect = instructions.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo,$expr.e, $blockparams.blkpar)}
+| VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ CORCHDER {}
+| VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER ID_VALIDO {};
 
-definicionvector:
-	IG CORCHIZQ listaexpresion CORCHDER {}
-	| CORCHIZQ tipodato CORCHDER CORCHIZQ CORCHDER {}
-	| PARIZQ PARDER {}
-	| ID_VALIDO {};
+blockparams returns [[]interface{} blkpar]
+@init{
+    $blkpar = []interface{}{}
+    var listInt []IBloqueparamsContext
+}
+: blopas+=bloqueparams+
+{
+    listInt = localctx.(*BlockparamsContext).GetBlopas()
+    for _, e := range listInt {
+        $blkpar = append($blkpar, e.GetBlopas())
+    }
+}
+;
 
-listaexpresion: expresion (COMA listaexpresion)* {};
+bloqueparams returns [interfaces.Expression blopas]
+: COMA expr 
+{
+    $blopas = instructions.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
+};
 
 vectoragregar:
-	ID_VALIDO PUNTO APPEND PARIZQ expresion PARDER {}
-	| ID_VALIDO CORCHIZQ expresion CORCHDER IG ID_VALIDO CORCHIZQ expresion CORCHDER {};
+ID_VALIDO PUNTO APPEND PARIZQ expr PARDER {}
+| ID_VALIDO CORCHIZQ expr CORCHDER IG ID_VALIDO CORCHIZQ expr CORCHDER {}
+| ID_VALIDO CORCHIZQ expr CORCHDER IG expr {};
 
-vectorremover:
-	ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER {}
-	| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expresion PARDER {};
+vectorremover
+: ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER {}
+| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expr PARDER {};
 
 vectorvacio: ID_VALIDO PUNTO ISEMPTY {};
 
 vectorcount: ID_VALIDO PUNTO COUNT {};
 
-vectoraccess: ID_VALIDO CORCHIZQ expresion CORCHDER {};
+vectoraccess: ID_VALIDO CORCHIZQ expr CORCHDER {};
 
+/*
 //CREACION DE EMBEBIDAS
 printcontrol
 	returns[interfaces.Instruction prnt]:

@@ -40,7 +40,10 @@ public class SwiftGrammarParser extends Parser {
 		RULE_declaconstanteint = 11, RULE_asignacionvariableint = 12, RULE_tipodato = 13, 
 		RULE_expr = 14, RULE_sentenciaifelse = 15, RULE_switchcontrol = 16, RULE_blockcase = 17, 
 		RULE_bloquecase = 18, RULE_whilecontrol = 19, RULE_forcontrol = 20, RULE_guardcontrol = 21, 
-		RULE_continuee = 22, RULE_breakk = 23, RULE_retornos = 24;
+		RULE_continuee = 22, RULE_breakk = 23, RULE_retornos = 24, RULE_vectorcontrol = 25, 
+		RULE_blockparams = 26, RULE_bloqueparams = 27, RULE_vectoragregar = 28, 
+		RULE_vectorremover = 29, RULE_vectorvacio = 30, RULE_vectorcount = 31, 
+		RULE_vectoraccess = 32;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"s", "block", "instruction", "blockinterno", "instructionint", "printstmt", 
@@ -48,7 +51,8 @@ public class SwiftGrammarParser extends Parser {
 			"declavaribleint", "declaconstanteint", "asignacionvariableint", "tipodato", 
 			"expr", "sentenciaifelse", "switchcontrol", "blockcase", "bloquecase", 
 			"whilecontrol", "forcontrol", "guardcontrol", "continuee", "breakk", 
-			"retornos"
+			"retornos", "vectorcontrol", "blockparams", "bloqueparams", "vectoragregar", 
+			"vectorremover", "vectorvacio", "vectorcount", "vectoraccess"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -151,9 +155,9 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(50);
+			setState(66);
 			((SContext)_localctx).block = block();
-			setState(51);
+			setState(67);
 			match(EOF);
 			   
 			        _localctx.code = ((SContext)_localctx).block.blk
@@ -198,18 +202,18 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(55); 
+			setState(71); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(54);
+				setState(70);
 				((BlockContext)_localctx).instruction = instruction();
 				((BlockContext)_localctx).ins.add(((BlockContext)_localctx).instruction);
 				}
 				}
-				setState(57); 
+				setState(73); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << LET) | (1L << IF) | (1L << SWITCH) | (1L << FOR) | (1L << WHILE) | (1L << GUARD) | (1L << PRINT) | (1L << ID_VALIDO))) != 0) );
@@ -243,6 +247,7 @@ public class SwiftGrammarParser extends Parser {
 		public WhilecontrolContext whilecontrol;
 		public ForcontrolContext forcontrol;
 		public GuardcontrolContext guardcontrol;
+		public VectorcontrolContext vectorcontrol;
 		public PrintstmtContext printstmt() {
 			return getRuleContext(PrintstmtContext.class,0);
 		}
@@ -271,6 +276,9 @@ public class SwiftGrammarParser extends Parser {
 		public GuardcontrolContext guardcontrol() {
 			return getRuleContext(GuardcontrolContext.class,0);
 		}
+		public VectorcontrolContext vectorcontrol() {
+			return getRuleContext(VectorcontrolContext.class,0);
+		}
 		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -282,20 +290,20 @@ public class SwiftGrammarParser extends Parser {
 		enterRule(_localctx, 4, RULE_instruction);
 		int _la;
 		try {
-			setState(100);
+			setState(122);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case PRINT:
+			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(61);
+				setState(77);
 				((InstructionContext)_localctx).printstmt = printstmt();
-				setState(63);
+				setState(79);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(62);
+					setState(78);
 					match(PUNTOCOMA);
 					}
 				}
@@ -303,17 +311,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.inst = ((InstructionContext)_localctx).printstmt.prnt
 				}
 				break;
-			case VAR:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(67);
+				setState(83);
 				((InstructionContext)_localctx).declavarible = declavarible();
-				setState(69);
+				setState(85);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(68);
+					setState(84);
 					match(PUNTOCOMA);
 					}
 				}
@@ -321,17 +329,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.inst = ((InstructionContext)_localctx).declavarible.decvbl
 				}
 				break;
-			case LET:
+			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(73);
+				setState(89);
 				((InstructionContext)_localctx).declaconstante = declaconstante();
-				setState(75);
+				setState(91);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(74);
+					setState(90);
 					match(PUNTOCOMA);
 					}
 				}
@@ -339,17 +347,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.inst = ((InstructionContext)_localctx).declaconstante.deccon
 				}
 				break;
-			case ID_VALIDO:
+			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(79);
+				setState(95);
 				((InstructionContext)_localctx).asignacionvariable = asignacionvariable();
-				setState(81);
+				setState(97);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(80);
+					setState(96);
 					match(PUNTOCOMA);
 					}
 				}
@@ -357,48 +365,64 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.inst = ((InstructionContext)_localctx).asignacionvariable.asgvbl
 				}
 				break;
-			case IF:
+			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(85);
+				setState(101);
 				((InstructionContext)_localctx).sentenciaifelse = sentenciaifelse();
 				 _localctx.inst = ((InstructionContext)_localctx).sentenciaifelse.myIfElse
 				}
 				break;
-			case SWITCH:
+			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(88);
+				setState(104);
 				((InstructionContext)_localctx).switchcontrol = switchcontrol();
 				 _localctx.inst = ((InstructionContext)_localctx).switchcontrol.mySwitch
 				}
 				break;
-			case WHILE:
+			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(91);
+				setState(107);
 				((InstructionContext)_localctx).whilecontrol = whilecontrol();
 				 _localctx.inst = ((InstructionContext)_localctx).whilecontrol.whict
 				}
 				break;
-			case FOR:
+			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(94);
+				setState(110);
 				((InstructionContext)_localctx).forcontrol = forcontrol();
 				 _localctx.inst = ((InstructionContext)_localctx).forcontrol.forct
 				}
 				break;
-			case GUARD:
+			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(97);
+				setState(113);
 				((InstructionContext)_localctx).guardcontrol = guardcontrol();
 				 _localctx.inst = ((InstructionContext)_localctx).guardcontrol.guct
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 10:
+				enterOuterAlt(_localctx, 10);
+				{
+				setState(116);
+				((InstructionContext)_localctx).vectorcontrol = vectorcontrol();
+				setState(118);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==PUNTOCOMA) {
+					{
+					setState(117);
+					match(PUNTOCOMA);
+					}
+				}
+
+				 _localctx.inst = ((InstructionContext)_localctx).vectorcontrol.vect 
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -439,18 +463,18 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(103); 
+			setState(125); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(102);
+				setState(124);
 				((BlockinternoContext)_localctx).instructionint = instructionint();
 				((BlockinternoContext)_localctx).insint.add(((BlockinternoContext)_localctx).instructionint);
 				}
 				}
-				setState(105); 
+				setState(127); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << LET) | (1L << IF) | (1L << SWITCH) | (1L << BREAK) | (1L << CONTINUE) | (1L << FOR) | (1L << WHILE) | (1L << GUARD) | (1L << RETURN) | (1L << PRINT) | (1L << ID_VALIDO))) != 0) );
@@ -487,6 +511,7 @@ public class SwiftGrammarParser extends Parser {
 		public ContinueeContext continuee;
 		public BreakkContext breakk;
 		public RetornosContext retornos;
+		public VectorcontrolContext vectorcontrol;
 		public PrintstmtintContext printstmtint() {
 			return getRuleContext(PrintstmtintContext.class,0);
 		}
@@ -524,6 +549,9 @@ public class SwiftGrammarParser extends Parser {
 		public RetornosContext retornos() {
 			return getRuleContext(RetornosContext.class,0);
 		}
+		public VectorcontrolContext vectorcontrol() {
+			return getRuleContext(VectorcontrolContext.class,0);
+		}
 		public InstructionintContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -535,20 +563,20 @@ public class SwiftGrammarParser extends Parser {
 		enterRule(_localctx, 8, RULE_instructionint);
 		int _la;
 		try {
-			setState(166);
+			setState(194);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case PRINT:
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(109);
+				setState(131);
 				((InstructionintContext)_localctx).printstmtint = printstmtint();
-				setState(111);
+				setState(133);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(110);
+					setState(132);
 					match(PUNTOCOMA);
 					}
 				}
@@ -556,17 +584,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).printstmtint.prnt
 				}
 				break;
-			case VAR:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(115);
+				setState(137);
 				((InstructionintContext)_localctx).declavaribleint = declavaribleint();
-				setState(117);
+				setState(139);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(116);
+					setState(138);
 					match(PUNTOCOMA);
 					}
 				}
@@ -574,17 +602,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).declavaribleint.decvbl
 				}
 				break;
-			case LET:
+			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(121);
+				setState(143);
 				((InstructionintContext)_localctx).declaconstanteint = declaconstanteint();
-				setState(123);
+				setState(145);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(122);
+					setState(144);
 					match(PUNTOCOMA);
 					}
 				}
@@ -592,17 +620,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).declaconstanteint.deccon
 				}
 				break;
-			case ID_VALIDO:
+			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(127);
+				setState(149);
 				((InstructionintContext)_localctx).asignacionvariableint = asignacionvariableint();
-				setState(129);
+				setState(151);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(128);
+					setState(150);
 					match(PUNTOCOMA);
 					}
 				}
@@ -610,57 +638,57 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).asignacionvariableint.asgvbl
 				}
 				break;
-			case IF:
+			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(133);
+				setState(155);
 				((InstructionintContext)_localctx).sentenciaifelse = sentenciaifelse();
 				 _localctx.insint = ((InstructionintContext)_localctx).sentenciaifelse.myIfElse
 				}
 				break;
-			case SWITCH:
+			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(136);
+				setState(158);
 				((InstructionintContext)_localctx).switchcontrol = switchcontrol();
 				 _localctx.insint = ((InstructionintContext)_localctx).switchcontrol.mySwitch
 				}
 				break;
-			case WHILE:
+			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(139);
+				setState(161);
 				((InstructionintContext)_localctx).whilecontrol = whilecontrol();
 				 _localctx.insint = ((InstructionintContext)_localctx).whilecontrol.whict
 				}
 				break;
-			case FOR:
+			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(142);
+				setState(164);
 				((InstructionintContext)_localctx).forcontrol = forcontrol();
 				 _localctx.insint = ((InstructionintContext)_localctx).forcontrol.forct
 				}
 				break;
-			case GUARD:
+			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(145);
+				setState(167);
 				((InstructionintContext)_localctx).guardcontrol = guardcontrol();
 				 _localctx.insint = ((InstructionintContext)_localctx).guardcontrol.guct
 				}
 				break;
-			case CONTINUE:
+			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(148);
+				setState(170);
 				((InstructionintContext)_localctx).continuee = continuee();
-				setState(150);
+				setState(172);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(149);
+					setState(171);
 					match(PUNTOCOMA);
 					}
 				}
@@ -668,17 +696,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).continuee.coct
 				}
 				break;
-			case BREAK:
+			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(154);
+				setState(176);
 				((InstructionintContext)_localctx).breakk = breakk();
-				setState(156);
+				setState(178);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(155);
+					setState(177);
 					match(PUNTOCOMA);
 					}
 				}
@@ -686,17 +714,17 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).breakk.brkct
 				}
 				break;
-			case RETURN:
+			case 12:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(160);
+				setState(182);
 				((InstructionintContext)_localctx).retornos = retornos();
-				setState(162);
+				setState(184);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PUNTOCOMA) {
 					{
-					setState(161);
+					setState(183);
 					match(PUNTOCOMA);
 					}
 				}
@@ -704,8 +732,24 @@ public class SwiftGrammarParser extends Parser {
 				 _localctx.insint = ((InstructionintContext)_localctx).retornos.rect 
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 13:
+				enterOuterAlt(_localctx, 13);
+				{
+				setState(188);
+				((InstructionintContext)_localctx).vectorcontrol = vectorcontrol();
+				setState(190);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==PUNTOCOMA) {
+					{
+					setState(189);
+					match(PUNTOCOMA);
+					}
+				}
+
+				 _localctx.insint = ((InstructionintContext)_localctx).vectorcontrol.vect 
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -741,13 +785,13 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(168);
+			setState(196);
 			((PrintstmtContext)_localctx).PRINT = match(PRINT);
-			setState(169);
+			setState(197);
 			match(PARIZQ);
-			setState(170);
+			setState(198);
 			((PrintstmtContext)_localctx).expr = expr(0);
-			setState(171);
+			setState(199);
 			match(PARDER);
 			 _localctx.prnt = instructions.NewPrint((((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getLine():0),(((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getCharPositionInLine():0),((PrintstmtContext)_localctx).expr.e)
 			}
@@ -790,55 +834,55 @@ public class SwiftGrammarParser extends Parser {
 		DeclavaribleContext _localctx = new DeclavaribleContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_declavarible);
 		try {
-			setState(195);
+			setState(223);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(174);
+				setState(202);
 				((DeclavaribleContext)_localctx).VAR = match(VAR);
-				setState(175);
+				setState(203);
 				((DeclavaribleContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(176);
+				setState(204);
 				match(DOS_PUNTOS);
-				setState(177);
+				setState(205);
 				((DeclavaribleContext)_localctx).tipodato = tipodato();
-				setState(178);
+				setState(206);
 				match(IG);
-				setState(179);
+				setState(207);
 				((DeclavaribleContext)_localctx).expr = expr(0);
-				_localctx.decvbl = instructions.NewVariableDeclaration((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), "Global",((DeclavaribleContext)_localctx).tipodato.tipo, ((DeclavaribleContext)_localctx).expr.e)
+				_localctx.decvbl = instructions.NewVariableDeclaration((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleContext)_localctx).tipodato.tipo, ((DeclavaribleContext)_localctx).expr.e)
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(182);
+				setState(210);
 				((DeclavaribleContext)_localctx).VAR = match(VAR);
-				setState(183);
+				setState(211);
 				((DeclavaribleContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(184);
+				setState(212);
 				match(IG);
-				setState(185);
+				setState(213);
 				((DeclavaribleContext)_localctx).expr = expr(0);
-				_localctx.decvbl = instructions.NewVariableDeclaracionSinTipo((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), "Global", ((DeclavaribleContext)_localctx).expr.e)
+				_localctx.decvbl = instructions.NewVariableDeclaracionSinTipo((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleContext)_localctx).expr.e)
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(188);
+				setState(216);
 				((DeclavaribleContext)_localctx).VAR = match(VAR);
-				setState(189);
+				setState(217);
 				((DeclavaribleContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(190);
+				setState(218);
 				match(DOS_PUNTOS);
-				setState(191);
+				setState(219);
 				((DeclavaribleContext)_localctx).tipodato = tipodato();
-				setState(192);
+				setState(220);
 				match(CIERRE_INTE);
-				_localctx.decvbl = instructions.NewVariableDeclaracionSinExp((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), "Global", ((DeclavaribleContext)_localctx).tipodato.tipo)
+				_localctx.decvbl = instructions.NewVariableDeclaracionSinExp((((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getLine():0), (((DeclavaribleContext)_localctx).VAR!=null?((DeclavaribleContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleContext)_localctx).ID_VALIDO!=null?((DeclavaribleContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleContext)_localctx).tipodato.tipo)
 				}
 				break;
 			}
@@ -880,39 +924,39 @@ public class SwiftGrammarParser extends Parser {
 		DeclaconstanteContext _localctx = new DeclaconstanteContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_declaconstante);
 		try {
-			setState(211);
+			setState(239);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(197);
+				setState(225);
 				((DeclaconstanteContext)_localctx).LET = match(LET);
-				setState(198);
+				setState(226);
 				((DeclaconstanteContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(199);
+				setState(227);
 				match(DOS_PUNTOS);
-				setState(200);
+				setState(228);
 				((DeclaconstanteContext)_localctx).tipodato = tipodato();
-				setState(201);
+				setState(229);
 				match(IG);
-				setState(202);
+				setState(230);
 				((DeclaconstanteContext)_localctx).expr = expr(0);
-				_localctx.deccon = instructions.NewConstanteDeclaration((((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getLine():0), (((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteContext)_localctx).ID_VALIDO!=null?((DeclaconstanteContext)_localctx).ID_VALIDO.getText():null), "Global", ((DeclaconstanteContext)_localctx).tipodato.tipo, ((DeclaconstanteContext)_localctx).expr.e)
+				_localctx.deccon = instructions.NewConstanteDeclaration((((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getLine():0), (((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteContext)_localctx).ID_VALIDO!=null?((DeclaconstanteContext)_localctx).ID_VALIDO.getText():null), ((DeclaconstanteContext)_localctx).tipodato.tipo, ((DeclaconstanteContext)_localctx).expr.e)
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(205);
+				setState(233);
 				((DeclaconstanteContext)_localctx).LET = match(LET);
-				setState(206);
+				setState(234);
 				((DeclaconstanteContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(207);
+				setState(235);
 				match(IG);
-				setState(208);
+				setState(236);
 				((DeclaconstanteContext)_localctx).expr = expr(0);
-				_localctx.deccon = instructions.NewConstanteDeclaracionSinTipo((((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getLine():0), (((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteContext)_localctx).ID_VALIDO!=null?((DeclaconstanteContext)_localctx).ID_VALIDO.getText():null), "Global", ((DeclaconstanteContext)_localctx).expr.e)
+				_localctx.deccon = instructions.NewConstanteDeclaracionSinTipo((((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getLine():0), (((DeclaconstanteContext)_localctx).LET!=null?((DeclaconstanteContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteContext)_localctx).ID_VALIDO!=null?((DeclaconstanteContext)_localctx).ID_VALIDO.getText():null), ((DeclaconstanteContext)_localctx).expr.e)
 				}
 				break;
 			}
@@ -949,17 +993,17 @@ public class SwiftGrammarParser extends Parser {
 		AsignacionvariableContext _localctx = new AsignacionvariableContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_asignacionvariable);
 		try {
-			setState(228);
+			setState(256);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(213);
+				setState(241);
 				((AsignacionvariableContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(214);
+				setState(242);
 				match(IG);
-				setState(215);
+				setState(243);
 				((AsignacionvariableContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionVariable((((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableContext)_localctx).expr.e)
 				}
@@ -967,11 +1011,11 @@ public class SwiftGrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(218);
+				setState(246);
 				((AsignacionvariableContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(219);
+				setState(247);
 				match(SUMA);
-				setState(220);
+				setState(248);
 				((AsignacionvariableContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionSuma((((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableContext)_localctx).expr.e)
 				}
@@ -979,11 +1023,11 @@ public class SwiftGrammarParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(223);
+				setState(251);
 				((AsignacionvariableContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(224);
+				setState(252);
 				match(RESTA);
-				setState(225);
+				setState(253);
 				((AsignacionvariableContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionResta((((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableContext)_localctx).ID_VALIDO!=null?((AsignacionvariableContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableContext)_localctx).expr.e)
 				}
@@ -1023,13 +1067,13 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(230);
+			setState(258);
 			((PrintstmtintContext)_localctx).PRINT = match(PRINT);
-			setState(231);
+			setState(259);
 			match(PARIZQ);
-			setState(232);
+			setState(260);
 			((PrintstmtintContext)_localctx).expr = expr(0);
-			setState(233);
+			setState(261);
 			match(PARDER);
 			 _localctx.prnt = instructions.NewPrint((((PrintstmtintContext)_localctx).PRINT!=null?((PrintstmtintContext)_localctx).PRINT.getLine():0),(((PrintstmtintContext)_localctx).PRINT!=null?((PrintstmtintContext)_localctx).PRINT.getCharPositionInLine():0),((PrintstmtintContext)_localctx).expr.e)
 			}
@@ -1072,55 +1116,55 @@ public class SwiftGrammarParser extends Parser {
 		DeclavaribleintContext _localctx = new DeclavaribleintContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_declavaribleint);
 		try {
-			setState(257);
+			setState(285);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(236);
+				setState(264);
 				((DeclavaribleintContext)_localctx).VAR = match(VAR);
-				setState(237);
+				setState(265);
 				((DeclavaribleintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(238);
+				setState(266);
 				match(DOS_PUNTOS);
-				setState(239);
+				setState(267);
 				((DeclavaribleintContext)_localctx).tipodato = tipodato();
-				setState(240);
+				setState(268);
 				match(IG);
-				setState(241);
+				setState(269);
 				((DeclavaribleintContext)_localctx).expr = expr(0);
-				_localctx.decvbl = instructions.NewVariableDeclaration((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), "Local",((DeclavaribleintContext)_localctx).tipodato.tipo, ((DeclavaribleintContext)_localctx).expr.e)
+				_localctx.decvbl = instructions.NewVariableDeclaration((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleintContext)_localctx).tipodato.tipo, ((DeclavaribleintContext)_localctx).expr.e)
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(244);
+				setState(272);
 				((DeclavaribleintContext)_localctx).VAR = match(VAR);
-				setState(245);
+				setState(273);
 				((DeclavaribleintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(246);
+				setState(274);
 				match(IG);
-				setState(247);
+				setState(275);
 				((DeclavaribleintContext)_localctx).expr = expr(0);
-				_localctx.decvbl = instructions.NewVariableDeclaracionSinTipo((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), "Local", ((DeclavaribleintContext)_localctx).expr.e)
+				_localctx.decvbl = instructions.NewVariableDeclaracionSinTipo((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleintContext)_localctx).expr.e)
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(250);
+				setState(278);
 				((DeclavaribleintContext)_localctx).VAR = match(VAR);
-				setState(251);
+				setState(279);
 				((DeclavaribleintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(252);
+				setState(280);
 				match(DOS_PUNTOS);
-				setState(253);
+				setState(281);
 				((DeclavaribleintContext)_localctx).tipodato = tipodato();
-				setState(254);
+				setState(282);
 				match(CIERRE_INTE);
-				_localctx.decvbl = instructions.NewVariableDeclaracionSinExp((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), "Local", ((DeclavaribleintContext)_localctx).tipodato.tipo)
+				_localctx.decvbl = instructions.NewVariableDeclaracionSinExp((((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getLine():0), (((DeclavaribleintContext)_localctx).VAR!=null?((DeclavaribleintContext)_localctx).VAR.getCharPositionInLine():0), (((DeclavaribleintContext)_localctx).ID_VALIDO!=null?((DeclavaribleintContext)_localctx).ID_VALIDO.getText():null), ((DeclavaribleintContext)_localctx).tipodato.tipo)
 				}
 				break;
 			}
@@ -1162,39 +1206,39 @@ public class SwiftGrammarParser extends Parser {
 		DeclaconstanteintContext _localctx = new DeclaconstanteintContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_declaconstanteint);
 		try {
-			setState(273);
+			setState(301);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(259);
+				setState(287);
 				((DeclaconstanteintContext)_localctx).LET = match(LET);
-				setState(260);
+				setState(288);
 				((DeclaconstanteintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(261);
+				setState(289);
 				match(DOS_PUNTOS);
-				setState(262);
+				setState(290);
 				((DeclaconstanteintContext)_localctx).tipodato = tipodato();
-				setState(263);
+				setState(291);
 				match(IG);
-				setState(264);
+				setState(292);
 				((DeclaconstanteintContext)_localctx).expr = expr(0);
-				_localctx.deccon = instructions.NewConstanteDeclaration((((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getLine():0), (((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteintContext)_localctx).ID_VALIDO!=null?((DeclaconstanteintContext)_localctx).ID_VALIDO.getText():null), "Local", ((DeclaconstanteintContext)_localctx).tipodato.tipo, ((DeclaconstanteintContext)_localctx).expr.e)
+				_localctx.deccon = instructions.NewConstanteDeclaration((((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getLine():0), (((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteintContext)_localctx).ID_VALIDO!=null?((DeclaconstanteintContext)_localctx).ID_VALIDO.getText():null), ((DeclaconstanteintContext)_localctx).tipodato.tipo, ((DeclaconstanteintContext)_localctx).expr.e)
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(267);
+				setState(295);
 				((DeclaconstanteintContext)_localctx).LET = match(LET);
-				setState(268);
+				setState(296);
 				((DeclaconstanteintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(269);
+				setState(297);
 				match(IG);
-				setState(270);
+				setState(298);
 				((DeclaconstanteintContext)_localctx).expr = expr(0);
-				_localctx.deccon = instructions.NewConstanteDeclaracionSinTipo((((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getLine():0), (((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteintContext)_localctx).ID_VALIDO!=null?((DeclaconstanteintContext)_localctx).ID_VALIDO.getText():null), "Local", ((DeclaconstanteintContext)_localctx).expr.e)
+				_localctx.deccon = instructions.NewConstanteDeclaracionSinTipo((((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getLine():0), (((DeclaconstanteintContext)_localctx).LET!=null?((DeclaconstanteintContext)_localctx).LET.getCharPositionInLine():0), (((DeclaconstanteintContext)_localctx).ID_VALIDO!=null?((DeclaconstanteintContext)_localctx).ID_VALIDO.getText():null), ((DeclaconstanteintContext)_localctx).expr.e)
 				}
 				break;
 			}
@@ -1231,17 +1275,17 @@ public class SwiftGrammarParser extends Parser {
 		AsignacionvariableintContext _localctx = new AsignacionvariableintContext(_ctx, getState());
 		enterRule(_localctx, 24, RULE_asignacionvariableint);
 		try {
-			setState(290);
+			setState(318);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(275);
+				setState(303);
 				((AsignacionvariableintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(276);
+				setState(304);
 				match(IG);
-				setState(277);
+				setState(305);
 				((AsignacionvariableintContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionVariable((((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableintContext)_localctx).expr.e)
 				}
@@ -1249,11 +1293,11 @@ public class SwiftGrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(280);
+				setState(308);
 				((AsignacionvariableintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(281);
+				setState(309);
 				match(SUMA);
-				setState(282);
+				setState(310);
 				((AsignacionvariableintContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionSuma((((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableintContext)_localctx).expr.e)
 				}
@@ -1261,11 +1305,11 @@ public class SwiftGrammarParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(285);
+				setState(313);
 				((AsignacionvariableintContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(286);
+				setState(314);
 				match(RESTA);
-				setState(287);
+				setState(315);
 				((AsignacionvariableintContext)_localctx).expr = expr(0);
 				 _localctx.asgvbl = instructions.NewAsignacionResta((((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getCharPositionInLine():0), (((AsignacionvariableintContext)_localctx).ID_VALIDO!=null?((AsignacionvariableintContext)_localctx).ID_VALIDO.getText():null), ((AsignacionvariableintContext)_localctx).expr.e)
 				}
@@ -1300,13 +1344,13 @@ public class SwiftGrammarParser extends Parser {
 		TipodatoContext _localctx = new TipodatoContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_tipodato);
 		try {
-			setState(302);
+			setState(330);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(292);
+				setState(320);
 				match(INT);
 				 _localctx.tipo = environment.INTEGER 
 				}
@@ -1314,7 +1358,7 @@ public class SwiftGrammarParser extends Parser {
 			case FLOAT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(294);
+				setState(322);
 				match(FLOAT);
 				 _localctx.tipo = environment.FLOAT 
 				}
@@ -1322,7 +1366,7 @@ public class SwiftGrammarParser extends Parser {
 			case STRING:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(296);
+				setState(324);
 				match(STRING);
 				 _localctx.tipo = environment.STRING 
 				}
@@ -1330,7 +1374,7 @@ public class SwiftGrammarParser extends Parser {
 			case BOOL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(298);
+				setState(326);
 				match(BOOL);
 				 _localctx.tipo = environment.BOOLEAN 
 				}
@@ -1338,7 +1382,7 @@ public class SwiftGrammarParser extends Parser {
 			case CHARACT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(300);
+				setState(328);
 				match(CHARACT);
 				 _localctx.tipo = environment.CHARACTER 
 				}
@@ -1422,34 +1466,34 @@ public class SwiftGrammarParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(331);
+			setState(359);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NOT:
 				{
-				setState(305);
+				setState(333);
 				((ExprContext)_localctx).op = match(NOT);
-				setState(306);
+				setState(334);
 				((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(18);
 				 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).right!=null?(((ExprContext)_localctx).right.start):null).GetLine(), (((ExprContext)_localctx).right!=null?(((ExprContext)_localctx).right.start):null).GetColumn(), ((ExprContext)_localctx).right.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 				}
 				break;
 			case PARIZQ:
 				{
-				setState(309);
+				setState(337);
 				match(PARIZQ);
-				setState(310);
+				setState(338);
 				((ExprContext)_localctx).expr = expr(0);
-				setState(311);
+				setState(339);
 				match(PARDER);
 				 _localctx.e = ((ExprContext)_localctx).expr.e 
 				}
 				break;
 			case SUB:
 				{
-				setState(314);
+				setState(342);
 				match(SUB);
-				setState(315);
+				setState(343);
 				((ExprContext)_localctx).NUMBER = match(NUMBER);
 
 				        if (strings.Contains((((ExprContext)_localctx).NUMBER!=null?((ExprContext)_localctx).NUMBER.getText():null),".")){
@@ -1475,7 +1519,7 @@ public class SwiftGrammarParser extends Parser {
 				break;
 			case NUMBER:
 				{
-				setState(317);
+				setState(345);
 				((ExprContext)_localctx).NUMBER = match(NUMBER);
 
 				        if (strings.Contains((((ExprContext)_localctx).NUMBER!=null?((ExprContext)_localctx).NUMBER.getText():null),".")){
@@ -1501,7 +1545,7 @@ public class SwiftGrammarParser extends Parser {
 				break;
 			case CADENA:
 				{
-				setState(319);
+				setState(347);
 				((ExprContext)_localctx).CADENA = match(CADENA);
 
 				        str := (((ExprContext)_localctx).CADENA!=null?((ExprContext)_localctx).CADENA.getText():null)
@@ -1511,21 +1555,21 @@ public class SwiftGrammarParser extends Parser {
 				break;
 			case TRU:
 				{
-				setState(321);
+				setState(349);
 				((ExprContext)_localctx).TRU = match(TRU);
 				 _localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).TRU!=null?((ExprContext)_localctx).TRU.getLine():0), (((ExprContext)_localctx).TRU!=null?((ExprContext)_localctx).TRU.getCharPositionInLine():0), true, environment.BOOLEAN) 
 				}
 				break;
 			case FAL:
 				{
-				setState(323);
+				setState(351);
 				((ExprContext)_localctx).FAL = match(FAL);
 				 _localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).FAL!=null?((ExprContext)_localctx).FAL.getLine():0), (((ExprContext)_localctx).FAL!=null?((ExprContext)_localctx).FAL.getCharPositionInLine():0), false, environment.BOOLEAN) 
 				}
 				break;
 			case CHARACTER:
 				{
-				setState(325);
+				setState(353);
 				((ExprContext)_localctx).CHARACTER = match(CHARACTER);
 				 
 				        str := (((ExprContext)_localctx).CHARACTER!=null?((ExprContext)_localctx).CHARACTER.getText():null)
@@ -1535,7 +1579,7 @@ public class SwiftGrammarParser extends Parser {
 				break;
 			case ID_VALIDO:
 				{
-				setState(327);
+				setState(355);
 				((ExprContext)_localctx).ID_VALIDO = match(ID_VALIDO);
 
 				        id := (((ExprContext)_localctx).ID_VALIDO!=null?((ExprContext)_localctx).ID_VALIDO.getText():null)
@@ -1545,7 +1589,7 @@ public class SwiftGrammarParser extends Parser {
 				break;
 			case NULO:
 				{
-				setState(329);
+				setState(357);
 				((ExprContext)_localctx).NULO = match(NULO);
 				_localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).NULO!=null?((ExprContext)_localctx).NULO.getLine():0), (((ExprContext)_localctx).NULO!=null?((ExprContext)_localctx).NULO.getCharPositionInLine():0), (((ExprContext)_localctx).NULO!=null?((ExprContext)_localctx).NULO.getText():null),environment.NULL)
 				}
@@ -1554,28 +1598,28 @@ public class SwiftGrammarParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(375);
+			setState(403);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(373);
+					setState(401);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(333);
+						setState(361);
 						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
-						setState(334);
+						setState(362);
 						((ExprContext)_localctx).op = match(MODULO);
-						setState(335);
+						setState(363);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(18);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1586,9 +1630,9 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(338);
+						setState(366);
 						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
-						setState(339);
+						setState(367);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MUL || _la==DIV) ) {
@@ -1599,7 +1643,7 @@ public class SwiftGrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(340);
+						setState(368);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(17);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1610,9 +1654,9 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(343);
+						setState(371);
 						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
-						setState(344);
+						setState(372);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==ADD || _la==SUB) ) {
@@ -1623,7 +1667,7 @@ public class SwiftGrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(345);
+						setState(373);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(16);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1634,9 +1678,9 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(348);
+						setState(376);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-						setState(349);
+						setState(377);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MAY_IG || _la==MAYOR) ) {
@@ -1647,7 +1691,7 @@ public class SwiftGrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(350);
+						setState(378);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(15);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1658,9 +1702,9 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(353);
+						setState(381);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-						setState(354);
+						setState(382);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MEN_IG || _la==MENOR) ) {
@@ -1671,7 +1715,7 @@ public class SwiftGrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(355);
+						setState(383);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(14);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1682,9 +1726,9 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(358);
+						setState(386);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
-						setState(359);
+						setState(387);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==DIF || _la==IG_IG) ) {
@@ -1695,7 +1739,7 @@ public class SwiftGrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(360);
+						setState(388);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(13);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1706,11 +1750,11 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(363);
+						setState(391);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
-						setState(364);
+						setState(392);
 						((ExprContext)_localctx).op = match(AND);
-						setState(365);
+						setState(393);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(12);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1721,11 +1765,11 @@ public class SwiftGrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(368);
+						setState(396);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
-						setState(369);
+						setState(397);
 						((ExprContext)_localctx).op = match(OR);
-						setState(370);
+						setState(398);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(11);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1733,9 +1777,9 @@ public class SwiftGrammarParser extends Parser {
 					}
 					} 
 				}
-				setState(377);
+				setState(405);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
 			}
 			}
 		}
@@ -1790,21 +1834,21 @@ public class SwiftGrammarParser extends Parser {
 		SentenciaifelseContext _localctx = new SentenciaifelseContext(_ctx, getState());
 		enterRule(_localctx, 30, RULE_sentenciaifelse);
 		try {
-			setState(405);
+			setState(433);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(378);
+				setState(406);
 				((SentenciaifelseContext)_localctx).IF = match(IF);
-				setState(379);
+				setState(407);
 				((SentenciaifelseContext)_localctx).expr = expr(0);
-				setState(380);
+				setState(408);
 				match(LLAVEIZQ);
-				setState(381);
+				setState(409);
 				((SentenciaifelseContext)_localctx).blockinterno = blockinterno();
-				setState(382);
+				setState(410);
 				match(LLAVEDER);
 				 _localctx.myIfElse = instructions.NewSentenciaIf((((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getLine():0), (((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getCharPositionInLine():0), ((SentenciaifelseContext)_localctx).expr.e, ((SentenciaifelseContext)_localctx).blockinterno.blkint)
 				}
@@ -1812,23 +1856,23 @@ public class SwiftGrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(385);
+				setState(413);
 				((SentenciaifelseContext)_localctx).IF = match(IF);
-				setState(386);
+				setState(414);
 				((SentenciaifelseContext)_localctx).expr = expr(0);
-				setState(387);
+				setState(415);
 				match(LLAVEIZQ);
-				setState(388);
+				setState(416);
 				((SentenciaifelseContext)_localctx).ifop = blockinterno();
-				setState(389);
+				setState(417);
 				match(LLAVEDER);
-				setState(390);
+				setState(418);
 				match(ELSE);
-				setState(391);
+				setState(419);
 				match(LLAVEIZQ);
-				setState(392);
+				setState(420);
 				((SentenciaifelseContext)_localctx).elseop = blockinterno();
-				setState(393);
+				setState(421);
 				match(LLAVEDER);
 				 _localctx.myIfElse = instructions.NewSentenciaIfElse((((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getLine():0), (((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getCharPositionInLine():0), ((SentenciaifelseContext)_localctx).expr.e, ((SentenciaifelseContext)_localctx).ifop.blkint , ((SentenciaifelseContext)_localctx).elseop.blkint)
 				}
@@ -1836,19 +1880,19 @@ public class SwiftGrammarParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(396);
+				setState(424);
 				((SentenciaifelseContext)_localctx).IF = match(IF);
-				setState(397);
+				setState(425);
 				((SentenciaifelseContext)_localctx).expr = expr(0);
-				setState(398);
+				setState(426);
 				match(LLAVEIZQ);
-				setState(399);
+				setState(427);
 				((SentenciaifelseContext)_localctx).blockinterno = blockinterno();
-				setState(400);
+				setState(428);
 				match(LLAVEDER);
-				setState(401);
+				setState(429);
 				match(ELSE);
-				setState(402);
+				setState(430);
 				((SentenciaifelseContext)_localctx).sentenciaifelse = sentenciaifelse();
 				 _localctx.myIfElse = instructions.NewSentenciaIfElseIf((((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getLine():0), (((SentenciaifelseContext)_localctx).IF!=null?((SentenciaifelseContext)_localctx).IF.getCharPositionInLine():0), ((SentenciaifelseContext)_localctx).expr.e, ((SentenciaifelseContext)_localctx).blockinterno.blkint, ((SentenciaifelseContext)_localctx).sentenciaifelse.myIfElse)
 				}
@@ -1900,29 +1944,29 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(407);
+			setState(435);
 			((SwitchcontrolContext)_localctx).SWITCH = match(SWITCH);
-			setState(408);
+			setState(436);
 			((SwitchcontrolContext)_localctx).expr = expr(0);
-			setState(409);
+			setState(437);
 			match(LLAVEIZQ);
-			setState(410);
+			setState(438);
 			((SwitchcontrolContext)_localctx).blockcase = blockcase();
-			setState(414);
+			setState(442);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DEFAULT) {
 				{
-				setState(411);
+				setState(439);
 				((SwitchcontrolContext)_localctx).DEFAULT = match(DEFAULT);
-				setState(412);
+				setState(440);
 				match(DOS_PUNTOS);
-				setState(413);
+				setState(441);
 				((SwitchcontrolContext)_localctx).blockinterno = blockinterno();
 				}
 			}
 
-			setState(416);
+			setState(444);
 			match(LLAVEDER);
 
 			    if (((SwitchcontrolContext)_localctx).DEFAULT != nil) {
@@ -1971,18 +2015,18 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(420); 
+			setState(448); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(419);
+				setState(447);
 				((BlockcaseContext)_localctx).bloquecase = bloquecase();
 				((BlockcaseContext)_localctx).blocas.add(((BlockcaseContext)_localctx).bloquecase);
 				}
 				}
-				setState(422); 
+				setState(450); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==CASE );
@@ -2030,13 +2074,13 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(426);
+			setState(454);
 			((BloquecaseContext)_localctx).CASE = match(CASE);
-			setState(427);
+			setState(455);
 			((BloquecaseContext)_localctx).expr = expr(0);
-			setState(428);
+			setState(456);
 			match(DOS_PUNTOS);
-			setState(429);
+			setState(457);
 			((BloquecaseContext)_localctx).blockinterno = blockinterno();
 
 			    _localctx.blocas=instructions.NewSentenciaSwitchCase((((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getLine():0) ,(((BloquecaseContext)_localctx).CASE!=null?((BloquecaseContext)_localctx).CASE.getCharPositionInLine():0), ((BloquecaseContext)_localctx).expr.e, ((BloquecaseContext)_localctx).blockinterno.blkint)
@@ -2080,15 +2124,15 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(432);
+			setState(460);
 			((WhilecontrolContext)_localctx).WHILE = match(WHILE);
-			setState(433);
+			setState(461);
 			((WhilecontrolContext)_localctx).expr = expr(0);
-			setState(434);
+			setState(462);
 			match(LLAVEIZQ);
-			setState(435);
+			setState(463);
 			((WhilecontrolContext)_localctx).blockinterno = blockinterno();
-			setState(436);
+			setState(464);
 			match(LLAVEDER);
 			 _localctx.whict = instructions.NewSentenciaWhile((((WhilecontrolContext)_localctx).WHILE!=null?((WhilecontrolContext)_localctx).WHILE.getLine():0), (((WhilecontrolContext)_localctx).WHILE!=null?((WhilecontrolContext)_localctx).WHILE.getCharPositionInLine():0), ((WhilecontrolContext)_localctx).expr.e, ((WhilecontrolContext)_localctx).blockinterno.blkint)
 			}
@@ -2137,29 +2181,29 @@ public class SwiftGrammarParser extends Parser {
 		ForcontrolContext _localctx = new ForcontrolContext(_ctx, getState());
 		enterRule(_localctx, 40, RULE_forcontrol);
 		try {
-			setState(459);
+			setState(487);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(439);
+				setState(467);
 				((ForcontrolContext)_localctx).FOR = match(FOR);
-				setState(440);
+				setState(468);
 				((ForcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(441);
+				setState(469);
 				match(IN);
-				setState(442);
+				setState(470);
 				((ForcontrolContext)_localctx).left = expr(0);
-				setState(443);
+				setState(471);
 				match(RANGO);
-				setState(444);
+				setState(472);
 				((ForcontrolContext)_localctx).right = expr(0);
-				setState(445);
+				setState(473);
 				match(LLAVEIZQ);
-				setState(446);
+				setState(474);
 				((ForcontrolContext)_localctx).blockinterno = blockinterno();
-				setState(447);
+				setState(475);
 				match(LLAVEDER);
 				 _localctx.forct = instructions.NewSentenciaForRango((((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getLine():0), (((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getCharPositionInLine():0), (((ForcontrolContext)_localctx).ID_VALIDO!=null?((ForcontrolContext)_localctx).ID_VALIDO.getText():null), ((ForcontrolContext)_localctx).left.e, ((ForcontrolContext)_localctx).right.e,((ForcontrolContext)_localctx).blockinterno.blkint)
 				}
@@ -2167,19 +2211,19 @@ public class SwiftGrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(450);
+				setState(478);
 				((ForcontrolContext)_localctx).FOR = match(FOR);
-				setState(451);
+				setState(479);
 				((ForcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
-				setState(452);
+				setState(480);
 				match(IN);
-				setState(453);
+				setState(481);
 				((ForcontrolContext)_localctx).expr = expr(0);
-				setState(454);
+				setState(482);
 				match(LLAVEIZQ);
-				setState(455);
+				setState(483);
 				((ForcontrolContext)_localctx).blockinterno = blockinterno();
-				setState(456);
+				setState(484);
 				match(LLAVEDER);
 				 _localctx.forct = instructions.NewSentenciaForCadena((((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getLine():0), (((ForcontrolContext)_localctx).FOR!=null?((ForcontrolContext)_localctx).FOR.getCharPositionInLine():0), (((ForcontrolContext)_localctx).ID_VALIDO!=null?((ForcontrolContext)_localctx).ID_VALIDO.getText():null), ((ForcontrolContext)_localctx).expr.e, ((ForcontrolContext)_localctx).blockinterno.blkint)
 				}
@@ -2224,17 +2268,17 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(461);
+			setState(489);
 			((GuardcontrolContext)_localctx).GUARD = match(GUARD);
-			setState(462);
+			setState(490);
 			((GuardcontrolContext)_localctx).expr = expr(0);
-			setState(463);
+			setState(491);
 			match(ELSE);
-			setState(464);
+			setState(492);
 			match(LLAVEIZQ);
-			setState(465);
+			setState(493);
 			((GuardcontrolContext)_localctx).blockinterno = blockinterno();
-			setState(466);
+			setState(494);
 			match(LLAVEDER);
 			 
 			    _localctx.guct = instructions.NewSentenciaGuard((((GuardcontrolContext)_localctx).GUARD!=null?((GuardcontrolContext)_localctx).GUARD.getLine():0), (((GuardcontrolContext)_localctx).GUARD!=null?((GuardcontrolContext)_localctx).GUARD.getCharPositionInLine():0), ((GuardcontrolContext)_localctx).expr.e, ((GuardcontrolContext)_localctx).blockinterno.blkint)
@@ -2268,7 +2312,7 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(469);
+			setState(497);
 			((ContinueeContext)_localctx).CONTINUE = match(CONTINUE);
 			_localctx.coct = instructions.NewTransferenciaContinue((((ContinueeContext)_localctx).CONTINUE!=null?((ContinueeContext)_localctx).CONTINUE.getLine():0), (((ContinueeContext)_localctx).CONTINUE!=null?((ContinueeContext)_localctx).CONTINUE.getCharPositionInLine():0))
 			}
@@ -2300,7 +2344,7 @@ public class SwiftGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(472);
+			setState(500);
 			((BreakkContext)_localctx).BREAK = match(BREAK);
 			 _localctx.brkct = instructions.NewTransferenciaBreak((((BreakkContext)_localctx).BREAK!=null?((BreakkContext)_localctx).BREAK.getLine():0), (((BreakkContext)_localctx).BREAK!=null?((BreakkContext)_localctx).BREAK.getCharPositionInLine():0))
 			}
@@ -2334,13 +2378,13 @@ public class SwiftGrammarParser extends Parser {
 		RetornosContext _localctx = new RetornosContext(_ctx, getState());
 		enterRule(_localctx, 48, RULE_retornos);
 		try {
-			setState(481);
+			setState(509);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(475);
+				setState(503);
 				((RetornosContext)_localctx).RETURN = match(RETURN);
 
 				    ((RetornosContext)_localctx).rect =  instructions.NewTransferenciaReturn((((RetornosContext)_localctx).RETURN!=null?((RetornosContext)_localctx).RETURN.getLine():0), (((RetornosContext)_localctx).RETURN!=null?((RetornosContext)_localctx).RETURN.getCharPositionInLine():0));
@@ -2350,15 +2394,544 @@ public class SwiftGrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(477);
+				setState(505);
 				((RetornosContext)_localctx).RETURN = match(RETURN);
-				setState(478);
+				setState(506);
 				((RetornosContext)_localctx).op = expr(0);
 
 				    ((RetornosContext)_localctx).rect =  instructions.NewTransferenciaReturnExp((((RetornosContext)_localctx).RETURN!=null?((RetornosContext)_localctx).RETURN.getLine():0), (((RetornosContext)_localctx).RETURN!=null?((RetornosContext)_localctx).RETURN.getCharPositionInLine():0), ((RetornosContext)_localctx).op.e);
 
 				}
 				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectorcontrolContext extends ParserRuleContext {
+		public interfaces.Instruction vect;
+		public Token VAR;
+		public Token ID_VALIDO;
+		public TipodatoContext tipodato;
+		public ExprContext expr;
+		public BlockparamsContext blockparams;
+		public TerminalNode VAR() { return getToken(SwiftGrammarParser.VAR, 0); }
+		public List<TerminalNode> ID_VALIDO() { return getTokens(SwiftGrammarParser.ID_VALIDO); }
+		public TerminalNode ID_VALIDO(int i) {
+			return getToken(SwiftGrammarParser.ID_VALIDO, i);
+		}
+		public TerminalNode DOS_PUNTOS() { return getToken(SwiftGrammarParser.DOS_PUNTOS, 0); }
+		public List<TerminalNode> CORCHIZQ() { return getTokens(SwiftGrammarParser.CORCHIZQ); }
+		public TerminalNode CORCHIZQ(int i) {
+			return getToken(SwiftGrammarParser.CORCHIZQ, i);
+		}
+		public TipodatoContext tipodato() {
+			return getRuleContext(TipodatoContext.class,0);
+		}
+		public List<TerminalNode> CORCHDER() { return getTokens(SwiftGrammarParser.CORCHDER); }
+		public TerminalNode CORCHDER(int i) {
+			return getToken(SwiftGrammarParser.CORCHDER, i);
+		}
+		public TerminalNode IG() { return getToken(SwiftGrammarParser.IG, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public BlockparamsContext blockparams() {
+			return getRuleContext(BlockparamsContext.class,0);
+		}
+		public VectorcontrolContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectorcontrol; }
+	}
+
+	public final VectorcontrolContext vectorcontrol() throws RecognitionException {
+		VectorcontrolContext _localctx = new VectorcontrolContext(_ctx, getState());
+		enterRule(_localctx, 50, RULE_vectorcontrol);
+		try {
+			setState(544);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(511);
+				((VectorcontrolContext)_localctx).VAR = match(VAR);
+				setState(512);
+				((VectorcontrolContext)_localctx).ID_VALIDO = match(ID_VALIDO);
+				setState(513);
+				match(DOS_PUNTOS);
+				setState(514);
+				match(CORCHIZQ);
+				setState(515);
+				((VectorcontrolContext)_localctx).tipodato = tipodato();
+				setState(516);
+				match(CORCHDER);
+				setState(517);
+				match(IG);
+				setState(518);
+				match(CORCHIZQ);
+				setState(519);
+				((VectorcontrolContext)_localctx).expr = expr(0);
+				setState(520);
+				((VectorcontrolContext)_localctx).blockparams = blockparams();
+				setState(521);
+				match(CORCHDER);
+				 _localctx.vect = instructions.NewArregloDeclaracionLista((((VectorcontrolContext)_localctx).VAR!=null?((VectorcontrolContext)_localctx).VAR.getLine():0) ,(((VectorcontrolContext)_localctx).VAR!=null?((VectorcontrolContext)_localctx).VAR.getCharPositionInLine():0), (((VectorcontrolContext)_localctx).ID_VALIDO!=null?((VectorcontrolContext)_localctx).ID_VALIDO.getText():null) , ((VectorcontrolContext)_localctx).tipodato.tipo,((VectorcontrolContext)_localctx).expr.e, ((VectorcontrolContext)_localctx).blockparams.blkpar)
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(524);
+				match(VAR);
+				setState(525);
+				match(ID_VALIDO);
+				setState(526);
+				match(DOS_PUNTOS);
+				setState(527);
+				match(CORCHIZQ);
+				setState(528);
+				tipodato();
+				setState(529);
+				match(CORCHDER);
+				setState(530);
+				match(IG);
+				setState(531);
+				match(CORCHIZQ);
+				setState(532);
+				match(CORCHDER);
+
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(535);
+				match(VAR);
+				setState(536);
+				match(ID_VALIDO);
+				setState(537);
+				match(DOS_PUNTOS);
+				setState(538);
+				match(CORCHIZQ);
+				setState(539);
+				tipodato();
+				setState(540);
+				match(CORCHDER);
+				setState(541);
+				match(ID_VALIDO);
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class BlockparamsContext extends ParserRuleContext {
+		public []interface{} blkpar;
+		public BloqueparamsContext bloqueparams;
+		public List<BloqueparamsContext> blopas = new ArrayList<BloqueparamsContext>();
+		public List<BloqueparamsContext> bloqueparams() {
+			return getRuleContexts(BloqueparamsContext.class);
+		}
+		public BloqueparamsContext bloqueparams(int i) {
+			return getRuleContext(BloqueparamsContext.class,i);
+		}
+		public BlockparamsContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_blockparams; }
+	}
+
+	public final BlockparamsContext blockparams() throws RecognitionException {
+		BlockparamsContext _localctx = new BlockparamsContext(_ctx, getState());
+		enterRule(_localctx, 52, RULE_blockparams);
+
+		    _localctx.blkpar = []interface{}{}
+		    var listInt []IBloqueparamsContext
+
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(547); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(546);
+				((BlockparamsContext)_localctx).bloqueparams = bloqueparams();
+				((BlockparamsContext)_localctx).blopas.add(((BlockparamsContext)_localctx).bloqueparams);
+				}
+				}
+				setState(549); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( _la==COMA );
+
+			    listInt = localctx.(*BlockparamsContext).GetBlopas()
+			    for _, e := range listInt {
+			        _localctx.blkpar = append(_localctx.blkpar, e.GetBlopas())
+			    }
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class BloqueparamsContext extends ParserRuleContext {
+		public interfaces.Expression blopas;
+		public Token COMA;
+		public ExprContext expr;
+		public TerminalNode COMA() { return getToken(SwiftGrammarParser.COMA, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public BloqueparamsContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_bloqueparams; }
+	}
+
+	public final BloqueparamsContext bloqueparams() throws RecognitionException {
+		BloqueparamsContext _localctx = new BloqueparamsContext(_ctx, getState());
+		enterRule(_localctx, 54, RULE_bloqueparams);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(553);
+			((BloqueparamsContext)_localctx).COMA = match(COMA);
+			setState(554);
+			((BloqueparamsContext)_localctx).expr = expr(0);
+
+			    _localctx.blopas = instructions.NewArregloParametros((((BloqueparamsContext)_localctx).COMA!=null?((BloqueparamsContext)_localctx).COMA.getLine():0) ,(((BloqueparamsContext)_localctx).COMA!=null?((BloqueparamsContext)_localctx).COMA.getCharPositionInLine():0), ((BloqueparamsContext)_localctx).expr.e)
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectoragregarContext extends ParserRuleContext {
+		public List<TerminalNode> ID_VALIDO() { return getTokens(SwiftGrammarParser.ID_VALIDO); }
+		public TerminalNode ID_VALIDO(int i) {
+			return getToken(SwiftGrammarParser.ID_VALIDO, i);
+		}
+		public TerminalNode PUNTO() { return getToken(SwiftGrammarParser.PUNTO, 0); }
+		public TerminalNode APPEND() { return getToken(SwiftGrammarParser.APPEND, 0); }
+		public TerminalNode PARIZQ() { return getToken(SwiftGrammarParser.PARIZQ, 0); }
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode PARDER() { return getToken(SwiftGrammarParser.PARDER, 0); }
+		public List<TerminalNode> CORCHIZQ() { return getTokens(SwiftGrammarParser.CORCHIZQ); }
+		public TerminalNode CORCHIZQ(int i) {
+			return getToken(SwiftGrammarParser.CORCHIZQ, i);
+		}
+		public List<TerminalNode> CORCHDER() { return getTokens(SwiftGrammarParser.CORCHDER); }
+		public TerminalNode CORCHDER(int i) {
+			return getToken(SwiftGrammarParser.CORCHDER, i);
+		}
+		public TerminalNode IG() { return getToken(SwiftGrammarParser.IG, 0); }
+		public VectoragregarContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectoragregar; }
+	}
+
+	public final VectoragregarContext vectoragregar() throws RecognitionException {
+		VectoragregarContext _localctx = new VectoragregarContext(_ctx, getState());
+		enterRule(_localctx, 56, RULE_vectoragregar);
+		try {
+			setState(584);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(557);
+				match(ID_VALIDO);
+				setState(558);
+				match(PUNTO);
+				setState(559);
+				match(APPEND);
+				setState(560);
+				match(PARIZQ);
+				setState(561);
+				expr(0);
+				setState(562);
+				match(PARDER);
+
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(565);
+				match(ID_VALIDO);
+				setState(566);
+				match(CORCHIZQ);
+				setState(567);
+				expr(0);
+				setState(568);
+				match(CORCHDER);
+				setState(569);
+				match(IG);
+				setState(570);
+				match(ID_VALIDO);
+				setState(571);
+				match(CORCHIZQ);
+				setState(572);
+				expr(0);
+				setState(573);
+				match(CORCHDER);
+
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(576);
+				match(ID_VALIDO);
+				setState(577);
+				match(CORCHIZQ);
+				setState(578);
+				expr(0);
+				setState(579);
+				match(CORCHDER);
+				setState(580);
+				match(IG);
+				setState(581);
+				expr(0);
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectorremoverContext extends ParserRuleContext {
+		public TerminalNode ID_VALIDO() { return getToken(SwiftGrammarParser.ID_VALIDO, 0); }
+		public TerminalNode PUNTO() { return getToken(SwiftGrammarParser.PUNTO, 0); }
+		public TerminalNode REMOVELAST() { return getToken(SwiftGrammarParser.REMOVELAST, 0); }
+		public TerminalNode PARIZQ() { return getToken(SwiftGrammarParser.PARIZQ, 0); }
+		public TerminalNode PARDER() { return getToken(SwiftGrammarParser.PARDER, 0); }
+		public TerminalNode REMOVE() { return getToken(SwiftGrammarParser.REMOVE, 0); }
+		public TerminalNode AT() { return getToken(SwiftGrammarParser.AT, 0); }
+		public TerminalNode DOS_PUNTOS() { return getToken(SwiftGrammarParser.DOS_PUNTOS, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public VectorremoverContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectorremover; }
+	}
+
+	public final VectorremoverContext vectorremover() throws RecognitionException {
+		VectorremoverContext _localctx = new VectorremoverContext(_ctx, getState());
+		enterRule(_localctx, 58, RULE_vectorremover);
+		try {
+			setState(602);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,35,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(586);
+				match(ID_VALIDO);
+				setState(587);
+				match(PUNTO);
+				setState(588);
+				match(REMOVELAST);
+				setState(589);
+				match(PARIZQ);
+				setState(590);
+				match(PARDER);
+
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(592);
+				match(ID_VALIDO);
+				setState(593);
+				match(PUNTO);
+				setState(594);
+				match(REMOVE);
+				setState(595);
+				match(PARIZQ);
+				setState(596);
+				match(AT);
+				setState(597);
+				match(DOS_PUNTOS);
+				setState(598);
+				expr(0);
+				setState(599);
+				match(PARDER);
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectorvacioContext extends ParserRuleContext {
+		public TerminalNode ID_VALIDO() { return getToken(SwiftGrammarParser.ID_VALIDO, 0); }
+		public TerminalNode PUNTO() { return getToken(SwiftGrammarParser.PUNTO, 0); }
+		public TerminalNode ISEMPTY() { return getToken(SwiftGrammarParser.ISEMPTY, 0); }
+		public VectorvacioContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectorvacio; }
+	}
+
+	public final VectorvacioContext vectorvacio() throws RecognitionException {
+		VectorvacioContext _localctx = new VectorvacioContext(_ctx, getState());
+		enterRule(_localctx, 60, RULE_vectorvacio);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(604);
+			match(ID_VALIDO);
+			setState(605);
+			match(PUNTO);
+			setState(606);
+			match(ISEMPTY);
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectorcountContext extends ParserRuleContext {
+		public TerminalNode ID_VALIDO() { return getToken(SwiftGrammarParser.ID_VALIDO, 0); }
+		public TerminalNode PUNTO() { return getToken(SwiftGrammarParser.PUNTO, 0); }
+		public TerminalNode COUNT() { return getToken(SwiftGrammarParser.COUNT, 0); }
+		public VectorcountContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectorcount; }
+	}
+
+	public final VectorcountContext vectorcount() throws RecognitionException {
+		VectorcountContext _localctx = new VectorcountContext(_ctx, getState());
+		enterRule(_localctx, 62, RULE_vectorcount);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(609);
+			match(ID_VALIDO);
+			setState(610);
+			match(PUNTO);
+			setState(611);
+			match(COUNT);
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VectoraccessContext extends ParserRuleContext {
+		public TerminalNode ID_VALIDO() { return getToken(SwiftGrammarParser.ID_VALIDO, 0); }
+		public TerminalNode CORCHIZQ() { return getToken(SwiftGrammarParser.CORCHIZQ, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode CORCHDER() { return getToken(SwiftGrammarParser.CORCHDER, 0); }
+		public VectoraccessContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_vectoraccess; }
+	}
+
+	public final VectoraccessContext vectoraccess() throws RecognitionException {
+		VectoraccessContext _localctx = new VectoraccessContext(_ctx, getState());
+		enterRule(_localctx, 64, RULE_vectoraccess);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(614);
+			match(ID_VALIDO);
+			setState(615);
+			match(CORCHIZQ);
+			setState(616);
+			expr(0);
+			setState(617);
+			match(CORCHDER);
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -2402,179 +2975,230 @@ public class SwiftGrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3K\u01e6\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3K\u026f\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
-		"\4\32\t\32\3\2\3\2\3\2\3\2\3\3\6\3:\n\3\r\3\16\3;\3\3\3\3\3\4\3\4\5\4"+
-		"B\n\4\3\4\3\4\3\4\3\4\5\4H\n\4\3\4\3\4\3\4\3\4\5\4N\n\4\3\4\3\4\3\4\3"+
-		"\4\5\4T\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3"+
-		"\4\3\4\3\4\5\4g\n\4\3\5\6\5j\n\5\r\5\16\5k\3\5\3\5\3\6\3\6\5\6r\n\6\3"+
-		"\6\3\6\3\6\3\6\5\6x\n\6\3\6\3\6\3\6\3\6\5\6~\n\6\3\6\3\6\3\6\3\6\5\6\u0084"+
-		"\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\5\6\u0099\n\6\3\6\3\6\3\6\3\6\5\6\u009f\n\6\3\6\3\6\3\6\3\6"+
-		"\5\6\u00a5\n\6\3\6\3\6\5\6\u00a9\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3"+
-		"\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\5\b\u00c6\n\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t"+
-		"\3\t\5\t\u00d6\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n"+
-		"\3\n\3\n\5\n\u00e7\n\n\3\13\3\13\3\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3"+
-		"\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f"+
-		"\u0104\n\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r"+
-		"\u0114\n\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
-		"\3\16\3\16\3\16\5\16\u0125\n\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17"+
-		"\3\17\3\17\5\17\u0131\n\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
+		"\t!\4\"\t\"\3\2\3\2\3\2\3\2\3\3\6\3J\n\3\r\3\16\3K\3\3\3\3\3\4\3\4\5\4"+
+		"R\n\4\3\4\3\4\3\4\3\4\5\4X\n\4\3\4\3\4\3\4\3\4\5\4^\n\4\3\4\3\4\3\4\3"+
+		"\4\5\4d\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3"+
+		"\4\3\4\3\4\3\4\3\4\5\4y\n\4\3\4\3\4\5\4}\n\4\3\5\6\5\u0080\n\5\r\5\16"+
+		"\5\u0081\3\5\3\5\3\6\3\6\5\6\u0088\n\6\3\6\3\6\3\6\3\6\5\6\u008e\n\6\3"+
+		"\6\3\6\3\6\3\6\5\6\u0094\n\6\3\6\3\6\3\6\3\6\5\6\u009a\n\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6\u00af"+
+		"\n\6\3\6\3\6\3\6\3\6\5\6\u00b5\n\6\3\6\3\6\3\6\3\6\5\6\u00bb\n\6\3\6\3"+
+		"\6\3\6\3\6\5\6\u00c1\n\6\3\6\3\6\5\6\u00c5\n\6\3\7\3\7\3\7\3\7\3\7\3\7"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
+		"\b\3\b\3\b\3\b\5\b\u00e2\n\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3"+
+		"\t\3\t\3\t\3\t\5\t\u00f2\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3"+
+		"\n\3\n\3\n\3\n\3\n\5\n\u0103\n\n\3\13\3\13\3\13\3\13\3\13\3\13\3\f\3\f"+
+		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3"+
+		"\f\3\f\5\f\u0120\n\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3"+
+		"\r\3\r\5\r\u0130\n\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
+		"\3\16\3\16\3\16\3\16\3\16\5\16\u0141\n\16\3\17\3\17\3\17\3\17\3\17\3\17"+
+		"\3\17\3\17\3\17\3\17\5\17\u014d\n\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
 		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
-		"\3\20\3\20\3\20\3\20\5\20\u014e\n\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u016a\n\20\3\20\3\20\3\20\3\20\3\20"+
 		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
 		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
-		"\3\20\3\20\3\20\3\20\3\20\7\20\u0178\n\20\f\20\16\20\u017b\13\20\3\21"+
-		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21"+
-		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u0198"+
-		"\n\21\3\22\3\22\3\22\3\22\3\22\3\22\3\22\5\22\u01a1\n\22\3\22\3\22\3\22"+
-		"\3\23\6\23\u01a7\n\23\r\23\16\23\u01a8\3\23\3\23\3\24\3\24\3\24\3\24\3"+
-		"\24\3\24\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\26\3\26\3\26\3\26\3\26\3"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\7\20\u0194\n\20\f\20\16\20\u0197\13"+
+		"\20\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3"+
+		"\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5"+
+		"\21\u01b4\n\21\3\22\3\22\3\22\3\22\3\22\3\22\3\22\5\22\u01bd\n\22\3\22"+
+		"\3\22\3\22\3\23\6\23\u01c3\n\23\r\23\16\23\u01c4\3\23\3\23\3\24\3\24\3"+
+		"\24\3\24\3\24\3\24\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\26\3\26\3\26\3"+
 		"\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3"+
-		"\26\5\26\u01ce\n\26\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\30\3\30"+
-		"\3\30\3\31\3\31\3\31\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u01e4\n\32\3\32"+
-		"\2\3\36\33\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\2\7\3"+
-		"\2;<\3\2=>\4\2\66\6688\4\2\67\6799\3\2\61\62\2\u0211\2\64\3\2\2\2\49\3"+
-		"\2\2\2\6f\3\2\2\2\bi\3\2\2\2\n\u00a8\3\2\2\2\f\u00aa\3\2\2\2\16\u00c5"+
-		"\3\2\2\2\20\u00d5\3\2\2\2\22\u00e6\3\2\2\2\24\u00e8\3\2\2\2\26\u0103\3"+
-		"\2\2\2\30\u0113\3\2\2\2\32\u0124\3\2\2\2\34\u0130\3\2\2\2\36\u014d\3\2"+
-		"\2\2 \u0197\3\2\2\2\"\u0199\3\2\2\2$\u01a6\3\2\2\2&\u01ac\3\2\2\2(\u01b2"+
-		"\3\2\2\2*\u01cd\3\2\2\2,\u01cf\3\2\2\2.\u01d7\3\2\2\2\60\u01da\3\2\2\2"+
-		"\62\u01e3\3\2\2\2\64\65\5\4\3\2\65\66\7\2\2\3\66\67\b\2\1\2\67\3\3\2\2"+
-		"\28:\5\6\4\298\3\2\2\2:;\3\2\2\2;9\3\2\2\2;<\3\2\2\2<=\3\2\2\2=>\b\3\1"+
-		"\2>\5\3\2\2\2?A\5\f\7\2@B\7-\2\2A@\3\2\2\2AB\3\2\2\2BC\3\2\2\2CD\b\4\1"+
-		"\2Dg\3\2\2\2EG\5\16\b\2FH\7-\2\2GF\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\b\4\1"+
-		"\2Jg\3\2\2\2KM\5\20\t\2LN\7-\2\2ML\3\2\2\2MN\3\2\2\2NO\3\2\2\2OP\b\4\1"+
-		"\2Pg\3\2\2\2QS\5\22\n\2RT\7-\2\2SR\3\2\2\2ST\3\2\2\2TU\3\2\2\2UV\b\4\1"+
-		"\2Vg\3\2\2\2WX\5 \21\2XY\b\4\1\2Yg\3\2\2\2Z[\5\"\22\2[\\\b\4\1\2\\g\3"+
-		"\2\2\2]^\5(\25\2^_\b\4\1\2_g\3\2\2\2`a\5*\26\2ab\b\4\1\2bg\3\2\2\2cd\5"+
-		",\27\2de\b\4\1\2eg\3\2\2\2f?\3\2\2\2fE\3\2\2\2fK\3\2\2\2fQ\3\2\2\2fW\3"+
-		"\2\2\2fZ\3\2\2\2f]\3\2\2\2f`\3\2\2\2fc\3\2\2\2g\7\3\2\2\2hj\5\n\6\2ih"+
-		"\3\2\2\2jk\3\2\2\2ki\3\2\2\2kl\3\2\2\2lm\3\2\2\2mn\b\5\1\2n\t\3\2\2\2"+
-		"oq\5\24\13\2pr\7-\2\2qp\3\2\2\2qr\3\2\2\2rs\3\2\2\2st\b\6\1\2t\u00a9\3"+
-		"\2\2\2uw\5\26\f\2vx\7-\2\2wv\3\2\2\2wx\3\2\2\2xy\3\2\2\2yz\b\6\1\2z\u00a9"+
-		"\3\2\2\2{}\5\30\r\2|~\7-\2\2}|\3\2\2\2}~\3\2\2\2~\177\3\2\2\2\177\u0080"+
-		"\b\6\1\2\u0080\u00a9\3\2\2\2\u0081\u0083\5\32\16\2\u0082\u0084\7-\2\2"+
-		"\u0083\u0082\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0085\3\2\2\2\u0085\u0086"+
-		"\b\6\1\2\u0086\u00a9\3\2\2\2\u0087\u0088\5 \21\2\u0088\u0089\b\6\1\2\u0089"+
-		"\u00a9\3\2\2\2\u008a\u008b\5\"\22\2\u008b\u008c\b\6\1\2\u008c\u00a9\3"+
-		"\2\2\2\u008d\u008e\5(\25\2\u008e\u008f\b\6\1\2\u008f\u00a9\3\2\2\2\u0090"+
-		"\u0091\5*\26\2\u0091\u0092\b\6\1\2\u0092\u00a9\3\2\2\2\u0093\u0094\5,"+
-		"\27\2\u0094\u0095\b\6\1\2\u0095\u00a9\3\2\2\2\u0096\u0098\5.\30\2\u0097"+
-		"\u0099\7-\2\2\u0098\u0097\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a\3\2"+
-		"\2\2\u009a\u009b\b\6\1\2\u009b\u00a9\3\2\2\2\u009c\u009e\5\60\31\2\u009d"+
-		"\u009f\7-\2\2\u009e\u009d\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a0\3\2"+
-		"\2\2\u00a0\u00a1\b\6\1\2\u00a1\u00a9\3\2\2\2\u00a2\u00a4\5\62\32\2\u00a3"+
-		"\u00a5\7-\2\2\u00a4\u00a3\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\u00a6\3\2"+
-		"\2\2\u00a6\u00a7\b\6\1\2\u00a7\u00a9\3\2\2\2\u00a8o\3\2\2\2\u00a8u\3\2"+
-		"\2\2\u00a8{\3\2\2\2\u00a8\u0081\3\2\2\2\u00a8\u0087\3\2\2\2\u00a8\u008a"+
-		"\3\2\2\2\u00a8\u008d\3\2\2\2\u00a8\u0090\3\2\2\2\u00a8\u0093\3\2\2\2\u00a8"+
-		"\u0096\3\2\2\2\u00a8\u009c\3\2\2\2\u00a8\u00a2\3\2\2\2\u00a9\13\3\2\2"+
-		"\2\u00aa\u00ab\7\33\2\2\u00ab\u00ac\7/\2\2\u00ac\u00ad\5\36\20\2\u00ad"+
-		"\u00ae\7\60\2\2\u00ae\u00af\b\7\1\2\u00af\r\3\2\2\2\u00b0\u00b1\7\n\2"+
-		"\2\u00b1\u00b2\7(\2\2\u00b2\u00b3\7,\2\2\u00b3\u00b4\5\34\17\2\u00b4\u00b5"+
-		"\7+\2\2\u00b5\u00b6\5\36\20\2\u00b6\u00b7\b\b\1\2\u00b7\u00c6\3\2\2\2"+
-		"\u00b8\u00b9\7\n\2\2\u00b9\u00ba\7(\2\2\u00ba\u00bb\7+\2\2\u00bb\u00bc"+
-		"\5\36\20\2\u00bc\u00bd\b\b\1\2\u00bd\u00c6\3\2\2\2\u00be\u00bf\7\n\2\2"+
-		"\u00bf\u00c0\7(\2\2\u00c0\u00c1\7,\2\2\u00c1\u00c2\5\34\17\2\u00c2\u00c3"+
-		"\7.\2\2\u00c3\u00c4\b\b\1\2\u00c4\u00c6\3\2\2\2\u00c5\u00b0\3\2\2\2\u00c5"+
-		"\u00b8\3\2\2\2\u00c5\u00be\3\2\2\2\u00c6\17\3\2\2\2\u00c7\u00c8\7\13\2"+
-		"\2\u00c8\u00c9\7(\2\2\u00c9\u00ca\7,\2\2\u00ca\u00cb\5\34\17\2\u00cb\u00cc"+
-		"\7+\2\2\u00cc\u00cd\5\36\20\2\u00cd\u00ce\b\t\1\2\u00ce\u00d6\3\2\2\2"+
-		"\u00cf\u00d0\7\13\2\2\u00d0\u00d1\7(\2\2\u00d1\u00d2\7+\2\2\u00d2\u00d3"+
-		"\5\36\20\2\u00d3\u00d4\b\t\1\2\u00d4\u00d6\3\2\2\2\u00d5\u00c7\3\2\2\2"+
-		"\u00d5\u00cf\3\2\2\2\u00d6\21\3\2\2\2\u00d7\u00d8\7(\2\2\u00d8\u00d9\7"+
-		"+\2\2\u00d9\u00da\5\36\20\2\u00da\u00db\b\n\1\2\u00db\u00e7\3\2\2\2\u00dc"+
-		"\u00dd\7(\2\2\u00dd\u00de\7?\2\2\u00de\u00df\5\36\20\2\u00df\u00e0\b\n"+
-		"\1\2\u00e0\u00e7\3\2\2\2\u00e1\u00e2\7(\2\2\u00e2\u00e3\7@\2\2\u00e3\u00e4"+
-		"\5\36\20\2\u00e4\u00e5\b\n\1\2\u00e5\u00e7\3\2\2\2\u00e6\u00d7\3\2\2\2"+
-		"\u00e6\u00dc\3\2\2\2\u00e6\u00e1\3\2\2\2\u00e7\23\3\2\2\2\u00e8\u00e9"+
-		"\7\33\2\2\u00e9\u00ea\7/\2\2\u00ea\u00eb\5\36\20\2\u00eb\u00ec\7\60\2"+
-		"\2\u00ec\u00ed\b\13\1\2\u00ed\25\3\2\2\2\u00ee\u00ef\7\n\2\2\u00ef\u00f0"+
-		"\7(\2\2\u00f0\u00f1\7,\2\2\u00f1\u00f2\5\34\17\2\u00f2\u00f3\7+\2\2\u00f3"+
-		"\u00f4\5\36\20\2\u00f4\u00f5\b\f\1\2\u00f5\u0104\3\2\2\2\u00f6\u00f7\7"+
-		"\n\2\2\u00f7\u00f8\7(\2\2\u00f8\u00f9\7+\2\2\u00f9\u00fa\5\36\20\2\u00fa"+
-		"\u00fb\b\f\1\2\u00fb\u0104\3\2\2\2\u00fc\u00fd\7\n\2\2\u00fd\u00fe\7("+
-		"\2\2\u00fe\u00ff\7,\2\2\u00ff\u0100\5\34\17\2\u0100\u0101\7.\2\2\u0101"+
-		"\u0102\b\f\1\2\u0102\u0104\3\2\2\2\u0103\u00ee\3\2\2\2\u0103\u00f6\3\2"+
-		"\2\2\u0103\u00fc\3\2\2\2\u0104\27\3\2\2\2\u0105\u0106\7\13\2\2\u0106\u0107"+
-		"\7(\2\2\u0107\u0108\7,\2\2\u0108\u0109\5\34\17\2\u0109\u010a\7+\2\2\u010a"+
-		"\u010b\5\36\20\2\u010b\u010c\b\r\1\2\u010c\u0114\3\2\2\2\u010d\u010e\7"+
-		"\13\2\2\u010e\u010f\7(\2\2\u010f\u0110\7+\2\2\u0110\u0111\5\36\20\2\u0111"+
-		"\u0112\b\r\1\2\u0112\u0114\3\2\2\2\u0113\u0105\3\2\2\2\u0113\u010d\3\2"+
-		"\2\2\u0114\31\3\2\2\2\u0115\u0116\7(\2\2\u0116\u0117\7+\2\2\u0117\u0118"+
-		"\5\36\20\2\u0118\u0119\b\16\1\2\u0119\u0125\3\2\2\2\u011a\u011b\7(\2\2"+
-		"\u011b\u011c\7?\2\2\u011c\u011d\5\36\20\2\u011d\u011e\b\16\1\2\u011e\u0125"+
-		"\3\2\2\2\u011f\u0120\7(\2\2\u0120\u0121\7@\2\2\u0121\u0122\5\36\20\2\u0122"+
-		"\u0123\b\16\1\2\u0123\u0125\3\2\2\2\u0124\u0115\3\2\2\2\u0124\u011a\3"+
-		"\2\2\2\u0124\u011f\3\2\2\2\u0125\33\3\2\2\2\u0126\u0127\7\3\2\2\u0127"+
-		"\u0131\b\17\1\2\u0128\u0129\7\4\2\2\u0129\u0131\b\17\1\2\u012a\u012b\7"+
-		"\5\2\2\u012b\u0131\b\17\1\2\u012c\u012d\7\6\2\2\u012d\u0131\b\17\1\2\u012e"+
-		"\u012f\7\7\2\2\u012f\u0131\b\17\1\2\u0130\u0126\3\2\2\2\u0130\u0128\3"+
-		"\2\2\2\u0130\u012a\3\2\2\2\u0130\u012c\3\2\2\2\u0130\u012e\3\2\2\2\u0131"+
-		"\35\3\2\2\2\u0132\u0133\b\20\1\2\u0133\u0134\7\63\2\2\u0134\u0135\5\36"+
-		"\20\24\u0135\u0136\b\20\1\2\u0136\u014e\3\2\2\2\u0137\u0138\7/\2\2\u0138"+
-		"\u0139\5\36\20\2\u0139\u013a\7\60\2\2\u013a\u013b\b\20\1\2\u013b\u014e"+
-		"\3\2\2\2\u013c\u013d\7>\2\2\u013d\u013e\7&\2\2\u013e\u014e\b\20\1\2\u013f"+
-		"\u0140\7&\2\2\u0140\u014e\b\20\1\2\u0141\u0142\7\'\2\2\u0142\u014e\b\20"+
-		"\1\2\u0143\u0144\7\b\2\2\u0144\u014e\b\20\1\2\u0145\u0146\7\t\2\2\u0146"+
-		"\u014e\b\20\1\2\u0147\u0148\7)\2\2\u0148\u014e\b\20\1\2\u0149\u014a\7"+
-		"(\2\2\u014a\u014e\b\20\1\2\u014b\u014c\7\f\2\2\u014c\u014e\b\20\1\2\u014d"+
-		"\u0132\3\2\2\2\u014d\u0137\3\2\2\2\u014d\u013c\3\2\2\2\u014d\u013f\3\2"+
-		"\2\2\u014d\u0141\3\2\2\2\u014d\u0143\3\2\2\2\u014d\u0145\3\2\2\2\u014d"+
-		"\u0147\3\2\2\2\u014d\u0149\3\2\2\2\u014d\u014b\3\2\2\2\u014e\u0179\3\2"+
-		"\2\2\u014f\u0150\f\23\2\2\u0150\u0151\7:\2\2\u0151\u0152\5\36\20\24\u0152"+
-		"\u0153\b\20\1\2\u0153\u0178\3\2\2\2\u0154\u0155\f\22\2\2\u0155\u0156\t"+
-		"\2\2\2\u0156\u0157\5\36\20\23\u0157\u0158\b\20\1\2\u0158\u0178\3\2\2\2"+
-		"\u0159\u015a\f\21\2\2\u015a\u015b\t\3\2\2\u015b\u015c\5\36\20\22\u015c"+
-		"\u015d\b\20\1\2\u015d\u0178\3\2\2\2\u015e\u015f\f\20\2\2\u015f\u0160\t"+
-		"\4\2\2\u0160\u0161\5\36\20\21\u0161\u0162\b\20\1\2\u0162\u0178\3\2\2\2"+
-		"\u0163\u0164\f\17\2\2\u0164\u0165\t\5\2\2\u0165\u0166\5\36\20\20\u0166"+
-		"\u0167\b\20\1\2\u0167\u0178\3\2\2\2\u0168\u0169\f\16\2\2\u0169\u016a\t"+
-		"\6\2\2\u016a\u016b\5\36\20\17\u016b\u016c\b\20\1\2\u016c\u0178\3\2\2\2"+
-		"\u016d\u016e\f\r\2\2\u016e\u016f\7\65\2\2\u016f\u0170\5\36\20\16\u0170"+
-		"\u0171\b\20\1\2\u0171\u0178\3\2\2\2\u0172\u0173\f\f\2\2\u0173\u0174\7"+
-		"\64\2\2\u0174\u0175\5\36\20\r\u0175\u0176\b\20\1\2\u0176\u0178\3\2\2\2"+
-		"\u0177\u014f\3\2\2\2\u0177\u0154\3\2\2\2\u0177\u0159\3\2\2\2\u0177\u015e"+
-		"\3\2\2\2\u0177\u0163\3\2\2\2\u0177\u0168\3\2\2\2\u0177\u016d\3\2\2\2\u0177"+
-		"\u0172\3\2\2\2\u0178\u017b\3\2\2\2\u0179\u0177\3\2\2\2\u0179\u017a\3\2"+
-		"\2\2\u017a\37\3\2\2\2\u017b\u0179\3\2\2\2\u017c\u017d\7\r\2\2\u017d\u017e"+
-		"\5\36\20\2\u017e\u017f\7A\2\2\u017f\u0180\5\b\5\2\u0180\u0181\7B\2\2\u0181"+
-		"\u0182\b\21\1\2\u0182\u0198\3\2\2\2\u0183\u0184\7\r\2\2\u0184\u0185\5"+
-		"\36\20\2\u0185\u0186\7A\2\2\u0186\u0187\5\b\5\2\u0187\u0188\7B\2\2\u0188"+
-		"\u0189\7\16\2\2\u0189\u018a\7A\2\2\u018a\u018b\5\b\5\2\u018b\u018c\7B"+
-		"\2\2\u018c\u018d\b\21\1\2\u018d\u0198\3\2\2\2\u018e\u018f\7\r\2\2\u018f"+
-		"\u0190\5\36\20\2\u0190\u0191\7A\2\2\u0191\u0192\5\b\5\2\u0192\u0193\7"+
-		"B\2\2\u0193\u0194\7\16\2\2\u0194\u0195\5 \21\2\u0195\u0196\b\21\1\2\u0196"+
-		"\u0198\3\2\2\2\u0197\u017c\3\2\2\2\u0197\u0183\3\2\2\2\u0197\u018e\3\2"+
-		"\2\2\u0198!\3\2\2\2\u0199\u019a\7\17\2\2\u019a\u019b\5\36\20\2\u019b\u019c"+
-		"\7A\2\2\u019c\u01a0\5$\23\2\u019d\u019e\7\21\2\2\u019e\u019f\7,\2\2\u019f"+
-		"\u01a1\5\b\5\2\u01a0\u019d\3\2\2\2\u01a0\u01a1\3\2\2\2\u01a1\u01a2\3\2"+
-		"\2\2\u01a2\u01a3\7B\2\2\u01a3\u01a4\b\22\1\2\u01a4#\3\2\2\2\u01a5\u01a7"+
-		"\5&\24\2\u01a6\u01a5\3\2\2\2\u01a7\u01a8\3\2\2\2\u01a8\u01a6\3\2\2\2\u01a8"+
-		"\u01a9\3\2\2\2\u01a9\u01aa\3\2\2\2\u01aa\u01ab\b\23\1\2\u01ab%\3\2\2\2"+
-		"\u01ac\u01ad\7\20\2\2\u01ad\u01ae\5\36\20\2\u01ae\u01af\7,\2\2\u01af\u01b0"+
-		"\5\b\5\2\u01b0\u01b1\b\24\1\2\u01b1\'\3\2\2\2\u01b2\u01b3\7\27\2\2\u01b3"+
-		"\u01b4\5\36\20\2\u01b4\u01b5\7A\2\2\u01b5\u01b6\5\b\5\2\u01b6\u01b7\7"+
-		"B\2\2\u01b7\u01b8\b\25\1\2\u01b8)\3\2\2\2\u01b9\u01ba\7\24\2\2\u01ba\u01bb"+
-		"\7(\2\2\u01bb\u01bc\7\25\2\2\u01bc\u01bd\5\36\20\2\u01bd\u01be\7\26\2"+
-		"\2\u01be\u01bf\5\36\20\2\u01bf\u01c0\7A\2\2\u01c0\u01c1\5\b\5\2\u01c1"+
-		"\u01c2\7B\2\2\u01c2\u01c3\b\26\1\2\u01c3\u01ce\3\2\2\2\u01c4\u01c5\7\24"+
-		"\2\2\u01c5\u01c6\7(\2\2\u01c6\u01c7\7\25\2\2\u01c7\u01c8\5\36\20\2\u01c8"+
-		"\u01c9\7A\2\2\u01c9\u01ca\5\b\5\2\u01ca\u01cb\7B\2\2\u01cb\u01cc\b\26"+
-		"\1\2\u01cc\u01ce\3\2\2\2\u01cd\u01b9\3\2\2\2\u01cd\u01c4\3\2\2\2\u01ce"+
-		"+\3\2\2\2\u01cf\u01d0\7\30\2\2\u01d0\u01d1\5\36\20\2\u01d1\u01d2\7\16"+
-		"\2\2\u01d2\u01d3\7A\2\2\u01d3\u01d4\5\b\5\2\u01d4\u01d5\7B\2\2\u01d5\u01d6"+
-		"\b\27\1\2\u01d6-\3\2\2\2\u01d7\u01d8\7\23\2\2\u01d8\u01d9\b\30\1\2\u01d9"+
-		"/\3\2\2\2\u01da\u01db\7\22\2\2\u01db\u01dc\b\31\1\2\u01dc\61\3\2\2\2\u01dd"+
-		"\u01de\7\31\2\2\u01de\u01e4\b\32\1\2\u01df\u01e0\7\31\2\2\u01e0\u01e1"+
-		"\5\36\20\2\u01e1\u01e2\b\32\1\2\u01e2\u01e4\3\2\2\2\u01e3\u01dd\3\2\2"+
-		"\2\u01e3\u01df\3\2\2\2\u01e4\63\3\2\2\2 ;AGMSfkqw}\u0083\u0098\u009e\u00a4"+
-		"\u00a8\u00c5\u00d5\u00e6\u0103\u0113\u0124\u0130\u014d\u0177\u0179\u0197"+
-		"\u01a0\u01a8\u01cd\u01e3";
+		"\26\3\26\3\26\5\26\u01ea\n\26\3\27\3\27\3\27\3\27\3\27\3\27\3\27\3\27"+
+		"\3\30\3\30\3\30\3\31\3\31\3\31\3\32\3\32\3\32\3\32\3\32\3\32\5\32\u0200"+
+		"\n\32\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33"+
+		"\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\33"+
+		"\3\33\3\33\3\33\3\33\3\33\3\33\5\33\u0223\n\33\3\34\6\34\u0226\n\34\r"+
+		"\34\16\34\u0227\3\34\3\34\3\35\3\35\3\35\3\35\3\36\3\36\3\36\3\36\3\36"+
+		"\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36"+
+		"\3\36\3\36\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u024b\n\36\3\37\3\37\3\37"+
+		"\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\3\37\5\37"+
+		"\u025d\n\37\3 \3 \3 \3 \3 \3!\3!\3!\3!\3!\3\"\3\"\3\"\3\"\3\"\3\"\3\""+
+		"\2\3\36#\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668"+
+		":<>@B\2\7\3\2;<\3\2=>\4\2\66\6688\4\2\67\6799\3\2\61\62\2\u029c\2D\3\2"+
+		"\2\2\4I\3\2\2\2\6|\3\2\2\2\b\177\3\2\2\2\n\u00c4\3\2\2\2\f\u00c6\3\2\2"+
+		"\2\16\u00e1\3\2\2\2\20\u00f1\3\2\2\2\22\u0102\3\2\2\2\24\u0104\3\2\2\2"+
+		"\26\u011f\3\2\2\2\30\u012f\3\2\2\2\32\u0140\3\2\2\2\34\u014c\3\2\2\2\36"+
+		"\u0169\3\2\2\2 \u01b3\3\2\2\2\"\u01b5\3\2\2\2$\u01c2\3\2\2\2&\u01c8\3"+
+		"\2\2\2(\u01ce\3\2\2\2*\u01e9\3\2\2\2,\u01eb\3\2\2\2.\u01f3\3\2\2\2\60"+
+		"\u01f6\3\2\2\2\62\u01ff\3\2\2\2\64\u0222\3\2\2\2\66\u0225\3\2\2\28\u022b"+
+		"\3\2\2\2:\u024a\3\2\2\2<\u025c\3\2\2\2>\u025e\3\2\2\2@\u0263\3\2\2\2B"+
+		"\u0268\3\2\2\2DE\5\4\3\2EF\7\2\2\3FG\b\2\1\2G\3\3\2\2\2HJ\5\6\4\2IH\3"+
+		"\2\2\2JK\3\2\2\2KI\3\2\2\2KL\3\2\2\2LM\3\2\2\2MN\b\3\1\2N\5\3\2\2\2OQ"+
+		"\5\f\7\2PR\7-\2\2QP\3\2\2\2QR\3\2\2\2RS\3\2\2\2ST\b\4\1\2T}\3\2\2\2UW"+
+		"\5\16\b\2VX\7-\2\2WV\3\2\2\2WX\3\2\2\2XY\3\2\2\2YZ\b\4\1\2Z}\3\2\2\2["+
+		"]\5\20\t\2\\^\7-\2\2]\\\3\2\2\2]^\3\2\2\2^_\3\2\2\2_`\b\4\1\2`}\3\2\2"+
+		"\2ac\5\22\n\2bd\7-\2\2cb\3\2\2\2cd\3\2\2\2de\3\2\2\2ef\b\4\1\2f}\3\2\2"+
+		"\2gh\5 \21\2hi\b\4\1\2i}\3\2\2\2jk\5\"\22\2kl\b\4\1\2l}\3\2\2\2mn\5(\25"+
+		"\2no\b\4\1\2o}\3\2\2\2pq\5*\26\2qr\b\4\1\2r}\3\2\2\2st\5,\27\2tu\b\4\1"+
+		"\2u}\3\2\2\2vx\5\64\33\2wy\7-\2\2xw\3\2\2\2xy\3\2\2\2yz\3\2\2\2z{\b\4"+
+		"\1\2{}\3\2\2\2|O\3\2\2\2|U\3\2\2\2|[\3\2\2\2|a\3\2\2\2|g\3\2\2\2|j\3\2"+
+		"\2\2|m\3\2\2\2|p\3\2\2\2|s\3\2\2\2|v\3\2\2\2}\7\3\2\2\2~\u0080\5\n\6\2"+
+		"\177~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082\3\2\2"+
+		"\2\u0082\u0083\3\2\2\2\u0083\u0084\b\5\1\2\u0084\t\3\2\2\2\u0085\u0087"+
+		"\5\24\13\2\u0086\u0088\7-\2\2\u0087\u0086\3\2\2\2\u0087\u0088\3\2\2\2"+
+		"\u0088\u0089\3\2\2\2\u0089\u008a\b\6\1\2\u008a\u00c5\3\2\2\2\u008b\u008d"+
+		"\5\26\f\2\u008c\u008e\7-\2\2\u008d\u008c\3\2\2\2\u008d\u008e\3\2\2\2\u008e"+
+		"\u008f\3\2\2\2\u008f\u0090\b\6\1\2\u0090\u00c5\3\2\2\2\u0091\u0093\5\30"+
+		"\r\2\u0092\u0094\7-\2\2\u0093\u0092\3\2\2\2\u0093\u0094\3\2\2\2\u0094"+
+		"\u0095\3\2\2\2\u0095\u0096\b\6\1\2\u0096\u00c5\3\2\2\2\u0097\u0099\5\32"+
+		"\16\2\u0098\u009a\7-\2\2\u0099\u0098\3\2\2\2\u0099\u009a\3\2\2\2\u009a"+
+		"\u009b\3\2\2\2\u009b\u009c\b\6\1\2\u009c\u00c5\3\2\2\2\u009d\u009e\5 "+
+		"\21\2\u009e\u009f\b\6\1\2\u009f\u00c5\3\2\2\2\u00a0\u00a1\5\"\22\2\u00a1"+
+		"\u00a2\b\6\1\2\u00a2\u00c5\3\2\2\2\u00a3\u00a4\5(\25\2\u00a4\u00a5\b\6"+
+		"\1\2\u00a5\u00c5\3\2\2\2\u00a6\u00a7\5*\26\2\u00a7\u00a8\b\6\1\2\u00a8"+
+		"\u00c5\3\2\2\2\u00a9\u00aa\5,\27\2\u00aa\u00ab\b\6\1\2\u00ab\u00c5\3\2"+
+		"\2\2\u00ac\u00ae\5.\30\2\u00ad\u00af\7-\2\2\u00ae\u00ad\3\2\2\2\u00ae"+
+		"\u00af\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00b1\b\6\1\2\u00b1\u00c5\3\2"+
+		"\2\2\u00b2\u00b4\5\60\31\2\u00b3\u00b5\7-\2\2\u00b4\u00b3\3\2\2\2\u00b4"+
+		"\u00b5\3\2\2\2\u00b5\u00b6\3\2\2\2\u00b6\u00b7\b\6\1\2\u00b7\u00c5\3\2"+
+		"\2\2\u00b8\u00ba\5\62\32\2\u00b9\u00bb\7-\2\2\u00ba\u00b9\3\2\2\2\u00ba"+
+		"\u00bb\3\2\2\2\u00bb\u00bc\3\2\2\2\u00bc\u00bd\b\6\1\2\u00bd\u00c5\3\2"+
+		"\2\2\u00be\u00c0\5\64\33\2\u00bf\u00c1\7-\2\2\u00c0\u00bf\3\2\2\2\u00c0"+
+		"\u00c1\3\2\2\2\u00c1\u00c2\3\2\2\2\u00c2\u00c3\b\6\1\2\u00c3\u00c5\3\2"+
+		"\2\2\u00c4\u0085\3\2\2\2\u00c4\u008b\3\2\2\2\u00c4\u0091\3\2\2\2\u00c4"+
+		"\u0097\3\2\2\2\u00c4\u009d\3\2\2\2\u00c4\u00a0\3\2\2\2\u00c4\u00a3\3\2"+
+		"\2\2\u00c4\u00a6\3\2\2\2\u00c4\u00a9\3\2\2\2\u00c4\u00ac\3\2\2\2\u00c4"+
+		"\u00b2\3\2\2\2\u00c4\u00b8\3\2\2\2\u00c4\u00be\3\2\2\2\u00c5\13\3\2\2"+
+		"\2\u00c6\u00c7\7\33\2\2\u00c7\u00c8\7/\2\2\u00c8\u00c9\5\36\20\2\u00c9"+
+		"\u00ca\7\60\2\2\u00ca\u00cb\b\7\1\2\u00cb\r\3\2\2\2\u00cc\u00cd\7\n\2"+
+		"\2\u00cd\u00ce\7(\2\2\u00ce\u00cf\7,\2\2\u00cf\u00d0\5\34\17\2\u00d0\u00d1"+
+		"\7+\2\2\u00d1\u00d2\5\36\20\2\u00d2\u00d3\b\b\1\2\u00d3\u00e2\3\2\2\2"+
+		"\u00d4\u00d5\7\n\2\2\u00d5\u00d6\7(\2\2\u00d6\u00d7\7+\2\2\u00d7\u00d8"+
+		"\5\36\20\2\u00d8\u00d9\b\b\1\2\u00d9\u00e2\3\2\2\2\u00da\u00db\7\n\2\2"+
+		"\u00db\u00dc\7(\2\2\u00dc\u00dd\7,\2\2\u00dd\u00de\5\34\17\2\u00de\u00df"+
+		"\7.\2\2\u00df\u00e0\b\b\1\2\u00e0\u00e2\3\2\2\2\u00e1\u00cc\3\2\2\2\u00e1"+
+		"\u00d4\3\2\2\2\u00e1\u00da\3\2\2\2\u00e2\17\3\2\2\2\u00e3\u00e4\7\13\2"+
+		"\2\u00e4\u00e5\7(\2\2\u00e5\u00e6\7,\2\2\u00e6\u00e7\5\34\17\2\u00e7\u00e8"+
+		"\7+\2\2\u00e8\u00e9\5\36\20\2\u00e9\u00ea\b\t\1\2\u00ea\u00f2\3\2\2\2"+
+		"\u00eb\u00ec\7\13\2\2\u00ec\u00ed\7(\2\2\u00ed\u00ee\7+\2\2\u00ee\u00ef"+
+		"\5\36\20\2\u00ef\u00f0\b\t\1\2\u00f0\u00f2\3\2\2\2\u00f1\u00e3\3\2\2\2"+
+		"\u00f1\u00eb\3\2\2\2\u00f2\21\3\2\2\2\u00f3\u00f4\7(\2\2\u00f4\u00f5\7"+
+		"+\2\2\u00f5\u00f6\5\36\20\2\u00f6\u00f7\b\n\1\2\u00f7\u0103\3\2\2\2\u00f8"+
+		"\u00f9\7(\2\2\u00f9\u00fa\7?\2\2\u00fa\u00fb\5\36\20\2\u00fb\u00fc\b\n"+
+		"\1\2\u00fc\u0103\3\2\2\2\u00fd\u00fe\7(\2\2\u00fe\u00ff\7@\2\2\u00ff\u0100"+
+		"\5\36\20\2\u0100\u0101\b\n\1\2\u0101\u0103\3\2\2\2\u0102\u00f3\3\2\2\2"+
+		"\u0102\u00f8\3\2\2\2\u0102\u00fd\3\2\2\2\u0103\23\3\2\2\2\u0104\u0105"+
+		"\7\33\2\2\u0105\u0106\7/\2\2\u0106\u0107\5\36\20\2\u0107\u0108\7\60\2"+
+		"\2\u0108\u0109\b\13\1\2\u0109\25\3\2\2\2\u010a\u010b\7\n\2\2\u010b\u010c"+
+		"\7(\2\2\u010c\u010d\7,\2\2\u010d\u010e\5\34\17\2\u010e\u010f\7+\2\2\u010f"+
+		"\u0110\5\36\20\2\u0110\u0111\b\f\1\2\u0111\u0120\3\2\2\2\u0112\u0113\7"+
+		"\n\2\2\u0113\u0114\7(\2\2\u0114\u0115\7+\2\2\u0115\u0116\5\36\20\2\u0116"+
+		"\u0117\b\f\1\2\u0117\u0120\3\2\2\2\u0118\u0119\7\n\2\2\u0119\u011a\7("+
+		"\2\2\u011a\u011b\7,\2\2\u011b\u011c\5\34\17\2\u011c\u011d\7.\2\2\u011d"+
+		"\u011e\b\f\1\2\u011e\u0120\3\2\2\2\u011f\u010a\3\2\2\2\u011f\u0112\3\2"+
+		"\2\2\u011f\u0118\3\2\2\2\u0120\27\3\2\2\2\u0121\u0122\7\13\2\2\u0122\u0123"+
+		"\7(\2\2\u0123\u0124\7,\2\2\u0124\u0125\5\34\17\2\u0125\u0126\7+\2\2\u0126"+
+		"\u0127\5\36\20\2\u0127\u0128\b\r\1\2\u0128\u0130\3\2\2\2\u0129\u012a\7"+
+		"\13\2\2\u012a\u012b\7(\2\2\u012b\u012c\7+\2\2\u012c\u012d\5\36\20\2\u012d"+
+		"\u012e\b\r\1\2\u012e\u0130\3\2\2\2\u012f\u0121\3\2\2\2\u012f\u0129\3\2"+
+		"\2\2\u0130\31\3\2\2\2\u0131\u0132\7(\2\2\u0132\u0133\7+\2\2\u0133\u0134"+
+		"\5\36\20\2\u0134\u0135\b\16\1\2\u0135\u0141\3\2\2\2\u0136\u0137\7(\2\2"+
+		"\u0137\u0138\7?\2\2\u0138\u0139\5\36\20\2\u0139\u013a\b\16\1\2\u013a\u0141"+
+		"\3\2\2\2\u013b\u013c\7(\2\2\u013c\u013d\7@\2\2\u013d\u013e\5\36\20\2\u013e"+
+		"\u013f\b\16\1\2\u013f\u0141\3\2\2\2\u0140\u0131\3\2\2\2\u0140\u0136\3"+
+		"\2\2\2\u0140\u013b\3\2\2\2\u0141\33\3\2\2\2\u0142\u0143\7\3\2\2\u0143"+
+		"\u014d\b\17\1\2\u0144\u0145\7\4\2\2\u0145\u014d\b\17\1\2\u0146\u0147\7"+
+		"\5\2\2\u0147\u014d\b\17\1\2\u0148\u0149\7\6\2\2\u0149\u014d\b\17\1\2\u014a"+
+		"\u014b\7\7\2\2\u014b\u014d\b\17\1\2\u014c\u0142\3\2\2\2\u014c\u0144\3"+
+		"\2\2\2\u014c\u0146\3\2\2\2\u014c\u0148\3\2\2\2\u014c\u014a\3\2\2\2\u014d"+
+		"\35\3\2\2\2\u014e\u014f\b\20\1\2\u014f\u0150\7\63\2\2\u0150\u0151\5\36"+
+		"\20\24\u0151\u0152\b\20\1\2\u0152\u016a\3\2\2\2\u0153\u0154\7/\2\2\u0154"+
+		"\u0155\5\36\20\2\u0155\u0156\7\60\2\2\u0156\u0157\b\20\1\2\u0157\u016a"+
+		"\3\2\2\2\u0158\u0159\7>\2\2\u0159\u015a\7&\2\2\u015a\u016a\b\20\1\2\u015b"+
+		"\u015c\7&\2\2\u015c\u016a\b\20\1\2\u015d\u015e\7\'\2\2\u015e\u016a\b\20"+
+		"\1\2\u015f\u0160\7\b\2\2\u0160\u016a\b\20\1\2\u0161\u0162\7\t\2\2\u0162"+
+		"\u016a\b\20\1\2\u0163\u0164\7)\2\2\u0164\u016a\b\20\1\2\u0165\u0166\7"+
+		"(\2\2\u0166\u016a\b\20\1\2\u0167\u0168\7\f\2\2\u0168\u016a\b\20\1\2\u0169"+
+		"\u014e\3\2\2\2\u0169\u0153\3\2\2\2\u0169\u0158\3\2\2\2\u0169\u015b\3\2"+
+		"\2\2\u0169\u015d\3\2\2\2\u0169\u015f\3\2\2\2\u0169\u0161\3\2\2\2\u0169"+
+		"\u0163\3\2\2\2\u0169\u0165\3\2\2\2\u0169\u0167\3\2\2\2\u016a\u0195\3\2"+
+		"\2\2\u016b\u016c\f\23\2\2\u016c\u016d\7:\2\2\u016d\u016e\5\36\20\24\u016e"+
+		"\u016f\b\20\1\2\u016f\u0194\3\2\2\2\u0170\u0171\f\22\2\2\u0171\u0172\t"+
+		"\2\2\2\u0172\u0173\5\36\20\23\u0173\u0174\b\20\1\2\u0174\u0194\3\2\2\2"+
+		"\u0175\u0176\f\21\2\2\u0176\u0177\t\3\2\2\u0177\u0178\5\36\20\22\u0178"+
+		"\u0179\b\20\1\2\u0179\u0194\3\2\2\2\u017a\u017b\f\20\2\2\u017b\u017c\t"+
+		"\4\2\2\u017c\u017d\5\36\20\21\u017d\u017e\b\20\1\2\u017e\u0194\3\2\2\2"+
+		"\u017f\u0180\f\17\2\2\u0180\u0181\t\5\2\2\u0181\u0182\5\36\20\20\u0182"+
+		"\u0183\b\20\1\2\u0183\u0194\3\2\2\2\u0184\u0185\f\16\2\2\u0185\u0186\t"+
+		"\6\2\2\u0186\u0187\5\36\20\17\u0187\u0188\b\20\1\2\u0188\u0194\3\2\2\2"+
+		"\u0189\u018a\f\r\2\2\u018a\u018b\7\65\2\2\u018b\u018c\5\36\20\16\u018c"+
+		"\u018d\b\20\1\2\u018d\u0194\3\2\2\2\u018e\u018f\f\f\2\2\u018f\u0190\7"+
+		"\64\2\2\u0190\u0191\5\36\20\r\u0191\u0192\b\20\1\2\u0192\u0194\3\2\2\2"+
+		"\u0193\u016b\3\2\2\2\u0193\u0170\3\2\2\2\u0193\u0175\3\2\2\2\u0193\u017a"+
+		"\3\2\2\2\u0193\u017f\3\2\2\2\u0193\u0184\3\2\2\2\u0193\u0189\3\2\2\2\u0193"+
+		"\u018e\3\2\2\2\u0194\u0197\3\2\2\2\u0195\u0193\3\2\2\2\u0195\u0196\3\2"+
+		"\2\2\u0196\37\3\2\2\2\u0197\u0195\3\2\2\2\u0198\u0199\7\r\2\2\u0199\u019a"+
+		"\5\36\20\2\u019a\u019b\7A\2\2\u019b\u019c\5\b\5\2\u019c\u019d\7B\2\2\u019d"+
+		"\u019e\b\21\1\2\u019e\u01b4\3\2\2\2\u019f\u01a0\7\r\2\2\u01a0\u01a1\5"+
+		"\36\20\2\u01a1\u01a2\7A\2\2\u01a2\u01a3\5\b\5\2\u01a3\u01a4\7B\2\2\u01a4"+
+		"\u01a5\7\16\2\2\u01a5\u01a6\7A\2\2\u01a6\u01a7\5\b\5\2\u01a7\u01a8\7B"+
+		"\2\2\u01a8\u01a9\b\21\1\2\u01a9\u01b4\3\2\2\2\u01aa\u01ab\7\r\2\2\u01ab"+
+		"\u01ac\5\36\20\2\u01ac\u01ad\7A\2\2\u01ad\u01ae\5\b\5\2\u01ae\u01af\7"+
+		"B\2\2\u01af\u01b0\7\16\2\2\u01b0\u01b1\5 \21\2\u01b1\u01b2\b\21\1\2\u01b2"+
+		"\u01b4\3\2\2\2\u01b3\u0198\3\2\2\2\u01b3\u019f\3\2\2\2\u01b3\u01aa\3\2"+
+		"\2\2\u01b4!\3\2\2\2\u01b5\u01b6\7\17\2\2\u01b6\u01b7\5\36\20\2\u01b7\u01b8"+
+		"\7A\2\2\u01b8\u01bc\5$\23\2\u01b9\u01ba\7\21\2\2\u01ba\u01bb\7,\2\2\u01bb"+
+		"\u01bd\5\b\5\2\u01bc\u01b9\3\2\2\2\u01bc\u01bd\3\2\2\2\u01bd\u01be\3\2"+
+		"\2\2\u01be\u01bf\7B\2\2\u01bf\u01c0\b\22\1\2\u01c0#\3\2\2\2\u01c1\u01c3"+
+		"\5&\24\2\u01c2\u01c1\3\2\2\2\u01c3\u01c4\3\2\2\2\u01c4\u01c2\3\2\2\2\u01c4"+
+		"\u01c5\3\2\2\2\u01c5\u01c6\3\2\2\2\u01c6\u01c7\b\23\1\2\u01c7%\3\2\2\2"+
+		"\u01c8\u01c9\7\20\2\2\u01c9\u01ca\5\36\20\2\u01ca\u01cb\7,\2\2\u01cb\u01cc"+
+		"\5\b\5\2\u01cc\u01cd\b\24\1\2\u01cd\'\3\2\2\2\u01ce\u01cf\7\27\2\2\u01cf"+
+		"\u01d0\5\36\20\2\u01d0\u01d1\7A\2\2\u01d1\u01d2\5\b\5\2\u01d2\u01d3\7"+
+		"B\2\2\u01d3\u01d4\b\25\1\2\u01d4)\3\2\2\2\u01d5\u01d6\7\24\2\2\u01d6\u01d7"+
+		"\7(\2\2\u01d7\u01d8\7\25\2\2\u01d8\u01d9\5\36\20\2\u01d9\u01da\7\26\2"+
+		"\2\u01da\u01db\5\36\20\2\u01db\u01dc\7A\2\2\u01dc\u01dd\5\b\5\2\u01dd"+
+		"\u01de\7B\2\2\u01de\u01df\b\26\1\2\u01df\u01ea\3\2\2\2\u01e0\u01e1\7\24"+
+		"\2\2\u01e1\u01e2\7(\2\2\u01e2\u01e3\7\25\2\2\u01e3\u01e4\5\36\20\2\u01e4"+
+		"\u01e5\7A\2\2\u01e5\u01e6\5\b\5\2\u01e6\u01e7\7B\2\2\u01e7\u01e8\b\26"+
+		"\1\2\u01e8\u01ea\3\2\2\2\u01e9\u01d5\3\2\2\2\u01e9\u01e0\3\2\2\2\u01ea"+
+		"+\3\2\2\2\u01eb\u01ec\7\30\2\2\u01ec\u01ed\5\36\20\2\u01ed\u01ee\7\16"+
+		"\2\2\u01ee\u01ef\7A\2\2\u01ef\u01f0\5\b\5\2\u01f0\u01f1\7B\2\2\u01f1\u01f2"+
+		"\b\27\1\2\u01f2-\3\2\2\2\u01f3\u01f4\7\23\2\2\u01f4\u01f5\b\30\1\2\u01f5"+
+		"/\3\2\2\2\u01f6\u01f7\7\22\2\2\u01f7\u01f8\b\31\1\2\u01f8\61\3\2\2\2\u01f9"+
+		"\u01fa\7\31\2\2\u01fa\u0200\b\32\1\2\u01fb\u01fc\7\31\2\2\u01fc\u01fd"+
+		"\5\36\20\2\u01fd\u01fe\b\32\1\2\u01fe\u0200\3\2\2\2\u01ff\u01f9\3\2\2"+
+		"\2\u01ff\u01fb\3\2\2\2\u0200\63\3\2\2\2\u0201\u0202\7\n\2\2\u0202\u0203"+
+		"\7(\2\2\u0203\u0204\7,\2\2\u0204\u0205\7G\2\2\u0205\u0206\5\34\17\2\u0206"+
+		"\u0207\7H\2\2\u0207\u0208\7+\2\2\u0208\u0209\7G\2\2\u0209\u020a\5\36\20"+
+		"\2\u020a\u020b\5\66\34\2\u020b\u020c\7H\2\2\u020c\u020d\b\33\1\2\u020d"+
+		"\u0223\3\2\2\2\u020e\u020f\7\n\2\2\u020f\u0210\7(\2\2\u0210\u0211\7,\2"+
+		"\2\u0211\u0212\7G\2\2\u0212\u0213\5\34\17\2\u0213\u0214\7H\2\2\u0214\u0215"+
+		"\7+\2\2\u0215\u0216\7G\2\2\u0216\u0217\7H\2\2\u0217\u0218\b\33\1\2\u0218"+
+		"\u0223\3\2\2\2\u0219\u021a\7\n\2\2\u021a\u021b\7(\2\2\u021b\u021c\7,\2"+
+		"\2\u021c\u021d\7G\2\2\u021d\u021e\5\34\17\2\u021e\u021f\7H\2\2\u021f\u0220"+
+		"\7(\2\2\u0220\u0221\b\33\1\2\u0221\u0223\3\2\2\2\u0222\u0201\3\2\2\2\u0222"+
+		"\u020e\3\2\2\2\u0222\u0219\3\2\2\2\u0223\65\3\2\2\2\u0224\u0226\58\35"+
+		"\2\u0225\u0224\3\2\2\2\u0226\u0227\3\2\2\2\u0227\u0225\3\2\2\2\u0227\u0228"+
+		"\3\2\2\2\u0228\u0229\3\2\2\2\u0229\u022a\b\34\1\2\u022a\67\3\2\2\2\u022b"+
+		"\u022c\7D\2\2\u022c\u022d\5\36\20\2\u022d\u022e\b\35\1\2\u022e9\3\2\2"+
+		"\2\u022f\u0230\7(\2\2\u0230\u0231\7E\2\2\u0231\u0232\7\35\2\2\u0232\u0233"+
+		"\7/\2\2\u0233\u0234\5\36\20\2\u0234\u0235\7\60\2\2\u0235\u0236\b\36\1"+
+		"\2\u0236\u024b\3\2\2\2\u0237\u0238\7(\2\2\u0238\u0239\7G\2\2\u0239\u023a"+
+		"\5\36\20\2\u023a\u023b\7H\2\2\u023b\u023c\7+\2\2\u023c\u023d\7(\2\2\u023d"+
+		"\u023e\7G\2\2\u023e\u023f\5\36\20\2\u023f\u0240\7H\2\2\u0240\u0241\b\36"+
+		"\1\2\u0241\u024b\3\2\2\2\u0242\u0243\7(\2\2\u0243\u0244\7G\2\2\u0244\u0245"+
+		"\5\36\20\2\u0245\u0246\7H\2\2\u0246\u0247\7+\2\2\u0247\u0248\5\36\20\2"+
+		"\u0248\u0249\b\36\1\2\u0249\u024b\3\2\2\2\u024a\u022f\3\2\2\2\u024a\u0237"+
+		"\3\2\2\2\u024a\u0242\3\2\2\2\u024b;\3\2\2\2\u024c\u024d\7(\2\2\u024d\u024e"+
+		"\7E\2\2\u024e\u024f\7\37\2\2\u024f\u0250\7/\2\2\u0250\u0251\7\60\2\2\u0251"+
+		"\u025d\b\37\1\2\u0252\u0253\7(\2\2\u0253\u0254\7E\2\2\u0254\u0255\7\36"+
+		"\2\2\u0255\u0256\7/\2\2\u0256\u0257\7\"\2\2\u0257\u0258\7,\2\2\u0258\u0259"+
+		"\5\36\20\2\u0259\u025a\7\60\2\2\u025a\u025b\b\37\1\2\u025b\u025d\3\2\2"+
+		"\2\u025c\u024c\3\2\2\2\u025c\u0252\3\2\2\2\u025d=\3\2\2\2\u025e\u025f"+
+		"\7(\2\2\u025f\u0260\7E\2\2\u0260\u0261\7!\2\2\u0261\u0262\b \1\2\u0262"+
+		"?\3\2\2\2\u0263\u0264\7(\2\2\u0264\u0265\7E\2\2\u0265\u0266\7 \2\2\u0266"+
+		"\u0267\b!\1\2\u0267A\3\2\2\2\u0268\u0269\7(\2\2\u0269\u026a\7G\2\2\u026a"+
+		"\u026b\5\36\20\2\u026b\u026c\7H\2\2\u026c\u026d\b\"\1\2\u026dC\3\2\2\2"+
+		"&KQW]cx|\u0081\u0087\u008d\u0093\u0099\u00ae\u00b4\u00ba\u00c0\u00c4\u00e1"+
+		"\u00f1\u0102\u011f\u012f\u0140\u014c\u0169\u0193\u0195\u01b3\u01bc\u01c4"+
+		"\u01e9\u01ff\u0222\u0227\u024a\u025c";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

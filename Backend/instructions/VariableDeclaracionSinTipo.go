@@ -9,13 +9,12 @@ type VariableDeclaracionSinTipo struct {
 	Lin   int
 	Col   int
 	Name  string
-	Scope string
 	Type  environment.TipoExpresion
 	Value interfaces.Expression
 }
 
-func NewVariableDeclaracionSinTipo(lin int, col int, name string, scope string, value interfaces.Expression) VariableDeclaracionSinTipo {
-	return VariableDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Scope: scope, Value: value}
+func NewVariableDeclaracionSinTipo(lin int, col int, name string, value interfaces.Expression) VariableDeclaracionSinTipo {
+	return VariableDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Value: value}
 }
 
 func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
@@ -25,7 +24,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface
 		Col:   value.Col,
 		Tipo:  value.Tipo,
 		Valor: value.Valor,
-		Scope: v.Scope,
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,

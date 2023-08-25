@@ -10,13 +10,12 @@ type VariableDeclaracion struct {
 	Lin   int
 	Col   int
 	Name  string
-	Scope string
 	Type  environment.TipoExpresion
 	Value interfaces.Expression
 }
 
-func NewVariableDeclaration(lin int, col int, name string, scope string, tipo environment.TipoExpresion, value interfaces.Expression) VariableDeclaracion {
-	return VariableDeclaracion{lin, col, name, scope, tipo, value}
+func NewVariableDeclaration(lin int, col int, name string, tipo environment.TipoExpresion, value interfaces.Expression) VariableDeclaracion {
+	return VariableDeclaracion{lin, col, name, tipo, value}
 }
 
 func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
@@ -26,7 +25,7 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 		Col:   v.Col,
 		Tipo:  v.Type,
 		Valor: value.Valor,
-		Scope: v.Scope,
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -95,7 +94,7 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		Variable.Symbols.Valor = nil

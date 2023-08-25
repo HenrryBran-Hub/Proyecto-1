@@ -62,7 +62,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      condicion.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 	}
@@ -75,7 +75,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 				Col:   v.Col,
 				Tipo:  environment.BOOLEAN,
 				Valor: true,
-				Scope: "Local",
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "Break",
@@ -91,7 +91,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 				Col:   v.Col,
 				Tipo:  environment.BOOLEAN,
 				Valor: true,
-				Scope: "Local",
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "Return",
@@ -107,7 +107,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 				Col:   v.Col,
 				Tipo:  reexp.Tipo,
 				Valor: reexp.Valor,
-				Scope: reexp.Scope,
+				Scope: ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "ReturnExp",
@@ -124,7 +124,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      condicion.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 	}

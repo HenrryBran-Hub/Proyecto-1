@@ -11,11 +11,10 @@ type ConstanteDeclaracionSinTipo struct {
 	Name  string
 	Type  environment.TipoExpresion
 	Value interfaces.Expression
-	Scope string
 }
 
-func NewConstanteDeclaracionSinTipo(lin int, col int, name string, scope string, value interfaces.Expression) ConstanteDeclaracionSinTipo {
-	return ConstanteDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Value: value, Scope: scope}
+func NewConstanteDeclaracionSinTipo(lin int, col int, name string, value interfaces.Expression) ConstanteDeclaracionSinTipo {
+	return ConstanteDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Value: value}
 }
 
 func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
@@ -25,7 +24,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interfac
 		Col:   value.Col,
 		Tipo:  value.Tipo,
 		Valor: value.Valor,
-		Scope: v.Scope,
+		Scope: ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,

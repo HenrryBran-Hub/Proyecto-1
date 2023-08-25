@@ -27,7 +27,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, env interface{}) inte
 			Col:   v.Col,
 			Tipo:  v.Type,
 			Valor: value.Valor,
-			Scope: Variable.Symbols.Scope,
+			Scope: ast.ObtenerAmbito(),
 		}
 		ast.ActualizarVariable(Variable, symbol)
 	}
@@ -38,7 +38,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, env interface{}) inte
 			Fila:        strconv.Itoa(value.Lin),
 			Columna:     strconv.Itoa(value.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -82,7 +82,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, env interface{}) inte
 			Fila:        strconv.Itoa(value.Lin),
 			Columna:     strconv.Itoa(value.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      value.Scope,
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 		Variable.Symbols.Valor = nil
