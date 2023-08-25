@@ -46,6 +46,7 @@ instruction returns [interfaces.Instruction inst]
 | guardcontrol { $inst = $guardcontrol.guct}
 | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 | vectoragregar  { $inst = $vectoragregar.veadct }
+| vectorremover  { $inst = $vectorremover.vermct }
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -79,7 +80,8 @@ instructionint returns [interfaces.Instruction insint]
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
 | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
 | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
-| vectoragregar  { $insint = $vectoragregar.veadct }
+| vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
+| vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 ;
 
 /////////////////////////
@@ -190,12 +192,12 @@ expr returns [interfaces.Expression e]
             if err!= nil{
                 fmt.Println(err)
             }
-            $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num3,environment.FLOAT)
+	        $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num3,environment.FLOAT)
         }else{
             num,err := strconv.Atoi($NUMBER.text)
             if err!= nil{
                 fmt.Println(err)
-            }
+            }            
             $e = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
         }
     }
@@ -217,6 +219,9 @@ expr returns [interfaces.Expression e]
         $e = instructions.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
     }
 |NULO {$e = expressions.NewPrimitive($NULO.line, $NULO.pos, $NULO.text,environment.NULL)}
+| vectorvacio { $e = $vectorvacio.veemct}
+| vectorcount { $e = $vectorcount.vecnct}
+| vectoraccess { $e = $vectoraccess.vepposct}
 ;
 
 // CREACION DE IF-ELSE
@@ -322,20 +327,23 @@ bloqueparams returns [interfaces.Expression blopas]
     $blopas = instructions.NewArregloParametro($expr.e)
 };
 
-vectoragregar returns  [interfaces.Instruction veadct]
+vectoragregar returns [interfaces.Instruction veadct]
 : ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = instructions.NewArregloAppend($ID_VALIDO.text , $expr.e)}
-| ID_VALIDO CORCHIZQ expr CORCHDER IG ID_VALIDO CORCHIZQ expr CORCHDER {}
-| ID_VALIDO CORCHIZQ expr CORCHDER IG expr {};
+| prin=ID_VALIDO CORCHIZQ pop=expr CORCHDER IG secu=ID_VALIDO CORCHIZQ sop=expr CORCHDER { $veadct = instructions.NewArregloAppendArreglo($prin.text , $pop.e, $secu.text, $sop.e)}
+| ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
 
-vectorremover
-: ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER {}
-| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expr PARDER {};
+vectorremover returns [interfaces.Instruction vermct]
+: ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER  { $vermct = instructions.NewArregloRemoveLast($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)}
+| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expr PARDER { $vermct = instructions.NewArregloRemovePos($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text, $expr.e)};
 
-vectorvacio: ID_VALIDO PUNTO ISEMPTY {};
+vectorvacio returns [interfaces.Expression veemct]
+: ID_VALIDO PUNTO ISEMPTY { $veemct = instructions.NewArregloIsEmpty($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
-vectorcount: ID_VALIDO PUNTO COUNT {};
+vectorcount returns [interfaces.Expression vecnct]
+: ID_VALIDO PUNTO COUNT { $vecnct = instructions.NewArregloCount($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
-vectoraccess: ID_VALIDO CORCHIZQ expr CORCHDER {};
+vectoraccess returns [interfaces.Expression vepposct]
+: ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = instructions.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)};
 
 /*
 //CREACION DE EMBEBIDAS

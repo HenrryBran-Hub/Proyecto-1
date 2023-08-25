@@ -52,11 +52,6 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, env interface{}) interface
 
 	arreglo.Elements.PushBack(symbol)
 
-	vector := environment.Vector{
-		Elements: arreglo.Elements,
-		Size:     arreglo.Elements.Len(),
-	}
-
-	ast.ActualizarArreglo(v.Name, &vector)
+	ast.ActualizarArreglo(v.Name, arreglo)
 	return nil
 }

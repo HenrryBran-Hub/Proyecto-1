@@ -60,7 +60,6 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, env interface{})
 		Symbols:     symbol,
 		Mutable:     true,
 		Elements:    listavalores,
-		Size:        listavalores.Len(),
 		TipoSimbolo: "Vector",
 	}
 

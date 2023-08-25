@@ -38,7 +38,6 @@ type Vector struct {
 	Mutable     bool
 	TipoSimbolo string
 	Elements    *list.List
-	Size        int
 }
 
 type Errores struct {
@@ -360,6 +359,8 @@ func (a *AST) TablaVariablesHTML() {
 				acumulado += ","
 			}
 		}
+
+		acumulado += " Tamanio Vector: " + strconv.Itoa(vector.Elements.Len())
 
 		fmt.Fprintf(file, `
    					<tr>
