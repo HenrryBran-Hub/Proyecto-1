@@ -12,18 +12,15 @@ type ArregloDeclaracionLista struct {
 	Col   int
 	Name  string
 	Type  environment.TipoExpresion
-	Valor interfaces.Expression
 	Lista []interface{}
 }
 
-func NewArregloDeclaracionLista(lin int, col int, name string, tipo environment.TipoExpresion, value interfaces.Expression, values []interface{}) ArregloDeclaracionLista {
-	return ArregloDeclaracionLista{lin, col, name, tipo, value, values}
+func NewArregloDeclaracionLista(lin int, col int, name string, tipo environment.TipoExpresion, values []interface{}) ArregloDeclaracionLista {
+	return ArregloDeclaracionLista{lin, col, name, tipo, values}
 }
 
 func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	listavalores := list.New()
-	value := v.Valor.Ejecutar(ast, env)
-	listavalores.PushBack(value)
 	for _, inst := range v.Lista {
 		if inst == nil {
 			continue

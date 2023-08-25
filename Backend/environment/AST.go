@@ -146,7 +146,7 @@ func (a *AST) GuardarArreglo(vector Vector) {
 	for e := a.Lista_Arreglos.Front(); e != nil; e = e.Next() {
 		if e.Value.(Vector).Name == vector.Name {
 			Errores := Errores{
-				Descripcion: "La variale que esta intentando guardar ya existe en este ambito: \n Variable: " + vector.Name,
+				Descripcion: "El arreglo que esta intentando guardar ya existe en este ambito: \n Arreglo: " + vector.Name,
 				Fila:        strconv.Itoa(e.Value.(Variable).Symbols.Lin),
 				Columna:     strconv.Itoa(e.Value.(Variable).Symbols.Col),
 				Tipo:        "Error Semantico",
@@ -206,7 +206,6 @@ func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
 			if v.Value.(Vector).Name == nombre && v.Value.(Vector).Mutable {
 				vector := v.Value.(Vector)
 				vector.Elements = nuevoValor.Elements
-				v.Value = vector
 				return
 			}
 		}

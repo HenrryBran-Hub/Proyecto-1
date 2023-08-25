@@ -45,6 +45,7 @@ instruction returns [interfaces.Instruction inst]
 | forcontrol { $inst = $forcontrol.forct}
 | guardcontrol { $inst = $guardcontrol.guct}
 | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
+| vectoragregar  { $inst = $vectoragregar.veadct }
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -78,6 +79,7 @@ instructionint returns [interfaces.Instruction insint]
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
 | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
 | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
+| vectoragregar  { $insint = $vectoragregar.veadct }
 ;
 
 /////////////////////////
@@ -292,9 +294,9 @@ retornos returns [interfaces.Instruction rect]
 
 //CREACION DEL VECTOR (pendiente)
 vectorcontrol returns [interfaces.Instruction vect]
-: VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ expr blockparams CORCHDER { $vect = instructions.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo,$expr.e, $blockparams.blkpar)}
-| VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ CORCHDER {}
-| VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER ID_VALIDO {};
+: VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ blockparams CORCHDER { $vect = instructions.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo, $blockparams.blkpar)}
+| VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ CORCHDER { $vect = instructions.NewArregloDeclaracionSinLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo)}
+| VAR prin=ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG secu=ID_VALIDO { $vect = instructions.NewArregloDeclaracionId($VAR.line ,$VAR.pos, $prin.text , $tipodato.tipo, $secu.text)};
 
 blockparams returns [[]interface{} blkpar]
 @init{
@@ -314,10 +316,14 @@ bloqueparams returns [interfaces.Expression blopas]
 : COMA expr 
 {
     $blopas = instructions.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
+}
+| expr 
+{
+    $blopas = instructions.NewArregloParametro($expr.e)
 };
 
-vectoragregar:
-ID_VALIDO PUNTO APPEND PARIZQ expr PARDER {}
+vectoragregar returns  [interfaces.Instruction veadct]
+: ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = instructions.NewArregloAppend($ID_VALIDO.text , $expr.e)}
 | ID_VALIDO CORCHIZQ expr CORCHDER IG ID_VALIDO CORCHIZQ expr CORCHDER {}
 | ID_VALIDO CORCHIZQ expr CORCHDER IG expr {};
 
