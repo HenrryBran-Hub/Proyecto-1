@@ -9,12 +9,6 @@ import (
 	"unicode"
 )
 
-import "Backend/interfaces"
-import "Backend/environment"
-import "Backend/expressions"
-import "Backend/instructions"
-import "strings"
-
 // Suppress unused import error
 var _ = fmt.Printf
 var _ = sync.Once{}
