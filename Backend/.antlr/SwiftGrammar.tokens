@@ -1,3 +1,4 @@
+T__0=1
 INT=1
 FLOAT=2
 STRING=3
@@ -71,6 +72,7 @@ CORCHDER=70
 WHITESPACE=71
 COMMENT=72
 LINE_COMMENT=73
+'&'=1
 'Int'=1
 'Float'=2
 'String'=3

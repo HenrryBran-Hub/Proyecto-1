@@ -22,9 +22,6 @@ type SwiftGrammarListener interface {
 	// EnterInstructionint is called when entering the instructionint production.
 	EnterInstructionint(c *InstructionintContext)
 
-	// EnterPrintstmt is called when entering the printstmt production.
-	EnterPrintstmt(c *PrintstmtContext)
-
 	// EnterDeclavarible is called when entering the declavarible production.
 	EnterDeclavarible(c *DeclavaribleContext)
 
@@ -106,6 +103,30 @@ type SwiftGrammarListener interface {
 	// EnterVectoraccess is called when entering the vectoraccess production.
 	EnterVectoraccess(c *VectoraccessContext)
 
+	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
+	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// EnterListaparametros is called when entering the listaparametros production.
+	EnterListaparametros(c *ListaparametrosContext)
+
+	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
+	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
+	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// EnterPrintstmt is called when entering the printstmt production.
+	EnterPrintstmt(c *PrintstmtContext)
+
+	// EnterIntembebida is called when entering the intembebida production.
+	EnterIntembebida(c *IntembebidaContext)
+
+	// EnterFloatembebida is called when entering the floatembebida production.
+	EnterFloatembebida(c *FloatembebidaContext)
+
+	// EnterStringembebida is called when entering the stringembebida production.
+	EnterStringembebida(c *StringembebidaContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -120,9 +141,6 @@ type SwiftGrammarListener interface {
 
 	// ExitInstructionint is called when exiting the instructionint production.
 	ExitInstructionint(c *InstructionintContext)
-
-	// ExitPrintstmt is called when exiting the printstmt production.
-	ExitPrintstmt(c *PrintstmtContext)
 
 	// ExitDeclavarible is called when exiting the declavarible production.
 	ExitDeclavarible(c *DeclavaribleContext)
@@ -204,4 +222,28 @@ type SwiftGrammarListener interface {
 
 	// ExitVectoraccess is called when exiting the vectoraccess production.
 	ExitVectoraccess(c *VectoraccessContext)
+
+	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
+	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// ExitListaparametros is called when exiting the listaparametros production.
+	ExitListaparametros(c *ListaparametrosContext)
+
+	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
+	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
+	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// ExitPrintstmt is called when exiting the printstmt production.
+	ExitPrintstmt(c *PrintstmtContext)
+
+	// ExitIntembebida is called when exiting the intembebida production.
+	ExitIntembebida(c *IntembebidaContext)
+
+	// ExitFloatembebida is called when exiting the floatembebida production.
+	ExitFloatembebida(c *FloatembebidaContext)
+
+	// ExitStringembebida is called when exiting the stringembebida production.
+	ExitStringembebida(c *StringembebidaContext)
 }

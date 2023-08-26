@@ -35,8 +35,7 @@ block returns [[]interface{} blk]
 
 // LISTA DE INSTRUCCIONES GENERALES O GLOBALES
 instruction returns [interfaces.Instruction inst]
-: printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
-| declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
+: declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
@@ -47,6 +46,7 @@ instruction returns [interfaces.Instruction inst]
 | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 | vectoragregar  { $inst = $vectoragregar.veadct }
 | vectorremover  { $inst = $vectorremover.vermct }
+| printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -67,8 +67,7 @@ blockinterno returns [[]interface{} blkint]
 
 // LISTA DE INSTRUCCIONES LOCALES
 instructionint returns [interfaces.Instruction insint]
-: printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
-| declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
+: declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
 | declaconstanteint (PUNTOCOMA)? { $insint = $declaconstanteint.deccon}
 | asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
@@ -82,6 +81,7 @@ instructionint returns [interfaces.Instruction insint]
 | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
+| printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
 ;
 
 /////////////////////////
@@ -89,10 +89,6 @@ instructionint returns [interfaces.Instruction insint]
 ///     GENERALES     ///
 /////////////////////////
 /////////////////////////
-
-// FUNCION PRINT
-printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
 
 // DECLARACION DE VARIABLES
 declavarible returns [interfaces.Instruction decvbl]
@@ -222,6 +218,9 @@ expr returns [interfaces.Expression e]
 | vectorvacio { $e = $vectorvacio.veemct}
 | vectorcount { $e = $vectorcount.vecnct}
 | vectoraccess { $e = $vectoraccess.vepposct}
+| intembebida { $e = $intembebida.intemb}
+| floatembebida { $e = $floatembebida.floemb}
+| stringembebida { $e = $stringembebida.stremb}
 ;
 
 // CREACION DE IF-ELSE
@@ -345,17 +344,77 @@ vectorcount returns [interfaces.Expression vecnct]
 vectoraccess returns [interfaces.Expression vepposct]
 : ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = instructions.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)};
 
-/*
+//CREACION DE FUNCIONES
+funciondeclaracioncontrol
+: FUNCION ID_VALIDO PARIZQ listaparametros? PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER {}
+| FUNCION ID_VALIDO PARIZQ listaparametros? PARDER LLAVEIZQ blockinterno LLAVEDER {};
+
+listaparametros:
+	COMA (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato listaparametros {}
+	| (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato {};
+
+funcionllamadacontrol:
+	ID_VALIDO PARIZQ listaparametrosllamada? PARIZQ {};
+
+listaparametrosllamada:
+	COMA (ID_VALIDO DOS_PUNTOS)? ('&')? expr listaparametrosllamada {}
+	| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
+
 //CREACION DE EMBEBIDAS
-printcontrol
-	returns[interfaces.Instruction prnt]:
-	PRINT PARIZQ expresion PARDER { 
-            $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expresion.e)
-    };
 
-intembebida: INT PARIZQ expresion PARDER {};
+// FUNCION PRINT
+printstmt returns [interfaces.Instruction prnt]
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
 
-floatembebida: FLOAT PARIZQ expresion PARDER {};
+intembebida returns [interfaces.Expression intemb]
+: INT PARIZQ expr PARDER { $intemb = instructions.NewFuncionIntEmbebida($expr.e)};
 
-stringembebida: STRING PARIZQ expresion PARDER {};
+floatembebida returns [interfaces.Expression floemb]
+: FLOAT PARIZQ expr PARDER { $floemb = instructions.NewFuncionFloatEmbebida($expr.e)};
+
+stringembebida returns [interfaces.Expression stremb]
+: STRING PARIZQ expr PARDER { $stremb = instructions.NewFuncionStringEmbebida($expr.e)};
+
+/*
+//CREACION DEL STRUCT
+
+structcontrol:
+	STRUCT ID_VALIDO LLAVEIZQ (listaatributos)* LLAVEDER {};
+
+listaatributos: (LET | VAR) ID_VALIDO (DOS_PUNTOS tipodato)? (
+		IG expresion
+	)? PUNTOCOMA {}
+	| MUTATING CIERRE_INTE {};
+
+//CREACION DE MATRICES
+matrizcontrol:
+	VAR ID_VALIDO (DOS_PUNTOS tipomatriz)? IG defmatriz {};
+
+tipomatriz:
+	CORCHIZQ tipomatriz CORCHDER {}
+	| CORCHIZQ tipodato CORCHDER {};
+
+defmatriz: listavaloresmat {} | simplematriz {};
+
+listavaloresmat: CORCHIZQ listavaloresmat2 CORCHDER {};
+
+listavaloresmat2:
+	listavaloresmat2 COMA listavaloresmat {}
+	| listavaloresmat {}
+	| listaexpresion {};
+
+simplematriz:
+	tipomatriz PARIZQ REPEATING DOS_PUNTOS simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER {}
+	| tipomatriz PARIZQ REPEATING DOS_PUNTOS expresion COMA COUNT DOS_PUNTOS NUMBER PARDER {};
+
+matrizasignacion:
+	ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER (
+		CORCHIZQ expresion CORCHDER
+	)* IG expresion {};
+
+matrizobtener:
+	ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER (
+		CORCHIZQ expresion CORCHDER
+	)* {};
+
 */
