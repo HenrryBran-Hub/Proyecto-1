@@ -2,6 +2,7 @@ package expressions
 
 import (
 	"Backend/environment"
+	"fmt"
 )
 
 type Primitive struct {
@@ -17,10 +18,16 @@ func NewPrimitive(lin int, col int, valor interface{}, tipo environment.TipoExpr
 }
 
 func (p Primitive) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+	p.arbol(ast)
 	return environment.Symbol{
 		Lin:   p.Lin,
 		Col:   p.Col,
 		Tipo:  p.Tipo,
 		Valor: p.Valor,
 	}
+}
+
+func (p Primitive) arbol(ast *environment.AST) {
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: fmt.Sprintf("%v", p.Valor)})
 }

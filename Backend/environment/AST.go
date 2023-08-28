@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 
 	"github.com/skratchdot/open-golang/open"
@@ -23,6 +24,10 @@ type AST struct {
 	Pila_Arreglos       *list.List
 	Lista_VectorHTML    *list.List
 	Variables           Variable
+	Stack               []*Node
+	Id                  int
+	Dot                 string
+	Root                *Node
 }
 
 type Variable struct {
@@ -58,7 +63,7 @@ type TablaSymbolosHTML struct {
 }
 
 func NewAST(inst []interface{}, print string, err string) AST {
-	ast := AST{Instructions: inst, Print: print, Errors: err}
+	ast := AST{Instructions: inst, Print: print, Errors: err, Id: 0, Dot: "graph{ \n graph [bgcolor=lightgray, fontname=\"Arial\", fontsize=12]; \n"}
 	return ast
 }
 
@@ -496,4 +501,105 @@ func (a *AST) LimpiarLista() {
 		}
 	}
 	a.removeFromListFromBack(numElementsToRemove)
+}
+
+type Node struct {
+	Id       int
+	Label    string
+	Children []*Node
+}
+
+func (t *AST) Postorder(tmp *Node) {
+	if tmp != nil {
+		for _, child := range tmp.Children {
+			t.Postorder(child)
+		}
+		t.Dot += strconv.Itoa(tmp.Id) + "[label=\"" + tmp.Label + "\" , shape=box, style=\"filled,rounded\", fillcolor=\"#F4A460\"];\n"
+		for _, child := range tmp.Children {
+			t.Dot += strconv.Itoa(tmp.Id) + "->" + strconv.Itoa(child.Id) + ";\n"
+		}
+	}
+}
+
+func (l *AST) Push(i *Node) {
+	l.Stack = append(l.Stack, i)
+}
+
+func (l *AST) Pop() *Node {
+	if len(l.Stack) < 1 {
+		panic("empty stack")
+	}
+	result := l.Stack[len(l.Stack)-1]
+	l.Stack = l.Stack[:len(l.Stack)-1]
+	return result
+}
+
+func (c *AST) GenerateCST() {
+	cstFile, err := os.Create("cst.dot")
+	if err != nil {
+		fmt.Println("Error creating CST DOT file:", err)
+		return
+	}
+	defer cstFile.Close()
+
+	_, err = cstFile.WriteString("digraph CST {\n")
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+	_, err = cstFile.WriteString(c.Dot)
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+	_, err = cstFile.WriteString("}\n")
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+
+	// Ejecutar Graphviz para generar la imagen
+	cmd := exec.Command("dot", "-Tpng", "cst.dot", "-o", "cst.png")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error generating image:", err)
+		return
+	}
+	c.MostrarImagenCST()
+
+	fmt.Println("CST DOT file generated successfully.")
+}
+
+func (c *AST) MostrarImagenCST() {
+	// Create a new HTML file
+	file, err := os.Create("ImagenCST.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Write the HTML header and embed the image
+	fmt.Fprintln(file, `<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Reporte de Errores</title>
+		<style>
+			body {
+				background-color: #333;
+				color: white;
+				font-family: sans-serif;
+			}
+			h1 {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Árbol de Sintaxis Concreta</h1>
+           <img src="cst.png" alt="Árbol de Sintaxis Concreta" style="max-width: 100%;">
+       </body>
+       </html>`)
+
+	// Open the HTML file in the default web browser
+	open.Start("ImagenCST.html")
 }
