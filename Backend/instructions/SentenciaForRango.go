@@ -112,7 +112,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			Mutable:     true,
 			TipoSimbolo: "Variable",
 		}
-		ast.ActualizarVariable(&Variable, symbol)
+		ast.ActualizarVariable(&Variable)
 	}
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()

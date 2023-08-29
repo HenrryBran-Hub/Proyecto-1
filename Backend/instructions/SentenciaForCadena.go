@@ -60,9 +60,9 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 					Mutable:     true,
 					TipoSimbolo: "Variable",
 				}
-				ast.ActualizarVariable(&Variable, symbol)
+				ast.ActualizarVariable(&Variable)
 				Variable.Mutable = false
-				ast.ActualizarVariable(&Variable, symbol)
+				ast.ActualizarVariable(&Variable)
 				for _, inst := range v.slice {
 					if inst == nil {
 						continue

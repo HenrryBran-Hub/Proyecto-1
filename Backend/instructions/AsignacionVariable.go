@@ -22,14 +22,12 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, env interface{}) inte
 	value := v.Value.Ejecutar(ast, env)
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
-		symbol := environment.Symbol{
-			Lin:   v.Lin,
-			Col:   v.Col,
-			Tipo:  v.Type,
-			Valor: value.Valor,
-			Scope: ast.ObtenerAmbito(),
-		}
-		ast.ActualizarVariable(Variable, symbol)
+		Variable.Symbols.Lin = v.Lin
+		Variable.Symbols.Col = v.Col
+		Variable.Symbols.Tipo = v.Type
+		Variable.Symbols.Valor = value.Valor
+		Variable.Symbols.Scope = ast.ObtenerAmbito()
+		ast.ActualizarVariable(Variable)
 	}
 
 	if Variable.Mutable == false {

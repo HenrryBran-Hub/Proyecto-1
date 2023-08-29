@@ -164,28 +164,39 @@ func (a *AST) GuardarArreglo(vector Vector) {
 	a.Lista_VectorHTML.PushBack(vector)
 }
 
-func (a *AST) ActualizarVariable(mariable *Variable, nuevoValor Symbol) {
+func (a *AST) ActualizarVariable(mariable *Variable) {
 	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
 		lista := e.Value.(*list.List)
 		for v := lista.Front(); v != nil; v = v.Next() {
 			if v.Value.(Variable).Name == mariable.Name && mariable.Mutable {
 				variable := v.Value.(Variable)
-				variable.Symbols.Col = nuevoValor.Col
-				variable.Symbols.Lin = nuevoValor.Lin
-				variable.Symbols.Scope = nuevoValor.Scope
-				variable.Symbols.Tipo = nuevoValor.Tipo
-				variable.Symbols.Valor = nuevoValor.Valor
-				v.Value = variable
+				variable.Symbols.Col = mariable.Symbols.Col
+				variable.Symbols.Lin = mariable.Symbols.Lin
+				variable.Symbols.Scope = mariable.Symbols.Scope
+				variable.Symbols.Tipo = mariable.Symbols.Tipo
+				variable.Symbols.Valor = mariable.Symbols.Valor
+				v.Value = variable // Actualizar la variable en la lista
+				for j := a.Lista_VariablesHTML.Front(); j != nil; j = j.Next() {
+					if j.Value.(Variable).Name == mariable.Name && mariable.Mutable && j.Value.(Variable).Symbols.Scope == mariable.Symbols.Scope {
+						variablej := j.Value.(Variable)
+						variablej.Symbols.Col = mariable.Symbols.Col
+						variablej.Symbols.Lin = mariable.Symbols.Lin
+						variablej.Symbols.Scope = mariable.Symbols.Scope
+						variablej.Symbols.Tipo = mariable.Symbols.Tipo
+						variablej.Symbols.Valor = mariable.Symbols.Valor
+						j.Value = variable // Actualizar la variable en la lista
+					}
+				}
 				return
 			}
 		}
 	}
 	Errores := Errores{
 		Descripcion: "La variale que esta intentando modificar no existe: \n Variable: " + mariable.Name,
-		Fila:        strconv.Itoa(nuevoValor.Lin),
-		Columna:     strconv.Itoa(nuevoValor.Col),
+		Fila:        strconv.Itoa(mariable.Symbols.Lin),
+		Columna:     strconv.Itoa(mariable.Symbols.Col),
 		Tipo:        "Error Semantico",
-		Ambito:      nuevoValor.Scope,
+		Ambito:      mariable.Symbols.Scope,
 	}
 	a.ErroresHTML(Errores)
 }
@@ -210,6 +221,12 @@ func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
 			if v.Value.(Vector).Name == nombre && v.Value.(Vector).Mutable {
 				vector := v.Value.(Vector)
 				vector.Elements = nuevoValor.Elements
+				for i := a.Lista_VectorHTML.Front(); i != nil; i = i.Next() {
+					if i.Value.(Vector).Name == nombre && i.Value.(Vector).Mutable && i.Value.(Vector).Symbols.Scope == nuevoValor.Symbols.Scope {
+						vectorj := i.Value.(Vector)
+						vectorj.Elements = nuevoValor.Elements
+					}
+				}
 				return
 			}
 		}
