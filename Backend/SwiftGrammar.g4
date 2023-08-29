@@ -67,9 +67,9 @@ blockinterno returns [[]interface{} blkint]
 
 // LISTA DE INSTRUCCIONES LOCALES
 instructionint returns [interfaces.Instruction insint]
-: declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
-| declaconstanteint (PUNTOCOMA)? { $insint = $declaconstanteint.deccon}
-| asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
+: declavarible (PUNTOCOMA)? { $insint = $declavarible.decvbl}
+| declaconstante (PUNTOCOMA)? { $insint = $declaconstante.deccon}
+| asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
@@ -81,7 +81,7 @@ instructionint returns [interfaces.Instruction insint]
 | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
-| printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
+| printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
 ;
 
 /////////////////////////
@@ -106,34 +106,6 @@ asignacionvariable returns [interfaces.Instruction asgvbl]
 : ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
-
-/////////////////////////
-/////////////////////////
-///     LOCALES       ///
-/////////////////////////
-/////////////////////////
-
-// FUNCION PRINT
-printstmtint returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
-
-// DECLARACION DE VARIABLES
-declavaribleint returns [interfaces.Instruction decvbl]
-: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, $expr.e)}
-| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo)};
-
-// DECLARACION DE CONSTANTES
-declaconstanteint returns [interfaces.Instruction deccon]
-: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)};
-
-// ASIGNACION DE VARIABLES
-asignacionvariableint returns [interfaces.Instruction asgvbl]
-: ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
-| ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
-| ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
-
 
 // TIPOS DE DATOS
 tipodato returns [environment.TipoExpresion tipo]
@@ -361,6 +333,8 @@ listaparametrosllamada:
 	| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
 
 //CREACION DE EMBEBIDAS
+
+// FUNCION PRINT
 
 // FUNCION PRINT
 printstmt returns [interfaces.Instruction prnt]

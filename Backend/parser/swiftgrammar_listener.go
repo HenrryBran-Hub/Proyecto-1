@@ -31,18 +31,6 @@ type SwiftGrammarListener interface {
 	// EnterAsignacionvariable is called when entering the asignacionvariable production.
 	EnterAsignacionvariable(c *AsignacionvariableContext)
 
-	// EnterPrintstmtint is called when entering the printstmtint production.
-	EnterPrintstmtint(c *PrintstmtintContext)
-
-	// EnterDeclavaribleint is called when entering the declavaribleint production.
-	EnterDeclavaribleint(c *DeclavaribleintContext)
-
-	// EnterDeclaconstanteint is called when entering the declaconstanteint production.
-	EnterDeclaconstanteint(c *DeclaconstanteintContext)
-
-	// EnterAsignacionvariableint is called when entering the asignacionvariableint production.
-	EnterAsignacionvariableint(c *AsignacionvariableintContext)
-
 	// EnterTipodato is called when entering the tipodato production.
 	EnterTipodato(c *TipodatoContext)
 
@@ -150,18 +138,6 @@ type SwiftGrammarListener interface {
 
 	// ExitAsignacionvariable is called when exiting the asignacionvariable production.
 	ExitAsignacionvariable(c *AsignacionvariableContext)
-
-	// ExitPrintstmtint is called when exiting the printstmtint production.
-	ExitPrintstmtint(c *PrintstmtintContext)
-
-	// ExitDeclavaribleint is called when exiting the declavaribleint production.
-	ExitDeclavaribleint(c *DeclavaribleintContext)
-
-	// ExitDeclaconstanteint is called when exiting the declaconstanteint production.
-	ExitDeclaconstanteint(c *DeclaconstanteintContext)
-
-	// ExitAsignacionvariableint is called when exiting the asignacionvariableint production.
-	ExitAsignacionvariableint(c *AsignacionvariableintContext)
 
 	// ExitTipodato is called when exiting the tipodato production.
 	ExitTipodato(c *TipodatoContext)
