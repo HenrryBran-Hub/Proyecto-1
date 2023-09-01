@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/interfaces"
 	"container/list"
-	"fmt"
 	"strconv"
 )
 
@@ -107,7 +106,6 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, env interface{}) inter
 		}
 
 		if ast.Lista_Matriz_Val.Len() == tipo.Valor {
-			fmt.Println(matriz)
 			ast.GuardarMatriz(matriz)
 			ast.QuitarNiveles()
 			return nil
@@ -179,7 +177,6 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, env interface{}) inter
 		pila := ast.Pila_Matriz_Val.Len()
 		lista := ast.Lista_Matriz_Val.Len()
 		elementos := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Elements.Len()
-		fmt.Println(elementos)
 		pila2 := tipo.Valor.(int)
 
 		if pila <= 3 {
@@ -208,8 +205,6 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, env interface{}) inter
 			}
 			contadorpila--
 		}
-		ast.ImprimirArreglovalores()
-		fmt.Println(matriz)
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
 		return nil

@@ -91,30 +91,6 @@ type SwiftGrammarListener interface {
 	// EnterVectoraccess is called when entering the vectoraccess production.
 	EnterVectoraccess(c *VectoraccessContext)
 
-	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
-	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
-
-	// EnterListaparametros is called when entering the listaparametros production.
-	EnterListaparametros(c *ListaparametrosContext)
-
-	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
-	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
-
-	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
-	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
-
-	// EnterPrintstmt is called when entering the printstmt production.
-	EnterPrintstmt(c *PrintstmtContext)
-
-	// EnterIntembebida is called when entering the intembebida production.
-	EnterIntembebida(c *IntembebidaContext)
-
-	// EnterFloatembebida is called when entering the floatembebida production.
-	EnterFloatembebida(c *FloatembebidaContext)
-
-	// EnterStringembebida is called when entering the stringembebida production.
-	EnterStringembebida(c *StringembebidaContext)
-
 	// EnterMatrizcontrol is called when entering the matrizcontrol production.
 	EnterMatrizcontrol(c *MatrizcontrolContext)
 
@@ -142,8 +118,35 @@ type SwiftGrammarListener interface {
 	// EnterMatrizasignacion is called when entering the matrizasignacion production.
 	EnterMatrizasignacion(c *MatrizasignacionContext)
 
-	// EnterMatrizobtener is called when entering the matrizobtener production.
-	EnterMatrizobtener(c *MatrizobtenerContext)
+	// EnterListamatrizaddsubs is called when entering the listamatrizaddsubs production.
+	EnterListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
+	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
+
+	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
+	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// EnterListaparametros is called when entering the listaparametros production.
+	EnterListaparametros(c *ListaparametrosContext)
+
+	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
+	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
+	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// EnterPrintstmt is called when entering the printstmt production.
+	EnterPrintstmt(c *PrintstmtContext)
+
+	// EnterIntembebida is called when entering the intembebida production.
+	EnterIntembebida(c *IntembebidaContext)
+
+	// EnterFloatembebida is called when entering the floatembebida production.
+	EnterFloatembebida(c *FloatembebidaContext)
+
+	// EnterStringembebida is called when entering the stringembebida production.
+	EnterStringembebida(c *StringembebidaContext)
 
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
@@ -229,30 +232,6 @@ type SwiftGrammarListener interface {
 	// ExitVectoraccess is called when exiting the vectoraccess production.
 	ExitVectoraccess(c *VectoraccessContext)
 
-	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
-	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
-
-	// ExitListaparametros is called when exiting the listaparametros production.
-	ExitListaparametros(c *ListaparametrosContext)
-
-	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
-	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
-
-	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
-	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)
-
-	// ExitPrintstmt is called when exiting the printstmt production.
-	ExitPrintstmt(c *PrintstmtContext)
-
-	// ExitIntembebida is called when exiting the intembebida production.
-	ExitIntembebida(c *IntembebidaContext)
-
-	// ExitFloatembebida is called when exiting the floatembebida production.
-	ExitFloatembebida(c *FloatembebidaContext)
-
-	// ExitStringembebida is called when exiting the stringembebida production.
-	ExitStringembebida(c *StringembebidaContext)
-
 	// ExitMatrizcontrol is called when exiting the matrizcontrol production.
 	ExitMatrizcontrol(c *MatrizcontrolContext)
 
@@ -280,6 +259,33 @@ type SwiftGrammarListener interface {
 	// ExitMatrizasignacion is called when exiting the matrizasignacion production.
 	ExitMatrizasignacion(c *MatrizasignacionContext)
 
-	// ExitMatrizobtener is called when exiting the matrizobtener production.
-	ExitMatrizobtener(c *MatrizobtenerContext)
+	// ExitListamatrizaddsubs is called when exiting the listamatrizaddsubs production.
+	ExitListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
+	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
+
+	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
+	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// ExitListaparametros is called when exiting the listaparametros production.
+	ExitListaparametros(c *ListaparametrosContext)
+
+	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
+	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
+	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// ExitPrintstmt is called when exiting the printstmt production.
+	ExitPrintstmt(c *PrintstmtContext)
+
+	// ExitIntembebida is called when exiting the intembebida production.
+	ExitIntembebida(c *IntembebidaContext)
+
+	// ExitFloatembebida is called when exiting the floatembebida production.
+	ExitFloatembebida(c *FloatembebidaContext)
+
+	// ExitStringembebida is called when exiting the stringembebida production.
+	ExitStringembebida(c *StringembebidaContext)
 }

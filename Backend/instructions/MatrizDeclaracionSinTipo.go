@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/interfaces"
 	"container/list"
-	"fmt"
 	"strconv"
 )
 
@@ -104,8 +103,6 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 			valormatri := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
 			ast.SustituirValores2(&matriz, valormatri, n1, n2)
 		}
-
-		fmt.Println(matriz)
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
 		return nil
@@ -123,8 +120,6 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 				contadorpila++
 			}
 		}
-
-		fmt.Println("contador de pila:", contadorpila)
 
 		//comprobacion del tipo en todos
 		for nivel := ast.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
@@ -208,7 +203,6 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 			contadorpila--
 		}
 
-		fmt.Println(matriz)
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
 		return nil
