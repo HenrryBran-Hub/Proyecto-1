@@ -35,8 +35,7 @@ block returns [[]interface{} blk]
 
 // LISTA DE INSTRUCCIONES GENERALES O GLOBALES
 instruction returns [interfaces.Instruction inst]
-: printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
-| declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
+: declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
@@ -47,6 +46,8 @@ instruction returns [interfaces.Instruction inst]
 | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 | vectoragregar  { $inst = $vectoragregar.veadct }
 | vectorremover  { $inst = $vectorremover.vermct }
+| printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
+| matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -67,10 +68,9 @@ blockinterno returns [[]interface{} blkint]
 
 // LISTA DE INSTRUCCIONES LOCALES
 instructionint returns [interfaces.Instruction insint]
-: printstmtint (PUNTOCOMA)? { $insint = $printstmtint.prnt}
-| declavaribleint (PUNTOCOMA)? { $insint = $declavaribleint.decvbl}
-| declaconstanteint (PUNTOCOMA)? { $insint = $declaconstanteint.deccon}
-| asignacionvariableint (PUNTOCOMA)? { $insint = $asignacionvariableint.asgvbl}
+: declavarible (PUNTOCOMA)? { $insint = $declavarible.decvbl}
+| declaconstante (PUNTOCOMA)? { $insint = $declaconstante.deccon}
+| asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
@@ -82,6 +82,7 @@ instructionint returns [interfaces.Instruction insint]
 | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
+| printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
 ;
 
 /////////////////////////
@@ -89,10 +90,6 @@ instructionint returns [interfaces.Instruction insint]
 ///     GENERALES     ///
 /////////////////////////
 /////////////////////////
-
-// FUNCION PRINT
-printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
 
 // DECLARACION DE VARIABLES
 declavarible returns [interfaces.Instruction decvbl]
@@ -110,34 +107,6 @@ asignacionvariable returns [interfaces.Instruction asgvbl]
 : ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
-
-/////////////////////////
-/////////////////////////
-///     LOCALES       ///
-/////////////////////////
-/////////////////////////
-
-// FUNCION PRINT
-printstmtint returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
-
-// DECLARACION DE VARIABLES
-declavaribleint returns [interfaces.Instruction decvbl]
-: VAR ID_VALIDO DOS_PUNTOS tipodato IG expr{$decvbl = instructions.NewVariableDeclaration($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-| VAR ID_VALIDO IG expr {$decvbl = instructions.NewVariableDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text, $expr.e)}
-| VAR ID_VALIDO DOS_PUNTOS tipodato CIERRE_INTE {$decvbl = instructions.NewVariableDeclaracionSinExp($VAR.line, $VAR.pos, $ID_VALIDO.text, $tipodato.tipo)};
-
-// DECLARACION DE CONSTANTES
-declaconstanteint returns [interfaces.Instruction deccon]
-: LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = instructions.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-| LET ID_VALIDO IG expr {$deccon = instructions.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)};
-
-// ASIGNACION DE VARIABLES
-asignacionvariableint returns [interfaces.Instruction asgvbl]
-: ID_VALIDO IG expr { $asgvbl = instructions.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
-| ID_VALIDO SUMA expr { $asgvbl = instructions.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
-| ID_VALIDO RESTA expr { $asgvbl = instructions.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
-
 
 // TIPOS DE DATOS
 tipodato returns [environment.TipoExpresion tipo]
@@ -222,6 +191,9 @@ expr returns [interfaces.Expression e]
 | vectorvacio { $e = $vectorvacio.veemct}
 | vectorcount { $e = $vectorcount.vecnct}
 | vectoraccess { $e = $vectoraccess.vepposct}
+| intembebida { $e = $intembebida.intemb}
+| floatembebida { $e = $floatembebida.floemb}
+| stringembebida { $e = $stringembebida.stremb}
 ;
 
 // CREACION DE IF-ELSE
@@ -330,7 +302,11 @@ bloqueparams returns [interfaces.Expression blopas]
 vectoragregar returns [interfaces.Instruction veadct]
 : ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = instructions.NewArregloAppend($ID_VALIDO.text , $expr.e)}
 | prin=ID_VALIDO CORCHIZQ pop=expr CORCHDER IG secu=ID_VALIDO CORCHIZQ sop=expr CORCHDER { $veadct = instructions.NewArregloAppendArreglo($prin.text , $pop.e, $secu.text, $sop.e)}
-| ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs IG op3=expr
+{ $veadct = instructions.NewMatrizAsignacionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas, $op3.e) }
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER IG op3=expr
+{ $veadct = instructions.NewMatrizAsignacion($ID_VALIDO.text, $op1.e, $op2.e, $op3.e) } 
+|ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
 
 vectorremover returns [interfaces.Instruction vermct]
 : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER  { $vermct = instructions.NewArregloRemoveLast($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)}
@@ -343,19 +319,146 @@ vectorcount returns [interfaces.Expression vecnct]
 : ID_VALIDO PUNTO COUNT { $vecnct = instructions.NewArregloCount($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
 vectoraccess returns [interfaces.Expression vepposct]
-: ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = instructions.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)};
+: ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs
+{ $vepposct = instructions.NewMatrizObtencionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas) }
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER 
+{ $vepposct = instructions.NewMatrizObtencion($ID_VALIDO.text, $op1.e, $op2.e) } 
+|ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = instructions.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)};
+
+//CREACION DE MATRICES
+matrizcontrol returns [interfaces.Instruction matct]
+: VAR ID_VALIDO (DOS_PUNTOS tipomatriz)? IG defmatriz
+{
+    if ($DOS_PUNTOS != nil) {
+        $matct = instructions.NewMatrizDeclaracion($VAR.line, $VAR.pos, $ID_VALIDO.text ,$tipomatriz.tipomat, $defmatriz.defmat)
+    } else {
+        $matct = instructions.NewMatrizDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text , $defmatriz.defmat)
+    }
+}
+;
+
+tipomatriz returns [interfaces.Expression tipomat]
+: CORCHIZQ tipomatriz CORCHDER 
+{ 
+    $tipomat = instructions.NewMatrizDimension($CORCHIZQ.line, $CORCHIZQ.pos, $tipomatriz.tipomat)
+}
+| CORCHIZQ tipodato CORCHDER 
+{ 
+    $tipomat = instructions.NewMatrizTipo($CORCHIZQ.line, $CORCHIZQ.pos, $tipodato.tipo)
+}
+;
+
+defmatriz returns [interfaces.Instruction defmat]
+: listavaloresmat { $defmat = $listavaloresmat.listvlamat}
+;
+
+listavaloresmat returns [interfaces.Instruction listvlamat]
+: CORCHIZQ listavaloresmat2 CORCHDER { $listvlamat = $listavaloresmat2.mylisttmatt}
+| simplematriz { $listvlamat = $simplematriz.simmat}
+;
+
+listavaloresmat2 returns [interfaces.Instruction mylisttmatt]
+: op=listavaloresmat2 COMA listavaloresmat { $mylisttmatt = instructions.NewMatrizListaExpresionList($op.mylisttmatt, $listavaloresmat.listvlamat)}
+| listavaloresmat { $mylisttmatt = instructions.NewMatrizListaNivel($listavaloresmat.listvlamat)}
+| listaexpresions { $mylisttmatt = instructions.NewMatrizListaExpresion($listaexpresions.blkparf)}
+;
+
+listaexpresions returns [[]interface{} blkparf]
+@init{
+    $blkparf = []interface{}{}
+    var listInt []IListaexpresionContext
+}
+: funpar+=listaexpresion+
+{
+    listInt = localctx.(*ListaexpresionsContext).GetFunpar()
+    for _, e := range listInt {
+        $blkparf = append($blkparf, e.GetFunpar())
+    }
+}
+;
+
+listaexpresion returns [interfaces.Expression funpar]
+: COMA expr 
+{
+    $funpar = instructions.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
+}
+| expr 
+{
+    $funpar = instructions.NewArregloParametro($expr.e)
+}
+;
+
+simplematriz returns [interfaces.Instruction simmat]
+: tipomatriz PARIZQ REPEATING DOS_PUNTOS op=simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER 
+{ $simmat = instructions.NewMatrizSimpleUno($tipomatriz.tipomat, $op.simmat, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
+| tipomatriz PARIZQ REPEATING DOS_PUNTOS expr COMA COUNT DOS_PUNTOS NUMBER PARDER 
+{ $simmat = instructions.NewMatrizSimpleDos($tipomatriz.tipomat, $expr.e, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
+;
+
+listamatrizaddsubs returns [[]interface{} blklimatas]
+@init{
+    $blklimatas = []interface{}{}
+    var listInt []IListamatrizaddsubContext
+}
+: lmas+=listamatrizaddsub+
+{
+    listInt = localctx.(*ListamatrizaddsubsContext).GetLmas()
+    for _, e := range listInt {
+        $blklimatas = append($blklimatas, e.GetLmas())
+    }
+}
+;
+
+listamatrizaddsub returns [interfaces.Expression lmas]
+: CORCHIZQ expr CORCHDER 
+{
+    $lmas = instructions.NewArregloParametros($CORCHIZQ.line ,$CORCHIZQ.pos, $expr.e)
+}
+;
 
 /*
-//CREACION DE EMBEBIDAS
-printcontrol
-	returns[interfaces.Instruction prnt]:
-	PRINT PARIZQ expresion PARDER { 
-            $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expresion.e)
-    };
+//CREACION DEL STRUCT
 
-intembebida: INT PARIZQ expresion PARDER {};
+structcontrol:
+	STRUCT ID_VALIDO LLAVEIZQ (listaatributos)* LLAVEDER {};
 
-floatembebida: FLOAT PARIZQ expresion PARDER {};
+listaatributos: (LET | VAR) ID_VALIDO (DOS_PUNTOS tipodato)? (
+		IG expresion
+	)? PUNTOCOMA {}
+	| MUTATING CIERRE_INTE {};
 
-stringembebida: STRING PARIZQ expresion PARDER {};
+
 */
+
+//CREACION DE FUNCIONES
+funciondeclaracioncontrol
+: FUNCION ID_VALIDO PARIZQ listaparametros? PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER {}
+| FUNCION ID_VALIDO PARIZQ listaparametros? PARDER LLAVEIZQ blockinterno LLAVEDER {};
+
+listaparametros:
+	COMA (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato listaparametros {}
+	| (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato {};
+
+funcionllamadacontrol:
+	ID_VALIDO PARIZQ listaparametrosllamada? PARIZQ {};
+
+listaparametrosllamada:
+	COMA (ID_VALIDO DOS_PUNTOS)? ('&')? expr listaparametrosllamada {}
+	| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
+
+//CREACION DE EMBEBIDAS
+
+// FUNCION PRINT
+
+// FUNCION PRINT
+printstmt returns [interfaces.Instruction prnt]
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
+
+intembebida returns [interfaces.Expression intemb]
+: INT PARIZQ expr PARDER { $intemb = instructions.NewFuncionIntEmbebida($expr.e)};
+
+floatembebida returns [interfaces.Expression floemb]
+: FLOAT PARIZQ expr PARDER { $floemb = instructions.NewFuncionFloatEmbebida($expr.e)};
+
+stringembebida returns [interfaces.Expression stremb]
+: STRING PARIZQ expr PARDER { $stremb = instructions.NewFuncionStringEmbebida($expr.e)};

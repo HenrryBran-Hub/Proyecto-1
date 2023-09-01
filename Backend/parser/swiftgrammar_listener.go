@@ -22,9 +22,6 @@ type SwiftGrammarListener interface {
 	// EnterInstructionint is called when entering the instructionint production.
 	EnterInstructionint(c *InstructionintContext)
 
-	// EnterPrintstmt is called when entering the printstmt production.
-	EnterPrintstmt(c *PrintstmtContext)
-
 	// EnterDeclavarible is called when entering the declavarible production.
 	EnterDeclavarible(c *DeclavaribleContext)
 
@@ -33,18 +30,6 @@ type SwiftGrammarListener interface {
 
 	// EnterAsignacionvariable is called when entering the asignacionvariable production.
 	EnterAsignacionvariable(c *AsignacionvariableContext)
-
-	// EnterPrintstmtint is called when entering the printstmtint production.
-	EnterPrintstmtint(c *PrintstmtintContext)
-
-	// EnterDeclavaribleint is called when entering the declavaribleint production.
-	EnterDeclavaribleint(c *DeclavaribleintContext)
-
-	// EnterDeclaconstanteint is called when entering the declaconstanteint production.
-	EnterDeclaconstanteint(c *DeclaconstanteintContext)
-
-	// EnterAsignacionvariableint is called when entering the asignacionvariableint production.
-	EnterAsignacionvariableint(c *AsignacionvariableintContext)
 
 	// EnterTipodato is called when entering the tipodato production.
 	EnterTipodato(c *TipodatoContext)
@@ -106,6 +91,60 @@ type SwiftGrammarListener interface {
 	// EnterVectoraccess is called when entering the vectoraccess production.
 	EnterVectoraccess(c *VectoraccessContext)
 
+	// EnterMatrizcontrol is called when entering the matrizcontrol production.
+	EnterMatrizcontrol(c *MatrizcontrolContext)
+
+	// EnterTipomatriz is called when entering the tipomatriz production.
+	EnterTipomatriz(c *TipomatrizContext)
+
+	// EnterDefmatriz is called when entering the defmatriz production.
+	EnterDefmatriz(c *DefmatrizContext)
+
+	// EnterListavaloresmat is called when entering the listavaloresmat production.
+	EnterListavaloresmat(c *ListavaloresmatContext)
+
+	// EnterListavaloresmat2 is called when entering the listavaloresmat2 production.
+	EnterListavaloresmat2(c *Listavaloresmat2Context)
+
+	// EnterListaexpresions is called when entering the listaexpresions production.
+	EnterListaexpresions(c *ListaexpresionsContext)
+
+	// EnterListaexpresion is called when entering the listaexpresion production.
+	EnterListaexpresion(c *ListaexpresionContext)
+
+	// EnterSimplematriz is called when entering the simplematriz production.
+	EnterSimplematriz(c *SimplematrizContext)
+
+	// EnterListamatrizaddsubs is called when entering the listamatrizaddsubs production.
+	EnterListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
+	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
+
+	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
+	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// EnterListaparametros is called when entering the listaparametros production.
+	EnterListaparametros(c *ListaparametrosContext)
+
+	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
+	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
+	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// EnterPrintstmt is called when entering the printstmt production.
+	EnterPrintstmt(c *PrintstmtContext)
+
+	// EnterIntembebida is called when entering the intembebida production.
+	EnterIntembebida(c *IntembebidaContext)
+
+	// EnterFloatembebida is called when entering the floatembebida production.
+	EnterFloatembebida(c *FloatembebidaContext)
+
+	// EnterStringembebida is called when entering the stringembebida production.
+	EnterStringembebida(c *StringembebidaContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -121,9 +160,6 @@ type SwiftGrammarListener interface {
 	// ExitInstructionint is called when exiting the instructionint production.
 	ExitInstructionint(c *InstructionintContext)
 
-	// ExitPrintstmt is called when exiting the printstmt production.
-	ExitPrintstmt(c *PrintstmtContext)
-
 	// ExitDeclavarible is called when exiting the declavarible production.
 	ExitDeclavarible(c *DeclavaribleContext)
 
@@ -132,18 +168,6 @@ type SwiftGrammarListener interface {
 
 	// ExitAsignacionvariable is called when exiting the asignacionvariable production.
 	ExitAsignacionvariable(c *AsignacionvariableContext)
-
-	// ExitPrintstmtint is called when exiting the printstmtint production.
-	ExitPrintstmtint(c *PrintstmtintContext)
-
-	// ExitDeclavaribleint is called when exiting the declavaribleint production.
-	ExitDeclavaribleint(c *DeclavaribleintContext)
-
-	// ExitDeclaconstanteint is called when exiting the declaconstanteint production.
-	ExitDeclaconstanteint(c *DeclaconstanteintContext)
-
-	// ExitAsignacionvariableint is called when exiting the asignacionvariableint production.
-	ExitAsignacionvariableint(c *AsignacionvariableintContext)
 
 	// ExitTipodato is called when exiting the tipodato production.
 	ExitTipodato(c *TipodatoContext)
@@ -204,4 +228,58 @@ type SwiftGrammarListener interface {
 
 	// ExitVectoraccess is called when exiting the vectoraccess production.
 	ExitVectoraccess(c *VectoraccessContext)
+
+	// ExitMatrizcontrol is called when exiting the matrizcontrol production.
+	ExitMatrizcontrol(c *MatrizcontrolContext)
+
+	// ExitTipomatriz is called when exiting the tipomatriz production.
+	ExitTipomatriz(c *TipomatrizContext)
+
+	// ExitDefmatriz is called when exiting the defmatriz production.
+	ExitDefmatriz(c *DefmatrizContext)
+
+	// ExitListavaloresmat is called when exiting the listavaloresmat production.
+	ExitListavaloresmat(c *ListavaloresmatContext)
+
+	// ExitListavaloresmat2 is called when exiting the listavaloresmat2 production.
+	ExitListavaloresmat2(c *Listavaloresmat2Context)
+
+	// ExitListaexpresions is called when exiting the listaexpresions production.
+	ExitListaexpresions(c *ListaexpresionsContext)
+
+	// ExitListaexpresion is called when exiting the listaexpresion production.
+	ExitListaexpresion(c *ListaexpresionContext)
+
+	// ExitSimplematriz is called when exiting the simplematriz production.
+	ExitSimplematriz(c *SimplematrizContext)
+
+	// ExitListamatrizaddsubs is called when exiting the listamatrizaddsubs production.
+	ExitListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
+	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
+
+	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
+	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// ExitListaparametros is called when exiting the listaparametros production.
+	ExitListaparametros(c *ListaparametrosContext)
+
+	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
+	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
+	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)
+
+	// ExitPrintstmt is called when exiting the printstmt production.
+	ExitPrintstmt(c *PrintstmtContext)
+
+	// ExitIntembebida is called when exiting the intembebida production.
+	ExitIntembebida(c *IntembebidaContext)
+
+	// ExitFloatembebida is called when exiting the floatembebida production.
+	ExitFloatembebida(c *FloatembebidaContext)
+
+	// ExitStringembebida is called when exiting the stringembebida production.
+	ExitStringembebida(c *StringembebidaContext)
 }

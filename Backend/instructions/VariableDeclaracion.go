@@ -100,7 +100,69 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) int
 		Variable.Symbols.Valor = nil
 		Variable.Symbols.Tipo = environment.INTEGER
 	}
-
+	v.arbol(ast, tipoexpstr)
 	ast.GuardarVariable(Variable)
 	return nil
+}
+
+func (v VariableDeclaracion) arbol(ast *environment.AST, tipoexpstr string) {
+	var operands2 []*environment.Node
+	for i := 0; i < 1; i++ {
+		operands2 = append(operands2, ast.Pop())
+	}
+
+	ast.Id += 1
+	ast.Push(&environment.Node{
+		Id:       ast.Id,
+		Label:    "Expresion",
+		Children: operands2,
+	})
+
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: "IG"})
+
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: tipoexpstr})
+
+	var operands3 []*environment.Node
+	for i := 0; i < 1; i++ {
+		operands3 = append(operands3, ast.Pop())
+	}
+	ast.Id += 1
+	ast.Push(&environment.Node{
+		Id:       ast.Id,
+		Label:    "TipoDato",
+		Children: operands3,
+	})
+
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: "DOS_PUNTOS(:)"})
+
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: v.Name})
+
+	var operands4 []*environment.Node
+	for i := 0; i < 1; i++ {
+		operands4 = append(operands4, ast.Pop())
+	}
+	ast.Id += 1
+	ast.Push(&environment.Node{
+		Id:       ast.Id,
+		Label:    "ID_VALIDO",
+		Children: operands4,
+	})
+
+	ast.Id += 1
+	ast.Push(&environment.Node{Id: ast.Id, Label: "Var"})
+
+	var operands []*environment.Node
+	for i := 0; i < 6; i++ {
+		operands = append(operands, ast.Pop())
+	}
+	ast.Id += 1
+	ast.Push(&environment.Node{
+		Id:       ast.Id,
+		Label:    "VariableDeclaracion",
+		Children: operands,
+	})
 }

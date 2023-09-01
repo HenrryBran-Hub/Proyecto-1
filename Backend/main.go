@@ -42,6 +42,7 @@ func main() {
 	http.Handle("/simbolos", corsMiddleware(http.HandlerFunc(handleSimbolos)))
 	http.Handle("/ejecutar", corsMiddleware(http.HandlerFunc(handleEjecutar)))
 	http.Handle("/errores", corsMiddleware(http.HandlerFunc(handleErrores)))
+	http.Handle("/arbol", corsMiddleware(http.HandlerFunc(handleCst)))
 
 	fmt.Println("Servidor escuchando en http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
@@ -110,9 +111,7 @@ func ejecutar(code string) string {
 		}
 		instruction.Ejecutar(&Ast, nil)
 	}
-
 	return Ast.GetPrint()
-
 }
 
 func handleSimbolos(w http.ResponseWriter, r *http.Request) {
@@ -261,6 +260,99 @@ func errores(code string) string {
 		}
 	}
 	Ast.TablaErroresHTML()
+	return Ast.GetPrint()
+}
+
+func handleCst(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error al leer el cuerpo de la petición", http.StatusInternalServerError)
+		return
+	}
+
+	var data map[string]string
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error al procesar el cuerpo de la petición", http.StatusBadRequest)
+		return
+	}
+
+	code := data["code"]
+	result := Cst(code)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"result": result})
+}
+
+func Cst(code string) string {
+	input := antlr.NewInputStream(code)
+	lexer := parser.NewSwiftLexer(input)
+	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create a new instance of MyErrorListener
+	errorListener := NewMyErrorListener()
+
+	// Remove default error listeners and add our custom error listener
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+
+	p := parser.NewSwiftGrammarParser(tokens)
+	p.BuildParseTrees = true
+
+	// Remove default error listeners and add our custom error listener
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
+	tree := p.S()
+	var listener *TreeShapeListener = NewTreeShapeListener()
+	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
+	Code := listener.Code
+	var Ast environment.AST
+	Ast.IniciarAmbito()
+	var contador int = 0
+	for _, inst := range Code {
+		if inst == nil {
+			fmt.Println("Error: inst is nil")
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
+			continue
+		}
+		instruction.Ejecutar(&Ast, nil)
+		contador++
+	}
+
+	var operands []*environment.Node
+	for i := 0; i < contador; i++ {
+		operands = append(operands, Ast.Pop())
+	}
+	Ast.Id += 1
+	Ast.Push(&environment.Node{
+		Id:       Ast.Id,
+		Label:    "Instrucciones",
+		Children: operands,
+	})
+
+	var operands2 []*environment.Node
+	for i := 0; i < 1; i++ {
+		operands2 = append(operands2, Ast.Pop())
+	}
+	Ast.Id += 1
+	Ast.Push(&environment.Node{
+		Id:       Ast.Id,
+		Label:    "Root",
+		Children: operands2,
+	})
+
+	Ast.Postorder(Ast.Pop())
+	Ast.GenerateCST()
 	return Ast.GetPrint()
 }
 
