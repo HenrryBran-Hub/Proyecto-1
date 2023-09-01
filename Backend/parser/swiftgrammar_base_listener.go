@@ -237,3 +237,63 @@ func (s *BaseSwiftGrammarListener) EnterStringembebida(ctx *StringembebidaContex
 
 // ExitStringembebida is called when production stringembebida is exited.
 func (s *BaseSwiftGrammarListener) ExitStringembebida(ctx *StringembebidaContext) {}
+
+// EnterMatrizcontrol is called when production matrizcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterMatrizcontrol(ctx *MatrizcontrolContext) {}
+
+// ExitMatrizcontrol is called when production matrizcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitMatrizcontrol(ctx *MatrizcontrolContext) {}
+
+// EnterTipomatriz is called when production tipomatriz is entered.
+func (s *BaseSwiftGrammarListener) EnterTipomatriz(ctx *TipomatrizContext) {}
+
+// ExitTipomatriz is called when production tipomatriz is exited.
+func (s *BaseSwiftGrammarListener) ExitTipomatriz(ctx *TipomatrizContext) {}
+
+// EnterDefmatriz is called when production defmatriz is entered.
+func (s *BaseSwiftGrammarListener) EnterDefmatriz(ctx *DefmatrizContext) {}
+
+// ExitDefmatriz is called when production defmatriz is exited.
+func (s *BaseSwiftGrammarListener) ExitDefmatriz(ctx *DefmatrizContext) {}
+
+// EnterListavaloresmat is called when production listavaloresmat is entered.
+func (s *BaseSwiftGrammarListener) EnterListavaloresmat(ctx *ListavaloresmatContext) {}
+
+// ExitListavaloresmat is called when production listavaloresmat is exited.
+func (s *BaseSwiftGrammarListener) ExitListavaloresmat(ctx *ListavaloresmatContext) {}
+
+// EnterListavaloresmat2 is called when production listavaloresmat2 is entered.
+func (s *BaseSwiftGrammarListener) EnterListavaloresmat2(ctx *Listavaloresmat2Context) {}
+
+// ExitListavaloresmat2 is called when production listavaloresmat2 is exited.
+func (s *BaseSwiftGrammarListener) ExitListavaloresmat2(ctx *Listavaloresmat2Context) {}
+
+// EnterListaexpresions is called when production listaexpresions is entered.
+func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
+
+// ExitListaexpresions is called when production listaexpresions is exited.
+func (s *BaseSwiftGrammarListener) ExitListaexpresions(ctx *ListaexpresionsContext) {}
+
+// EnterListaexpresion is called when production listaexpresion is entered.
+func (s *BaseSwiftGrammarListener) EnterListaexpresion(ctx *ListaexpresionContext) {}
+
+// ExitListaexpresion is called when production listaexpresion is exited.
+func (s *BaseSwiftGrammarListener) ExitListaexpresion(ctx *ListaexpresionContext) {}
+
+// EnterSimplematriz is called when production simplematriz is entered.
+func (s *BaseSwiftGrammarListener) EnterSimplematriz(ctx *SimplematrizContext) {}
+
+// ExitSimplematriz is called when production simplematriz is exited.
+func (s *BaseSwiftGrammarListener) ExitSimplematriz(ctx *SimplematrizContext) {}
+
+// EnterMatrizasignacion is called when production matrizasignacion is entered.
+func (s *BaseSwiftGrammarListener) EnterMatrizasignacion(ctx *MatrizasignacionContext) {}
+
+// ExitMatrizasignacion is called when production matrizasignacion is exited.
+func (s *BaseSwiftGrammarListener) ExitMatrizasignacion(ctx *MatrizasignacionContext) {}
+
+// EnterMatrizobtener is called when production matrizobtener is entered.
+func (s *BaseSwiftGrammarListener) EnterMatrizobtener(ctx *MatrizobtenerContext) {}
+
+// ExitMatrizobtener is called when production matrizobtener is exited.
+func (s *BaseSwiftGrammarListener) ExitMatrizobtener(ctx *MatrizobtenerContext) {}

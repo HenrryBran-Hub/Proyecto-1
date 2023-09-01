@@ -115,6 +115,36 @@ type SwiftGrammarListener interface {
 	// EnterStringembebida is called when entering the stringembebida production.
 	EnterStringembebida(c *StringembebidaContext)
 
+	// EnterMatrizcontrol is called when entering the matrizcontrol production.
+	EnterMatrizcontrol(c *MatrizcontrolContext)
+
+	// EnterTipomatriz is called when entering the tipomatriz production.
+	EnterTipomatriz(c *TipomatrizContext)
+
+	// EnterDefmatriz is called when entering the defmatriz production.
+	EnterDefmatriz(c *DefmatrizContext)
+
+	// EnterListavaloresmat is called when entering the listavaloresmat production.
+	EnterListavaloresmat(c *ListavaloresmatContext)
+
+	// EnterListavaloresmat2 is called when entering the listavaloresmat2 production.
+	EnterListavaloresmat2(c *Listavaloresmat2Context)
+
+	// EnterListaexpresions is called when entering the listaexpresions production.
+	EnterListaexpresions(c *ListaexpresionsContext)
+
+	// EnterListaexpresion is called when entering the listaexpresion production.
+	EnterListaexpresion(c *ListaexpresionContext)
+
+	// EnterSimplematriz is called when entering the simplematriz production.
+	EnterSimplematriz(c *SimplematrizContext)
+
+	// EnterMatrizasignacion is called when entering the matrizasignacion production.
+	EnterMatrizasignacion(c *MatrizasignacionContext)
+
+	// EnterMatrizobtener is called when entering the matrizobtener production.
+	EnterMatrizobtener(c *MatrizobtenerContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -222,4 +252,34 @@ type SwiftGrammarListener interface {
 
 	// ExitStringembebida is called when exiting the stringembebida production.
 	ExitStringembebida(c *StringembebidaContext)
+
+	// ExitMatrizcontrol is called when exiting the matrizcontrol production.
+	ExitMatrizcontrol(c *MatrizcontrolContext)
+
+	// ExitTipomatriz is called when exiting the tipomatriz production.
+	ExitTipomatriz(c *TipomatrizContext)
+
+	// ExitDefmatriz is called when exiting the defmatriz production.
+	ExitDefmatriz(c *DefmatrizContext)
+
+	// ExitListavaloresmat is called when exiting the listavaloresmat production.
+	ExitListavaloresmat(c *ListavaloresmatContext)
+
+	// ExitListavaloresmat2 is called when exiting the listavaloresmat2 production.
+	ExitListavaloresmat2(c *Listavaloresmat2Context)
+
+	// ExitListaexpresions is called when exiting the listaexpresions production.
+	ExitListaexpresions(c *ListaexpresionsContext)
+
+	// ExitListaexpresion is called when exiting the listaexpresion production.
+	ExitListaexpresion(c *ListaexpresionContext)
+
+	// ExitSimplematriz is called when exiting the simplematriz production.
+	ExitSimplematriz(c *SimplematrizContext)
+
+	// ExitMatrizasignacion is called when exiting the matrizasignacion production.
+	ExitMatrizasignacion(c *MatrizasignacionContext)
+
+	// ExitMatrizobtener is called when exiting the matrizobtener production.
+	ExitMatrizobtener(c *MatrizobtenerContext)
 }

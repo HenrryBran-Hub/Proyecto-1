@@ -111,7 +111,6 @@ func ejecutar(code string) string {
 		}
 		instruction.Ejecutar(&Ast, nil)
 	}
-
 	return Ast.GetPrint()
 }
 

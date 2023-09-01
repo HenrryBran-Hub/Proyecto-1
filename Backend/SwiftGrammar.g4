@@ -47,6 +47,7 @@ instruction returns [interfaces.Instruction inst]
 | vectoragregar  { $inst = $vectoragregar.veadct }
 | vectorremover  { $inst = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
+| matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -349,6 +350,87 @@ floatembebida returns [interfaces.Expression floemb]
 stringembebida returns [interfaces.Expression stremb]
 : STRING PARIZQ expr PARDER { $stremb = instructions.NewFuncionStringEmbebida($expr.e)};
 
+//CREACION DE MATRICES
+matrizcontrol returns [interfaces.Instruction matct]
+: VAR ID_VALIDO (DOS_PUNTOS tipomatriz)? IG defmatriz
+{
+    if ($DOS_PUNTOS != nil) {
+        $matct = instructions.NewMatrizDeclaracion($VAR.line, $VAR.pos, $ID_VALIDO.text ,$tipomatriz.tipomat, $defmatriz.defmat)
+    } else {
+        $matct = instructions.NewMatrizDeclaracionSinTipo($VAR.line, $VAR.pos, $ID_VALIDO.text , $defmatriz.defmat)
+    }
+}
+;
+
+tipomatriz returns [interfaces.Expression tipomat]
+: CORCHIZQ tipomatriz CORCHDER 
+{ 
+    $tipomat = instructions.NewMatrizDimension($CORCHIZQ.line, $CORCHIZQ.pos, $tipomatriz.tipomat)
+}
+| CORCHIZQ tipodato CORCHDER 
+{ 
+    $tipomat = instructions.NewMatrizTipo($CORCHIZQ.line, $CORCHIZQ.pos, $tipodato.tipo)
+}
+;
+
+defmatriz returns [interfaces.Instruction defmat]
+: listavaloresmat { $defmat = $listavaloresmat.listvlamat}
+;
+
+listavaloresmat returns [interfaces.Instruction listvlamat]
+: CORCHIZQ listavaloresmat2 CORCHDER { $listvlamat = $listavaloresmat2.mylisttmatt}
+| simplematriz { $listvlamat = $simplematriz.simmat}
+;
+
+listavaloresmat2 returns [interfaces.Instruction mylisttmatt]
+: op=listavaloresmat2 COMA listavaloresmat { $mylisttmatt = instructions.NewMatrizListaExpresionList($op.mylisttmatt, $listavaloresmat.listvlamat)}
+| listavaloresmat { $mylisttmatt = instructions.NewMatrizListaNivel($listavaloresmat.listvlamat)}
+| listaexpresions { $mylisttmatt = instructions.NewMatrizListaExpresion($listaexpresions.blkparf)}
+;
+
+listaexpresions returns [[]interface{} blkparf]
+@init{
+    $blkparf = []interface{}{}
+    var listInt []IListaexpresionContext
+}
+: funpar+=listaexpresion+
+{
+    listInt = localctx.(*ListaexpresionsContext).GetFunpar()
+    for _, e := range listInt {
+        $blkparf = append($blkparf, e.GetFunpar())
+    }
+}
+;
+
+listaexpresion returns [interfaces.Expression funpar]
+: COMA expr 
+{
+    $funpar = instructions.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
+}
+| expr 
+{
+    $funpar = instructions.NewArregloParametro($expr.e)
+}
+;
+
+simplematriz returns [interfaces.Instruction simmat]
+: tipomatriz PARIZQ REPEATING DOS_PUNTOS op=simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER 
+{ $simmat = instructions.NewMatrizSimpleUno($tipomatriz.tipomat, $op.simmat, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
+| tipomatriz PARIZQ REPEATING DOS_PUNTOS expr COMA COUNT DOS_PUNTOS NUMBER PARDER 
+{ $simmat = instructions.NewMatrizSimpleDos($tipomatriz.tipomat, $expr.e, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
+;
+
+matrizasignacion
+: ID_VALIDO CORCHIZQ expr CORCHDER CORCHIZQ expr CORCHDER (CORCHIZQ expr CORCHDER)* IG expr 
+{}
+;
+
+matrizobtener
+: ID_VALIDO CORCHIZQ expr CORCHDER CORCHIZQ expr CORCHDER (CORCHIZQ expr CORCHDER)* 
+{}
+;
+
+
 /*
 //CREACION DEL STRUCT
 
@@ -360,35 +442,5 @@ listaatributos: (LET | VAR) ID_VALIDO (DOS_PUNTOS tipodato)? (
 	)? PUNTOCOMA {}
 	| MUTATING CIERRE_INTE {};
 
-//CREACION DE MATRICES
-matrizcontrol:
-	VAR ID_VALIDO (DOS_PUNTOS tipomatriz)? IG defmatriz {};
-
-tipomatriz:
-	CORCHIZQ tipomatriz CORCHDER {}
-	| CORCHIZQ tipodato CORCHDER {};
-
-defmatriz: listavaloresmat {} | simplematriz {};
-
-listavaloresmat: CORCHIZQ listavaloresmat2 CORCHDER {};
-
-listavaloresmat2:
-	listavaloresmat2 COMA listavaloresmat {}
-	| listavaloresmat {}
-	| listaexpresion {};
-
-simplematriz:
-	tipomatriz PARIZQ REPEATING DOS_PUNTOS simplematriz COMA COUNT DOS_PUNTOS NUMBER PARDER {}
-	| tipomatriz PARIZQ REPEATING DOS_PUNTOS expresion COMA COUNT DOS_PUNTOS NUMBER PARDER {};
-
-matrizasignacion:
-	ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER (
-		CORCHIZQ expresion CORCHDER
-	)* IG expresion {};
-
-matrizobtener:
-	ID_VALIDO CORCHIZQ expresion CORCHDER CORCHIZQ expresion CORCHDER (
-		CORCHIZQ expresion CORCHDER
-	)* {};
 
 */
