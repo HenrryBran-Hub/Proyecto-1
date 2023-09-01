@@ -906,6 +906,7 @@ func (c *AST) ImprimirArreglovalores() {
 	for nivel := c.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
 		lista := nivel.Value.(*list.List)
 		fmt.Println("Nivel de pila:", contadorpila)
+		fmt.Println("----------------------")
 		for elem := lista.Front(); elem != nil; elem = elem.Next() {
 			valores := elem.Value.(Valores_Matriz)
 			fmt.Printf("Tipo: %d\n", valores.Tipo)

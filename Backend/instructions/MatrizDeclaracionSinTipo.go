@@ -115,6 +115,17 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 
 	if Condiciones.Elements != nil {
 
+		ast.ImprimirArreglovalores()
+		contadorpila := 0
+		for nivel := ast.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
+			lista := nivel.Value.(*list.List)
+			if lista.Back() != nil {
+				contadorpila++
+			}
+		}
+
+		fmt.Println("contador de pila:", contadorpila)
+
 		//comprobacion del tipo en todos
 		for nivel := ast.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
 			lista := nivel.Value.(*list.List)
@@ -163,17 +174,18 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 		}
 
 		var matriz environment.Matriz
-		contadorpila := tipo.Valor.(int) - 1
-		pila := ast.Pila_Matriz_Val.Len()
 		lista := ast.Lista_Matriz_Val.Len()
 		elementos := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Elements.Len()
-		pila2 := tipo.Valor.(int)
+		etiqueta := false
 
-		if pila <= 3 {
+		if contadorpila < 2 {
 			matriz = ast.NuevaMatriz(v.Name, true, tipo2, lista, elementos)
+			etiqueta = true
 		} else {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo2, pila2, lista, elementos)
+			matriz = ast.NuevaMatriz(v.Name, true, tipo2, contadorpila, lista, elementos)
 		}
+
+		contadorpila--
 
 		for nivel := ast.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
 			lista := nivel.Value.(*list.List)
@@ -183,7 +195,7 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 				if valores.Elements != nil {
 					contadorvalor := 0
 					for e := valores.Elements.Front(); e != nil; e = e.Next() {
-						if tipo.Valor.(int) == 2 {
+						if etiqueta {
 							ast.IngresarValor(&matriz, []int{contadorlista, contadorvalor}, e.Value.(environment.Symbol).Valor)
 						} else {
 							ast.IngresarValor(&matriz, []int{contadorpila, contadorlista, contadorvalor}, e.Value.(environment.Symbol).Valor)
@@ -195,6 +207,7 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 			}
 			contadorpila--
 		}
+
 		fmt.Println(matriz)
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
