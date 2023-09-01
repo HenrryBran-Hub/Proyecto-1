@@ -115,9 +115,6 @@ type SwiftGrammarListener interface {
 	// EnterSimplematriz is called when entering the simplematriz production.
 	EnterSimplematriz(c *SimplematrizContext)
 
-	// EnterMatrizasignacion is called when entering the matrizasignacion production.
-	EnterMatrizasignacion(c *MatrizasignacionContext)
-
 	// EnterListamatrizaddsubs is called when entering the listamatrizaddsubs production.
 	EnterListamatrizaddsubs(c *ListamatrizaddsubsContext)
 
@@ -255,9 +252,6 @@ type SwiftGrammarListener interface {
 
 	// ExitSimplematriz is called when exiting the simplematriz production.
 	ExitSimplematriz(c *SimplematrizContext)
-
-	// ExitMatrizasignacion is called when exiting the matrizasignacion production.
-	ExitMatrizasignacion(c *MatrizasignacionContext)
 
 	// ExitListamatrizaddsubs is called when exiting the listamatrizaddsubs production.
 	ExitListamatrizaddsubs(c *ListamatrizaddsubsContext)

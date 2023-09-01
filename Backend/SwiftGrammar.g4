@@ -48,7 +48,6 @@ instruction returns [interfaces.Instruction inst]
 | vectorremover  { $inst = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
 | matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
-| matrizasignacion (PUNTOCOMA)? { $inst = $matrizasignacion.matasig}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -84,7 +83,6 @@ instructionint returns [interfaces.Instruction insint]
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
-| matrizasignacion (PUNTOCOMA)? { $insint = $matrizasignacion.matasig}
 ;
 
 /////////////////////////
@@ -304,7 +302,11 @@ bloqueparams returns [interfaces.Expression blopas]
 vectoragregar returns [interfaces.Instruction veadct]
 : ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = instructions.NewArregloAppend($ID_VALIDO.text , $expr.e)}
 | prin=ID_VALIDO CORCHIZQ pop=expr CORCHDER IG secu=ID_VALIDO CORCHIZQ sop=expr CORCHDER { $veadct = instructions.NewArregloAppendArreglo($prin.text , $pop.e, $secu.text, $sop.e)}
-| ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs IG op3=expr
+{ $veadct = instructions.NewMatrizAsignacionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas, $op3.e) }
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER IG op3=expr
+{ $veadct = instructions.NewMatrizAsignacion($ID_VALIDO.text, $op1.e, $op2.e, $op3.e) } 
+|ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
 
 vectorremover returns [interfaces.Instruction vermct]
 : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER  { $vermct = instructions.NewArregloRemoveLast($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)}
@@ -391,11 +393,6 @@ simplematriz returns [interfaces.Instruction simmat]
 { $simmat = instructions.NewMatrizSimpleUno($tipomatriz.tipomat, $op.simmat, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
 | tipomatriz PARIZQ REPEATING DOS_PUNTOS expr COMA COUNT DOS_PUNTOS NUMBER PARDER 
 { $simmat = instructions.NewMatrizSimpleDos($tipomatriz.tipomat, $expr.e, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
-;
-
-matrizasignacion returns [interfaces.Instruction matasig]
-: ID_VALIDO CORCHIZQ expr CORCHDER listamatrizaddsubs IG expr 
-{ $matasig = instructions.NewMatrizAsiginacion($ID_VALIDO.text, $expr.e, $listamatrizaddsubs.blklimatas) }
 ;
 
 listamatrizaddsubs returns [[]interface{} blklimatas]

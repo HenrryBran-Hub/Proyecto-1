@@ -9,8 +9,6 @@ import (
 	"unicode"
 )
 
-
-
 // Suppress unused import error
 var _ = fmt.Printf
 var _ = sync.Once{}

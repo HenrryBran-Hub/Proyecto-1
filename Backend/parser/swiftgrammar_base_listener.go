@@ -236,12 +236,6 @@ func (s *BaseSwiftGrammarListener) EnterSimplematriz(ctx *SimplematrizContext) {
 // ExitSimplematriz is called when production simplematriz is exited.
 func (s *BaseSwiftGrammarListener) ExitSimplematriz(ctx *SimplematrizContext) {}
 
-// EnterMatrizasignacion is called when production matrizasignacion is entered.
-func (s *BaseSwiftGrammarListener) EnterMatrizasignacion(ctx *MatrizasignacionContext) {}
-
-// ExitMatrizasignacion is called when production matrizasignacion is exited.
-func (s *BaseSwiftGrammarListener) ExitMatrizasignacion(ctx *MatrizasignacionContext) {}
-
 // EnterListamatrizaddsubs is called when production listamatrizaddsubs is entered.
 func (s *BaseSwiftGrammarListener) EnterListamatrizaddsubs(ctx *ListamatrizaddsubsContext) {}
 
