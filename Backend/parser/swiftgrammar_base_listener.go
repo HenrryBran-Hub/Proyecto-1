@@ -248,6 +248,56 @@ func (s *BaseSwiftGrammarListener) EnterListamatrizaddsub(ctx *Listamatrizaddsub
 // ExitListamatrizaddsub is called when production listamatrizaddsub is exited.
 func (s *BaseSwiftGrammarListener) ExitListamatrizaddsub(ctx *ListamatrizaddsubContext) {}
 
+// EnterStructcontrol is called when production structcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterStructcontrol(ctx *StructcontrolContext) {}
+
+// ExitStructcontrol is called when production structcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitStructcontrol(ctx *StructcontrolContext) {}
+
+// EnterListaatributos is called when production listaatributos is entered.
+func (s *BaseSwiftGrammarListener) EnterListaatributos(ctx *ListaatributosContext) {}
+
+// ExitListaatributos is called when production listaatributos is exited.
+func (s *BaseSwiftGrammarListener) ExitListaatributos(ctx *ListaatributosContext) {}
+
+// EnterListaatributo is called when production listaatributo is entered.
+func (s *BaseSwiftGrammarListener) EnterListaatributo(ctx *ListaatributoContext) {}
+
+// ExitListaatributo is called when production listaatributo is exited.
+func (s *BaseSwiftGrammarListener) ExitListaatributo(ctx *ListaatributoContext) {}
+
+// EnterStructexpr is called when production structexpr is entered.
+func (s *BaseSwiftGrammarListener) EnterStructexpr(ctx *StructexprContext) {}
+
+// ExitStructexpr is called when production structexpr is exited.
+func (s *BaseSwiftGrammarListener) ExitStructexpr(ctx *StructexprContext) {}
+
+// EnterL_dupla is called when production l_dupla is entered.
+func (s *BaseSwiftGrammarListener) EnterL_dupla(ctx *L_duplaContext) {}
+
+// ExitL_dupla is called when production l_dupla is exited.
+func (s *BaseSwiftGrammarListener) ExitL_dupla(ctx *L_duplaContext) {}
+
+// EnterLlamadastruct is called when production llamadastruct is entered.
+func (s *BaseSwiftGrammarListener) EnterLlamadastruct(ctx *LlamadastructContext) {}
+
+// ExitLlamadastruct is called when production llamadastruct is exited.
+func (s *BaseSwiftGrammarListener) ExitLlamadastruct(ctx *LlamadastructContext) {}
+
+// EnterAsignacionparametrostruct is called when production asignacionparametrostruct is entered.
+func (s *BaseSwiftGrammarListener) EnterAsignacionparametrostruct(ctx *AsignacionparametrostructContext) {
+}
+
+// ExitAsignacionparametrostruct is called when production asignacionparametrostruct is exited.
+func (s *BaseSwiftGrammarListener) ExitAsignacionparametrostruct(ctx *AsignacionparametrostructContext) {
+}
+
+// EnterLlamadafuncionstruct is called when production llamadafuncionstruct is entered.
+func (s *BaseSwiftGrammarListener) EnterLlamadafuncionstruct(ctx *LlamadafuncionstructContext) {}
+
+// ExitLlamadafuncionstruct is called when production llamadafuncionstruct is exited.
+func (s *BaseSwiftGrammarListener) ExitLlamadafuncionstruct(ctx *LlamadafuncionstructContext) {}
+
 // EnterFunciondeclaracioncontrol is called when production funciondeclaracioncontrol is entered.
 func (s *BaseSwiftGrammarListener) EnterFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
 }
@@ -256,11 +306,11 @@ func (s *BaseSwiftGrammarListener) EnterFunciondeclaracioncontrol(ctx *Funcionde
 func (s *BaseSwiftGrammarListener) ExitFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
 }
 
-// EnterListaparametros is called when production listaparametros is entered.
-func (s *BaseSwiftGrammarListener) EnterListaparametros(ctx *ListaparametrosContext) {}
+// EnterListaparametro is called when production listaparametro is entered.
+func (s *BaseSwiftGrammarListener) EnterListaparametro(ctx *ListaparametroContext) {}
 
-// ExitListaparametros is called when production listaparametros is exited.
-func (s *BaseSwiftGrammarListener) ExitListaparametros(ctx *ListaparametrosContext) {}
+// ExitListaparametro is called when production listaparametro is exited.
+func (s *BaseSwiftGrammarListener) ExitListaparametro(ctx *ListaparametroContext) {}
 
 // EnterFuncionllamadacontrol is called when production funcionllamadacontrol is entered.
 func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}

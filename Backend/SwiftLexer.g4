@@ -38,6 +38,7 @@ AT: 'at';
 REPEATING: 'repeating';
 STRUCT: 'struct';
 MUTATING: 'mutating';
+SELF: 'self';
 
 // primitives
 NUMBER: [0-9]+ ('.' [0-9]+)?;

@@ -48,6 +48,8 @@ instruction returns [interfaces.Instruction inst]
 | vectorremover  { $inst = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
 | matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
+| structcontrol { $inst = $structcontrol.struck}
+| funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -416,35 +418,156 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 }
 ;
 
-/*
 //CREACION DEL STRUCT
 
-structcontrol:
-	STRUCT ID_VALIDO LLAVEIZQ (listaatributos)* LLAVEDER {};
+structcontrol returns [interfaces.Instruction struck]
+: STRUCT ID_VALIDO LLAVEIZQ listaatributos LLAVEDER 
+{
+    $struck = instructions.NewStruck($STRUCT.line, $STRUCT.pos, $ID_VALIDO.text, $listaatributos.blkstlt);
+};
 
-listaatributos: (LET | VAR) ID_VALIDO (DOS_PUNTOS tipodato)? (
-		IG expresion
-	)? PUNTOCOMA {}
-	| MUTATING CIERRE_INTE {};
+listaatributos returns [[]interface{} blkstlt]
+@init{
+    $blkstlt = []interface{}{}
+    var listInt []IListaatributoContext
+}
+: listatstr+=listaatributo+
+{
+    listInt = localctx.(*ListaatributosContext).GetListatstr()
+    for _, e := range listInt {
+        $blkstlt = append($blkstlt, e.GetListatstr())
+    }
+}
+;
 
+listaatributo returns [interfaces.Instruction listatstr]
+: tip1=(LET | VAR) tip4=ID_VALIDO DOS_PUNTOS (tip2=tipodato|tip3=ID_VALIDO) (IG expr)? (PUNTOCOMA)? 
+{
+    if $IG != nil{
+        if $tip3.text != "" {
+            $listatstr = instructions.NewStructAtributosConTE2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text, $expr.e)
+        }else{                        
+            $listatstr = instructions.NewStructAtributosConTE($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo, $expr.e)
+        }        
+    }else{ 
+        if $tip3.text != "" {                        
+            $listatstr = instructions.NewStructAtributosConT2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text) 
+        }else{            
+            $listatstr = instructions.NewStructAtributosConT($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo) 
+        }
+    }
+}
+| tipo=(LET | VAR) ID_VALIDO (IG expr)? (PUNTOCOMA)? 
+{
+    if $IG != nil{
+        $listatstr = instructions.NewStructAtributosConE($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text, $expr.e)
+    }else{
+        $listatstr = instructions.NewStructAtributos($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text)
+    }
+}
+| (MUTATING)?  funciondeclaracioncontrol 
+{
+    if $MUTATING != nil{
+        //$listatstr = instructions.NewStruckMutatingFunction($funciondeclaracioncontrol.fdc)
+    } else {
+        //$listatstr = instructions.NewStruckFunction($funciondeclaracioncontrol.fdc)
+    }
+}
+;
 
-*/
+//asignacion del struct
+structexpr
+: (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG ID_VALIDO( l_dupla )?
+{}
+| (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG (ID_VALIDO)?
+{}
+| (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG expr
+{}
+;
+
+l_dupla
+:(ID_VALIDO DOS_PUNTOS expr)+
+{}
+;
+
+//asignacion y obtencio de struct
+llamadastruct
+: ID_VALIDO PUNTO ID_VALIDO
+{}
+;
+
+asignacionparametrostruct
+: ID_VALIDO PUNTO ID_VALIDO IG expr
+{}
+;
+
+llamadafuncionstruct
+: ID_VALIDO PUNTO ID_VALIDO PARIZQ PARDER
+{}
+;
 
 //CREACION DE FUNCIONES
-funciondeclaracioncontrol
-: FUNCION ID_VALIDO PARIZQ listaparametros? PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER {}
-| FUNCION ID_VALIDO PARIZQ listaparametros? PARDER LLAVEIZQ blockinterno LLAVEDER {};
+funciondeclaracioncontrol returns [interfaces.Instruction fdc]
+: FUNCION ID_VALIDO PARIZQ listaparametro PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = instructions.NewFuncionesDeclaracionRP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $tipodato.tipo, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ  PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = instructions.NewFuncionesDeclaracionR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $tipodato.tipo, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ listaparametro PARDER LLAVEIZQ blockinterno LLAVEDER 
+{
+   $fdc = instructions.NewFuncionesDeclaracionP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ PARDER LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = instructions.NewFuncionesDeclaracion($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $blockinterno.blkint)
+}
+;
 
-listaparametros:
-	COMA (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato listaparametros {}
-	| (ID_VALIDO | GUIONBAJO)? ID_VALIDO DOS_PUNTOS INOUT? tipodato {};
+listaparametro returns [interfaces.Instruction listparfun]
+: op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato COMA op3=listaparametro 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true, true, $op3.listparfun )
+        }else {
+            $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true, $op3.listparfun )
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false, $op3.listparfun )
+        }else {
+            $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false,$op3.listparfun )
+        } 
+    }      
+}
+| op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true , true)
+        }else {
+            $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true)
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false)
+        }else {
+            $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false)
+    } 
+    }
+    
+};
 
-funcionllamadacontrol:
-	ID_VALIDO PARIZQ listaparametrosllamada? PARIZQ {};
+funcionllamadacontrol
+: ID_VALIDO PARIZQ listaparametrosllamada PARIZQ {}
+| ID_VALIDO PARIZQ PARIZQ {};
 
-listaparametrosllamada:
-	COMA (ID_VALIDO DOS_PUNTOS)? ('&')? expr listaparametrosllamada {}
-	| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
+listaparametrosllamada
+: COMA (ID_VALIDO DOS_PUNTOS)? ('&')? expr listaparametrosllamada {}
+| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
 
 //CREACION DE EMBEBIDAS
 
