@@ -15,7 +15,7 @@ func NewMatrizListaExpresion(lista []interface{}) MatrizListaExpresion {
 	return exp
 }
 
-func (o MatrizListaExpresion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (o MatrizListaExpresion) Ejecutar(ast *environment.AST) interface{} {
 	lista := list.New()
 	for _, inst := range o.ListaValores {
 		if inst == nil {
@@ -25,7 +25,7 @@ func (o MatrizListaExpresion) Ejecutar(ast *environment.AST, env interface{}) in
 		if !ok {
 			continue
 		}
-		valor := instruction.Ejecutar(ast, env)
+		valor := instruction.Ejecutar(ast)
 		lista.PushBack(valor)
 	}
 	arreglo := environment.Valores_Matriz{

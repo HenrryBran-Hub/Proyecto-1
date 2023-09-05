@@ -13,7 +13,7 @@ func NewTransferenciaContinue(lin int, col int) TransferenciaContinue {
 	return TransferenciaContinue{Lin: lin, Col: col}
 }
 
-func (v TransferenciaContinue) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v TransferenciaContinue) Ejecutar(ast *environment.AST) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

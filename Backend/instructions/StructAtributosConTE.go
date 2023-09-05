@@ -24,7 +24,7 @@ func NewStructAtributosConTE2(line, col int, tipo string, name string, typet str
 	return StructAtributosConTE{line, col, tipo, name, environment.STRUCT, expr, typet}
 }
 
-func (v StructAtributosConTE) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v StructAtributosConTE) Ejecutar(ast *environment.AST) interface{} {
 
 	// var tipoexpstr environment.TipoExpresion
 	// switch v.Type {
@@ -42,7 +42,7 @@ func (v StructAtributosConTE) Ejecutar(ast *environment.AST, env interface{}) in
 	// 	tipoexpstr = environment.NULL
 	// }
 
-	valor := v.Expr.Ejecutar(ast, env)
+	valor := v.Expr.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   v.Line,
 		Col:   v.Col,

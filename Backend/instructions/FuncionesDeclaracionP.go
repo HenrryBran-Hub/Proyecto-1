@@ -19,9 +19,9 @@ func NewFuncionesDeclaracionP(lin int, col int, name string, parametros interfac
 	return FuncionesDeclaracionP{lin, col, name, parametros, bloque}
 }
 
-func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST) interface{} {
 	listavalores := list.New()
-	v.Parametros.Ejecutar(ast, env)
+	v.Parametros.Ejecutar(ast)
 	for e := ast.Lista_Funciones_Var.Front(); e != nil; e = e.Next() {
 		valor := e.Value.(environment.VariableFuncion)
 		valor.Symbols.Scope = "Funcion-" + v.Name

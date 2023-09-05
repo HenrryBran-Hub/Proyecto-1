@@ -14,8 +14,8 @@ func NewMatrizListaNivel(op1 interfaces.Instruction) MatrizListaNivel {
 	return exp
 }
 
-func (o MatrizListaNivel) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (o MatrizListaNivel) Ejecutar(ast *environment.AST) interface{} {
 	ast.AumentarNivel()
-	o.Op.Ejecutar(ast, env)
+	o.Op.Ejecutar(ast)
 	return nil
 }

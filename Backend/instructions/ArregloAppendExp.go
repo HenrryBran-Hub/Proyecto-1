@@ -16,10 +16,10 @@ func NewArregloAppendExp(prin string, pop interfaces.Expression, sop interfaces.
 	return ArregloAppendExp{prin, pop, sop}
 }
 
-func (v ArregloAppendExp) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloAppendExp) Ejecutar(ast *environment.AST) interface{} {
 	Principal := ast.GetArreglo(v.Prin)
-	Prinop := v.Pop.Ejecutar(ast, env)
-	Secuop := v.Sop.Ejecutar(ast, env)
+	Prinop := v.Pop.Ejecutar(ast)
+	Secuop := v.Sop.Ejecutar(ast)
 	if Principal == nil {
 		Errores := environment.Errores{
 			Descripcion: "El arreglo que esta intentando agregar no existe: \n Arreglo: " + v.Prin,

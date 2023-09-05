@@ -16,7 +16,7 @@ func NewArregloDeclaracionSinLista(lin int, col int, name string, tipo environme
 	return ArregloDeclaracionSinLista{lin, col, name, tipo}
 }
 
-func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST) interface{} {
 	listavalores := list.New()
 	symbol := environment.Symbol{
 		Lin:   v.Lin,

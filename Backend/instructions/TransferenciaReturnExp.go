@@ -15,8 +15,8 @@ func NewTransferenciaReturnExp(lin int, col int, value interfaces.Expression) Tr
 	return TransferenciaReturnExp{Lin: lin, Col: col, Value: value}
 }
 
-func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

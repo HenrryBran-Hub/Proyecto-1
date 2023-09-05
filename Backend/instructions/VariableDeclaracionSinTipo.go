@@ -17,8 +17,8 @@ func NewVariableDeclaracionSinTipo(lin int, col int, name string, value interfac
 	return VariableDeclaracionSinTipo{Lin: lin, Col: col, Name: name, Value: value}
 }
 
-func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   value.Lin,
 		Col:   value.Col,

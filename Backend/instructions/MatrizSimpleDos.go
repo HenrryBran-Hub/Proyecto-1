@@ -21,9 +21,9 @@ func NewMatrizSimpleDos(tipo interfaces.Expression, expre interfaces.Expression,
 	return exp
 }
 
-func (o MatrizSimpleDos) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	tipo := o.Type.Ejecutar(ast, env)
-	expre := o.Expre.Ejecutar(ast, env)
+func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
+	tipo := o.Type.Ejecutar(ast)
+	expre := o.Expre.Ejecutar(ast)
 
 	if tipo.Tipo != expre.Tipo {
 		Errores := environment.Errores{

@@ -17,7 +17,7 @@ func NewStruck(line, col int, name string, op []interface{}) Struck {
 	return Struck{line, col, name, op}
 }
 
-func (v Struck) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v Struck) Ejecutar(ast *environment.AST) interface{} {
 
 	for _, inst := range v.Op {
 		if inst == nil {
@@ -27,7 +27,7 @@ func (v Struck) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		if !ok {
 			continue
 		}
-		instruction.Ejecutar(ast, env)
+		instruction.Ejecutar(ast)
 	}
 
 	fmt.Println(ast.AtributosStruct)

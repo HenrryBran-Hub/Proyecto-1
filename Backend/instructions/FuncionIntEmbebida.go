@@ -16,9 +16,9 @@ func NewFuncionIntEmbebida(op interfaces.Expression) FuncionIntEmbebida {
 	return exp
 }
 
-func (o FuncionIntEmbebida) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o FuncionIntEmbebida) Ejecutar(ast *environment.AST) environment.Symbol {
 	var op environment.Symbol
-	op = o.Op.Ejecutar(ast, env)
+	op = o.Op.Ejecutar(ast)
 
 	if op.Tipo == environment.INTEGER {
 		return environment.Symbol{Lin: op.Lin, Col: op.Col, Tipo: environment.INTEGER, Valor: op.Valor}

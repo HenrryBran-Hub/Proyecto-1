@@ -17,8 +17,8 @@ func NewFuncionesLlamadaList3(lin int, col int, name string, expr interfaces.Exp
 	return FuncionesLlamadaList3{lin, col, name, expr, lista}
 }
 
-func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	valor := v.Expr.Ejecutar(ast, env)
+func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST) interface{} {
+	valor := v.Expr.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -37,6 +37,6 @@ func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST, env interface{}) i
 	}
 
 	ast.Lista_Funciones_Par.PushBack(variablefuncion)
-	v.Lista.Ejecutar(ast, env)
+	v.Lista.Ejecutar(ast)
 	return true
 }

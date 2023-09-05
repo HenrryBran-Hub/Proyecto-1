@@ -16,6 +16,6 @@ func NewSentenciaSwitchCase(lin int, col int, expr1 interfaces.Expression, opera
 	return SentenciaSwitchCase{lin, col, expr1, operations}
 }
 
-func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST) interface{} {
 	return nil
 }

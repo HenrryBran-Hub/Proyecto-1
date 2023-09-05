@@ -15,7 +15,7 @@ func NewStructAtributos(line, col int, tipo, name string) StructAtributos {
 	return StructAtributos{line, col, tipo, name}
 }
 
-func (v StructAtributos) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v StructAtributos) Ejecutar(ast *environment.AST) interface{} {
 
 	symbol := environment.Symbol{
 		Lin:   v.Line,

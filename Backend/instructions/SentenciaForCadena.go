@@ -19,9 +19,9 @@ func NewSentenciaForCadena(lin int, col int, id string, expre interfaces.Express
 	return SentenciaForCadena{lin, col, id, expre, bloque}
 }
 
-func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaForCadena) Ejecutar(ast *environment.AST) interface{} {
 	var cadena environment.Symbol
-	cadena = v.Expre.Ejecutar(ast, env)
+	cadena = v.Expre.Ejecutar(ast)
 
 	if cadena.Tipo == environment.VECTOR || cadena.Tipo == environment.STRING {
 		symbol := environment.Symbol{
@@ -71,7 +71,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, env interface{}) inte
 					if !ok {
 						continue
 					}
-					instruction.Ejecutar(ast, env)
+					instruction.Ejecutar(ast)
 					bvari := ast.GetVariable("Break")
 					if bvari != nil {
 						retornable = 1

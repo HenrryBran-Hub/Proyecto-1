@@ -109,7 +109,7 @@ func ejecutar(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast, nil)
+		instruction.Ejecutar(&Ast)
 	}
 	return Ast.GetPrint()
 }
@@ -175,7 +175,7 @@ func simbolos(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast, nil)
+		instruction.Ejecutar(&Ast)
 	}
 
 	Ast.TablaVariablesHTML()
@@ -243,7 +243,7 @@ func errores(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast, nil)
+		instruction.Ejecutar(&Ast)
 	}
 
 	if len(errorListener.errors) > 0 {
@@ -325,7 +325,7 @@ func Cst(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast, nil)
+		instruction.Ejecutar(&Ast)
 		contador++
 	}
 

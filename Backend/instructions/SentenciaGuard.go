@@ -18,12 +18,12 @@ func NewSentenciaGuard(lin int, col int, expresion interfaces.Expression, bloque
 	return SentenciaGuard{lin, col, expresion, bloque}
 }
 
-func (v SentenciaGuard) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaGuard) Ejecutar(ast *environment.AST) interface{} {
 	ultimoValor := v.slice[len(v.slice)-1]
 	instType := reflect.TypeOf(ultimoValor).String()
 	if instType == "instructions.TransferenciaContinue" || instType == "instructions.TransferenciaBreak" || instType == "instructions.TransferenciaReturn" || instType == "instructions.TransferenciaReturnExp" {
 		var condicion environment.Symbol
-		condicion = v.Expresion.Ejecutar(ast, env)
+		condicion = v.Expresion.Ejecutar(ast)
 		if condicion.Tipo == environment.BOOLEAN {
 			var retornable int = 0
 			var reexp environment.Symbol
@@ -37,7 +37,7 @@ func (v SentenciaGuard) Ejecutar(ast *environment.AST, env interface{}) interfac
 					if !ok {
 						continue
 					}
-					instruction.Ejecutar(ast, env)
+					instruction.Ejecutar(ast)
 					bvari := ast.GetVariable("Break")
 					if bvari != nil {
 						retornable = 1

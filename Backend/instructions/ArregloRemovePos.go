@@ -18,7 +18,7 @@ func NewArregloRemovePos(line, col int, remove string, pos interfaces.Expression
 	return ArregloRemovePos{line, col, remove, pos}
 }
 
-func (v ArregloRemovePos) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloRemovePos) Ejecutar(ast *environment.AST) interface{} {
 	Remove := ast.GetArreglo(v.Remove)
 	if Remove == nil {
 		Errores := environment.Errores{
@@ -43,7 +43,7 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST, env interface{}) interf
 		ast.ErroresHTML(Errores)
 	}
 
-	Posicion := v.Pos.Ejecutar(ast, env)
+	Posicion := v.Pos.Ejecutar(ast)
 
 	if Posicion.Tipo != environment.INTEGER {
 		Errores := environment.Errores{

@@ -18,9 +18,9 @@ func NewSentenciaIfElseIf(lin int, col int, expresion interfaces.Expression, Ifo
 	return SentenciaIfElseIf{lin, col, expresion, Ifop, Elseop}
 }
 
-func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST) interface{} {
 	var condicion environment.Symbol
-	condicion = v.Expresion.Ejecutar(ast, env)
+	condicion = v.Expresion.Ejecutar(ast)
 	var retornable int = 0
 	var reexp environment.Symbol
 	ast.AumentarAmbito("If-Else If")
@@ -35,7 +35,7 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast, env)
+				instruction.Ejecutar(ast)
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
@@ -59,7 +59,7 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, env interface{}) inter
 			}
 
 		} else {
-			v.Elseop.Ejecutar(ast, env)
+			v.Elseop.Ejecutar(ast)
 			bvari := ast.GetVariable("Break")
 			if bvari != nil {
 				retornable = 1

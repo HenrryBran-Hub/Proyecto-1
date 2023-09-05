@@ -18,7 +18,7 @@ func NewFuncionesParametro(lin int, col int, externointerno, name string, tipo e
 	return FuncionesParametro{lin, col, externointerno, name, tipo, inout, ei}
 }
 
-func (v FuncionesParametro) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesParametro) Ejecutar(ast *environment.AST) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

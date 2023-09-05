@@ -19,7 +19,7 @@ func NewArregloDeclaracionLista(lin int, col int, name string, tipo environment.
 	return ArregloDeclaracionLista{lin, col, name, tipo, values}
 }
 
-func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST) interface{} {
 	listavalores := list.New()
 	for _, inst := range v.Lista {
 		if inst == nil {
@@ -29,7 +29,7 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, env interface{})
 		if !ok {
 			continue
 		}
-		values := instruction.Ejecutar(ast, env)
+		values := instruction.Ejecutar(ast)
 		listavalores.PushBack(values)
 	}
 

@@ -18,8 +18,8 @@ func NewFuncionesControlP(lin int, col int, name string, lista interfaces.Instru
 	return FuncionesControlP{lin, col, name, lista}
 }
 
-func (v FuncionesControlP) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	v.Lista.Ejecutar(ast, env)
+func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
+	v.Lista.Ejecutar(ast)
 
 	existfun := ast.GetFuncion(v.Name)
 	if existfun == nil {
@@ -168,7 +168,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST, env interface{}) inter
 		if !ok {
 			continue
 		}
-		instruction.Ejecutar(ast, env)
+		instruction.Ejecutar(ast)
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			break

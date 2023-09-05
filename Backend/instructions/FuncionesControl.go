@@ -16,7 +16,7 @@ func NewFuncionesControl(lin int, col int, name string) FuncionesControl {
 	return FuncionesControl{lin, col, name}
 }
 
-func (v FuncionesControl) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesControl) Ejecutar(ast *environment.AST) interface{} {
 	existfun := ast.GetFuncion(v.Name)
 	if existfun == nil {
 		Errores := environment.Errores{
@@ -53,7 +53,7 @@ func (v FuncionesControl) Ejecutar(ast *environment.AST, env interface{}) interf
 		if !ok {
 			continue
 		}
-		instruction.Ejecutar(ast, env)
+		instruction.Ejecutar(ast)
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			break

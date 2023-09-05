@@ -14,7 +14,7 @@ func NewFuncionesLlamadaList2(lin int, col int, name string) FuncionesLlamadaLis
 	return FuncionesLlamadaList2{lin, col, name}
 }
 
-func (v FuncionesLlamadaList2) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesLlamadaList2) Ejecutar(ast *environment.AST) interface{} {
 	aux := ast.GetVariable(v.Name)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,

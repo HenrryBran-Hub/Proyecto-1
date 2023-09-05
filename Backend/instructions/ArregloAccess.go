@@ -18,7 +18,7 @@ func NewArregloAccess(line, col int, vaccess string, pos interfaces.Expression) 
 	return ArregloAccess{line, col, vaccess, pos}
 }
 
-func (v ArregloAccess) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
 	VAccess := ast.GetArreglo(v.VAccess)
 	if VAccess == nil {
 		Errores := environment.Errores{
@@ -44,7 +44,7 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST, env interface{}) environme
 		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
 	}
 
-	Posicion := v.Pos.Ejecutar(ast, env)
+	Posicion := v.Pos.Ejecutar(ast)
 
 	if Posicion.Tipo != environment.INTEGER {
 		Errores := environment.Errores{

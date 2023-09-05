@@ -15,6 +15,6 @@ func NewMatrizTipo(lin, col int, op environment.TipoExpresion) MatrizTipo {
 	return exp
 }
 
-func (o MatrizTipo) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o MatrizTipo) Ejecutar(ast *environment.AST) environment.Symbol {
 	return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: o.Op, Valor: 1}
 }

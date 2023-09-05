@@ -21,9 +21,9 @@ func NewMatrizSimpleUno(tipo interfaces.Expression, op interfaces.Instruction, n
 	return exp
 }
 
-func (o MatrizSimpleUno) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	o.Op.Ejecutar(ast, env)
-	tipo := o.Type.Ejecutar(ast, env)
+func (o MatrizSimpleUno) Ejecutar(ast *environment.AST) interface{} {
+	o.Op.Ejecutar(ast)
+	tipo := o.Type.Ejecutar(ast)
 	if strings.Contains(o.Numero, ".") {
 		Errores := environment.Errores{
 			Descripcion: "No es posible crear la matriz, esta colocando numeros no enteros",

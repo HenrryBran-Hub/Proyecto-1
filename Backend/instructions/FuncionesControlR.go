@@ -17,7 +17,7 @@ func NewFuncionesControlR(lin int, col int, name string) FuncionesControlR {
 	return FuncionesControlR{lin, col, name}
 }
 
-func (v FuncionesControlR) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (v FuncionesControlR) Ejecutar(ast *environment.AST) environment.Symbol {
 	existfun := ast.GetFuncion(v.Name)
 	if existfun == nil {
 		Errores := environment.Errores{
@@ -55,7 +55,7 @@ func (v FuncionesControlR) Ejecutar(ast *environment.AST, env interface{}) envir
 		if !ok {
 			continue
 		}
-		instruction.Ejecutar(ast, env)
+		instruction.Ejecutar(ast)
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			retorno = rvari.Symbols

@@ -18,8 +18,8 @@ func NewFuncionesControlPR(lin int, col int, name string, lista interfaces.Instr
 	return FuncionesControlPR{lin, col, name, lista}
 }
 
-func (v FuncionesControlPR) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	v.Lista.Ejecutar(ast, env)
+func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
+	v.Lista.Ejecutar(ast)
 
 	existfun := ast.GetFuncion(v.Name)
 	if existfun == nil {
@@ -168,7 +168,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST, env interface{}) envi
 		if !ok {
 			continue
 		}
-		instruction.Ejecutar(ast, env)
+		instruction.Ejecutar(ast)
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			retorno = rvari.Symbols

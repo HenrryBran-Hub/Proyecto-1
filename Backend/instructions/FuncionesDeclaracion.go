@@ -15,7 +15,7 @@ func NewFuncionesDeclaracion(lin int, col int, name string, bloque []interface{}
 	return FuncionesDeclaracion{lin, col, name, bloque}
 }
 
-func (v FuncionesDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 
 	funcion := environment.Funcion{
 		Lin:           v.Lin,

@@ -20,7 +20,7 @@ func NewOperation(lin int, col int, Op1 interfaces.Expression, Operador string, 
 	return exp
 }
 
-func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o Operation) Ejecutar(ast *environment.AST) environment.Symbol {
 	var dominante environment.TipoExpresion
 
 	tabla_dominante := [6][6]environment.TipoExpresion{
@@ -34,8 +34,8 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 	}
 
 	var op1, op2 environment.Symbol
-	op1 = o.Op_izq.Ejecutar(ast, env)
-	op2 = o.Op_der.Ejecutar(ast, env)
+	op1 = o.Op_izq.Ejecutar(ast)
+	op2 = o.Op_der.Ejecutar(ast)
 
 	switch o.Operador {
 	case "+":

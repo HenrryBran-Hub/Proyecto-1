@@ -17,13 +17,13 @@ func NewSentenciaSwitch(lin int, col int, expresion interfaces.Expression, cases
 	return SentenciaSwitch{lin, col, expresion, cases}
 }
 
-func (v SentenciaSwitch) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaSwitch) Ejecutar(ast *environment.AST) interface{} {
 	var retornable int = 0
 	var reexp environment.Symbol
 	for _, inst := range v.Case {
 		switchCase, _ := inst.(SentenciaSwitchCase)
-		valorcase := switchCase.Exp1.Ejecutar(ast, env)
-		valorswitch := v.Expresion.Ejecutar(ast, env)
+		valorcase := switchCase.Exp1.Ejecutar(ast)
+		valorswitch := v.Expresion.Ejecutar(ast)
 		if valorcase.Valor == valorswitch.Valor && valorcase.Tipo == valorswitch.Tipo {
 			ast.AumentarAmbito("Switch")
 			for _, inst := range switchCase.Case {
@@ -34,7 +34,7 @@ func (v SentenciaSwitch) Ejecutar(ast *environment.AST, env interface{}) interfa
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast, env)
+				instruction.Ejecutar(ast)
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1

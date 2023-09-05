@@ -20,7 +20,7 @@ func NewFuncionesListaParametro(lin int, col int, externointerno, name string, t
 	return FuncionesListaParametro{lin, col, externointerno, name, tipo, inout, ei, lista}
 }
 
-func (v FuncionesListaParametro) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v FuncionesListaParametro) Ejecutar(ast *environment.AST) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -40,6 +40,6 @@ func (v FuncionesListaParametro) Ejecutar(ast *environment.AST, env interface{})
 	}
 
 	ast.Lista_Funciones_Var.PushBack(variablefuncion)
-	v.Lista.Ejecutar(ast, env)
+	v.Lista.Ejecutar(ast)
 	return true
 }

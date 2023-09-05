@@ -15,7 +15,7 @@ func NewArregloIsEmpty(line, col int, vempty string) ArregloIsEmpty {
 	return ArregloIsEmpty{line, col, vempty}
 }
 
-func (v ArregloIsEmpty) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (v ArregloIsEmpty) Ejecutar(ast *environment.AST) environment.Symbol {
 	VEmpty := ast.GetArreglo(v.VEmpty)
 	if VEmpty == nil {
 		Errores := environment.Errores{

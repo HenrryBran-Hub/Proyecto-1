@@ -13,8 +13,8 @@ func NewFuncionesLlamadaList6(expr interfaces.Expression) FuncionesLlamadaList6 
 	return FuncionesLlamadaList6{expr}
 }
 
-func (v FuncionesLlamadaList6) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	valor := v.Expr.Ejecutar(ast, env)
+func (v FuncionesLlamadaList6) Ejecutar(ast *environment.AST) interface{} {
+	valor := v.Expr.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   valor.Lin,
 		Col:   valor.Col,

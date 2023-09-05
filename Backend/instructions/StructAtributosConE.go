@@ -17,8 +17,8 @@ func NewStructAtributosConE(line, col int, tipo, name string, expr interfaces.Ex
 	return StructAtributosConE{line, col, tipo, name, expr}
 }
 
-func (v StructAtributosConE) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	symbol := v.Expr.Ejecutar(ast, env)
+func (v StructAtributosConE) Ejecutar(ast *environment.AST) interface{} {
+	symbol := v.Expr.Ejecutar(ast)
 	Variable := environment.Variable{
 		Name:        v.Name,
 		Symbols:     symbol,

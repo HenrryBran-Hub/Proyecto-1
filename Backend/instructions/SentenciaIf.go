@@ -17,9 +17,9 @@ func NewSentenciaIf(lin int, col int, expresion interfaces.Expression, bloque []
 	return SentenciaIf{lin, col, expresion, bloque}
 }
 
-func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaIf) Ejecutar(ast *environment.AST) interface{} {
 	var condicion environment.Symbol
-	condicion = v.Expresion.Ejecutar(ast, env)
+	condicion = v.Expresion.Ejecutar(ast)
 	var retornable int = 0
 	var reexp environment.Symbol
 	ast.AumentarAmbito("If")
@@ -33,7 +33,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, env interface{}) interface{}
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast, env)
+				instruction.Ejecutar(ast)
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1

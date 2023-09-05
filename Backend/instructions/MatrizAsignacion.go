@@ -17,9 +17,9 @@ func NewMatrizAsignacion(name string, exp1, exp2, exp3 interfaces.Expression) Ma
 	return MatrizAsignacion{name, exp1, exp2, exp3}
 }
 
-func (v MatrizAsignacion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v MatrizAsignacion) Ejecutar(ast *environment.AST) interface{} {
 
-	primerval := v.Expr1.Ejecutar(ast, env)
+	primerval := v.Expr1.Ejecutar(ast)
 
 	if primerval.Tipo != environment.INTEGER {
 		Errores := environment.Errores{
@@ -33,7 +33,7 @@ func (v MatrizAsignacion) Ejecutar(ast *environment.AST, env interface{}) interf
 		return nil
 	}
 
-	primerval2 := v.Expr2.Ejecutar(ast, env)
+	primerval2 := v.Expr2.Ejecutar(ast)
 
 	if primerval2.Tipo != environment.INTEGER {
 		Errores := environment.Errores{
@@ -64,7 +64,7 @@ func (v MatrizAsignacion) Ejecutar(ast *environment.AST, env interface{}) interf
 		return nil
 	}
 
-	entrada := v.Expr3.Ejecutar(ast, env)
+	entrada := v.Expr3.Ejecutar(ast)
 
 	if entrada.Tipo != matriz.Symbols.Tipo {
 		Errores := environment.Errores{

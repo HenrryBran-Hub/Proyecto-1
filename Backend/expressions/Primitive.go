@@ -17,7 +17,7 @@ func NewPrimitive(lin int, col int, valor interface{}, tipo environment.TipoExpr
 	return exp
 }
 
-func (p Primitive) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (p Primitive) Ejecutar(ast *environment.AST) environment.Symbol {
 	p.arbol(ast)
 	return environment.Symbol{
 		Lin:   p.Lin,
