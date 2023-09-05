@@ -154,6 +154,9 @@ type SwiftGrammarListener interface {
 	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
 	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
 
+	// EnterFuncionllamadacontrolConRetorno is called when entering the funcionllamadacontrolConRetorno production.
+	EnterFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
+
 	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
 	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
 
@@ -315,6 +318,9 @@ type SwiftGrammarListener interface {
 
 	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
 	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitFuncionllamadacontrolConRetorno is called when exiting the funcionllamadacontrolConRetorno production.
+	ExitFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
 
 	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
 	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)

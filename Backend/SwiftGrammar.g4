@@ -50,6 +50,7 @@ instruction returns [interfaces.Instruction inst]
 | matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
 | structcontrol { $inst = $structcontrol.struck}
 | funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
+| funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -85,6 +86,7 @@ instructionint returns [interfaces.Instruction insint]
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
+| funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
 ;
 
 /////////////////////////
@@ -196,6 +198,7 @@ expr returns [interfaces.Expression e]
 | intembebida { $e = $intembebida.intemb}
 | floatembebida { $e = $floatembebida.floemb}
 | stringembebida { $e = $stringembebida.stremb}
+| funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
 ;
 
 // CREACION DE IF-ELSE
@@ -561,13 +564,51 @@ listaparametro returns [interfaces.Instruction listparfun]
     
 };
 
-funcionllamadacontrol
-: ID_VALIDO PARIZQ listaparametrosllamada PARIZQ {}
-| ID_VALIDO PARIZQ PARIZQ {};
+funcionllamadacontrol returns [interfaces.Instruction flctl]
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctl = instructions.NewFuncionesControlP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
+{
+    $flctl = instructions.NewFuncionesControl($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
+};
 
-listaparametrosllamada
-: COMA (ID_VALIDO DOS_PUNTOS)? ('&')? expr listaparametrosllamada {}
-| (ID_VALIDO DOS_PUNTOS)? ('&')? expr {};
+funcionllamadacontrolConRetorno returns [interfaces.Expression flctlret]
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctlret = instructions.NewFuncionesControlPR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
+{
+    $flctlret = instructions.NewFuncionesControlR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
+};
+
+listaparametrosllamada returns [interfaces.Instruction lpll]
+: DIRME ID_VALIDO COMA op2=listaparametrosllamada 
+{
+    $lpll = instructions.NewFuncionesLlamadaList1($DIRME.line, $DIRME.pos, $ID_VALIDO.text, $op2.lpll)    
+}
+| DIRME ID_VALIDO
+{
+    $lpll = instructions.NewFuncionesLlamadaList2($DIRME.line, $DIRME.pos, $ID_VALIDO.text)    
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr COMA op2=listaparametrosllamada 
+{
+    if $op != nil{
+        $lpll = instructions.NewFuncionesLlamadaList3($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e, $op2.lpll)
+    }else{
+        $lpll = instructions.NewFuncionesLlamadaList4($COMA.line, $COMA.pos, $expr.e, $op2.lpll)
+    }
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr
+{
+    if $op != nil{
+        $lpll = instructions.NewFuncionesLlamadaList5($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)
+    }else{
+        $lpll = instructions.NewFuncionesLlamadaList6($expr.e)
+    }     
+};
 
 //CREACION DE EMBEBIDAS
 

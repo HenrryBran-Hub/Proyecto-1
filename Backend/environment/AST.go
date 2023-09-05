@@ -39,6 +39,7 @@ type AST struct {
 	Lista_Struct        *list.List
 	Lista_Funciones     *list.List
 	Lista_Funciones_Var *list.List
+	Lista_Funciones_Par *list.List
 }
 
 type Variable struct {
@@ -166,6 +167,7 @@ func (a *AST) IniciarAmbito() {
 
 	a.Lista_Funciones = list.New()
 	a.Lista_Funciones_Var = list.New()
+	a.Lista_Funciones_Par = list.New()
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -992,4 +994,14 @@ func (a *AST) GuardarFuncion(funcion Funcion) {
 		}
 	}
 	a.Lista_Funciones.PushBack(funcion)
+}
+
+func (a *AST) GetFuncion(nombre string) *Funcion {
+	for v := a.Lista_Funciones.Front(); v != nil; v = v.Next() {
+		funcion := v.Value.(Funcion)
+		if funcion.Nombre == nombre {
+			return &funcion
+		}
+	}
+	return nil
 }

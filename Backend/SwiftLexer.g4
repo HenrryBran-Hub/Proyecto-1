@@ -87,6 +87,8 @@ GUIONBAJO: '_';
 CORCHIZQ: '[';
 CORCHDER: ']';
 
+DIRME: '&';
+
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 COMMENT: '/*' .*? '*/' -> skip;
