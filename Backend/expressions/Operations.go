@@ -36,7 +36,7 @@ func (o Operation) Ejecutar(ast *environment.AST) environment.Symbol {
 	var op1, op2 environment.Symbol
 	op1 = o.Op_izq.Ejecutar(ast)
 	op2 = o.Op_der.Ejecutar(ast)
-
+	//quitamos el operador coma
 	switch o.Operador {
 	case "+":
 		{

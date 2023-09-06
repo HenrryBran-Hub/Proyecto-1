@@ -131,6 +131,7 @@ expr returns [interfaces.Expression e]
 | left=expr op=(IG_IG|DIF) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
+| left=expr op=COMA right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PARIZQ expr PARDER { $e = $expr.e }
 | SUB NUMBER                             
     {
@@ -264,14 +265,15 @@ breakk returns [interfaces.Instruction brkct]
 
 //CREACION DEL RETURN
 retornos returns [interfaces.Instruction rect]
-: RETURN
+: RETURN op=expr
+{
+    $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
+}
+|RETURN
 {
     $rect = instructions.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
 }
-| RETURN op=expr
-{
-    $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
-};
+;
 
 
 //CREACION DEL VECTOR (pendiente)

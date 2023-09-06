@@ -24,7 +24,6 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST) interface{} {
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
 		Variable.Symbols.Lin = v.Lin
 		Variable.Symbols.Col = v.Col
-		Variable.Symbols.Tipo = v.Type
 		Variable.Symbols.Valor = value.Valor
 		Variable.Symbols.Scope = ast.ObtenerAmbito()
 		ast.ActualizarVariable(Variable)

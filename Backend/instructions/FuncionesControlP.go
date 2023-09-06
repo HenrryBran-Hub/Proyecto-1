@@ -61,8 +61,15 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 		return nil
 	}
 
+	var listaparametros = list.New()
+	for e := ast.Lista_Funciones_Par.Front(); e != nil; e = e.Next() {
+		vari := e.Value.(environment.VariableFuncion)
+		listaparametros.PushBack(vari)
+	}
+	ast.Lista_Funciones_Par.Init()
+
 	e1 := existfun.Parametros.Front()
-	e2 := ast.Lista_Funciones_Par.Front()
+	e2 := listaparametros.Front()
 	listavariablesinterna := list.New()
 
 	for e1 != nil && e2 != nil {
@@ -92,7 +99,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.Lista_Funciones_Par.Init()
+			listaparametros.Init()
 			return nil
 		}
 
@@ -106,7 +113,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
-				ast.Lista_Funciones_Par.Init()
+				listaparametros.Init()
 				return nil
 			}
 		} else if valor1.EI == true && valor2.EI == true {
@@ -119,7 +126,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
-				ast.Lista_Funciones_Par.Init()
+				listaparametros.Init()
 				return nil
 			}
 		}
@@ -133,7 +140,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.Lista_Funciones_Par.Init()
+			listaparametros.Init()
 			return nil
 		} else if valor1.Inout == false && valor2.Inout == true {
 			Errores := environment.Errores{
@@ -144,7 +151,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.Lista_Funciones_Par.Init()
+			listaparametros.Init()
 			return nil
 		}
 
@@ -183,7 +190,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.Lista_Funciones_Par.Init()
+			listaparametros.Init()
 			ast.DisminuirAmbito()
 			return nil
 		}
@@ -196,7 +203,7 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 	ast.DisminuirAmbito()
 
 	e1 = existfun.Parametros.Front()
-	e2 = ast.Lista_Funciones_Par.Front()
+	e2 = listaparametros.Front()
 	for e1 != nil && e2 != nil {
 		valor1 := e1.Value.(environment.VariableFuncion)
 		valor2 := e2.Value.(environment.VariableFuncion)
@@ -223,10 +230,10 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		ast.Lista_Funciones_Par.Init()
+		listaparametros.Init()
 		return nil
 	} else {
-		ast.Lista_Funciones_Par.Init()
+		listaparametros.Init()
 		return nil
 	}
 }

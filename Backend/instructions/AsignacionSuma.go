@@ -30,7 +30,6 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST) interface{} {
 			num2 := val1 + val2
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Tipo = v.Type
 			Variable.Symbols.Valor = num2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
@@ -45,7 +44,6 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST) interface{} {
 			}
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Tipo = v.Type
 			Variable.Symbols.Valor = num3
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
