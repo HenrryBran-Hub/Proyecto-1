@@ -18,8 +18,8 @@ func NewConstanteDeclaration(lin int, col int, name string, tipo environment.Tip
 	return ConstanteDeclaracion{lin, col, name, tipo, value}
 }
 
-func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

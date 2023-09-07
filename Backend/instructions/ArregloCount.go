@@ -15,7 +15,7 @@ func NewArregloCount(line, col int, vcount string) ArregloCount {
 	return ArregloCount{line, col, vcount}
 }
 
-func (v ArregloCount) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (v ArregloCount) Ejecutar(ast *environment.AST) environment.Symbol {
 	VCount := ast.GetArreglo(v.VCount)
 	if VCount == nil {
 		Errores := environment.Errores{

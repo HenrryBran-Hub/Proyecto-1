@@ -18,7 +18,7 @@ func NewArregloDeclaracionId(lin int, col int, prin string, tipo environment.Tip
 	return ArregloDeclaracionId{lin, col, prin, tipo, secu}
 }
 
-func (v ArregloDeclaracionId) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloDeclaracionId) Ejecutar(ast *environment.AST) interface{} {
 	listavalores := list.New()
 	secund := ast.GetArreglo(v.Secu)
 	if secund == nil {

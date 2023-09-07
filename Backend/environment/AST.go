@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 
 	"github.com/skratchdot/open-golang/open"
@@ -23,6 +24,22 @@ type AST struct {
 	Pila_Arreglos       *list.List
 	Lista_VectorHTML    *list.List
 	Variables           Variable
+	Stack               []*Node
+	Id                  int
+	Dot                 string
+	Root                *Node
+	ContadorDimen       int
+	Lista_Matriz_Val    *list.List
+	Pila_Matriz_Val     *list.List
+	Lista_Matriz        *list.List
+	Pila_Matriz         *list.List
+	Lista_MatrizHTML    *list.List
+	AtributosStruct     *list.List
+	FuncionesStruct     *list.List
+	Lista_Struct        *list.List
+	Lista_Funciones     *list.List
+	Lista_Funciones_Var *list.List
+	Lista_Funciones_Par *list.List
 }
 
 type Variable struct {
@@ -38,6 +55,14 @@ type Vector struct {
 	Mutable     bool
 	TipoSimbolo string
 	Elements    *list.List
+}
+
+type Matriz struct {
+	Name        string
+	Symbols     Symbol
+	Mutable     bool
+	TipoSimbolo string
+	Elements    interface{}
 }
 
 type Errores struct {
@@ -57,8 +82,43 @@ type TablaSymbolosHTML struct {
 	Ambito      string
 }
 
+type Valores_Matriz struct {
+	Tipo      TipoExpresion
+	Valor     Symbol
+	Matriztam *list.List
+	Elements  *list.List
+}
+
+type Funcion struct {
+	Lin           int
+	Col           int
+	Nombre        string
+	IsReturn      bool
+	IsParame      bool
+	Tipo          TipoExpresion
+	Retorno       interface{}
+	Parametros    *list.List
+	CodigoFuncion []interface{}
+}
+
+type VariableFuncion struct {
+	Name           string
+	Symbols        Symbol
+	Mutable        bool
+	TipoSimbolo    string
+	Inout          bool
+	EI             bool
+	ExternoInterno string
+}
+
+type Struc struct {
+	Nombre    string
+	Variables []Variable
+	Funciones []Funcion
+}
+
 func NewAST(inst []interface{}, print string, err string) AST {
-	ast := AST{Instructions: inst, Print: print, Errors: err}
+	ast := AST{Instructions: inst, Print: print, Errors: err, Id: 0, Dot: "graph{ \n graph [bgcolor=lightgray, fontname=\"Arial\", fontsize=12]; \n"}
 	return ast
 }
 
@@ -83,33 +143,76 @@ func (a *AST) IniciarAmbito() {
 	a.Lista_Variables = list.New()
 	a.Lista_VariablesHTML = list.New()
 	a.Pila_Variables.PushBack(a.Lista_Variables)
-	a.Lista_Errores = list.New()
+
 	a.Lista_Ambitos_Var = list.New()
 	a.Pila_Arreglos = list.New()
 	a.Lista_Arreglos = list.New()
-	a.Pila_Arreglos.PushBack(a.Lista_Arreglos)
 	a.Lista_VectorHTML = list.New()
+	a.Pila_Arreglos.PushBack(a.Lista_Arreglos)
+
+	a.Lista_Matriz_Val = list.New()
+	a.Pila_Matriz_Val = list.New()
+	a.Pila_Matriz_Val.PushBack(a.Lista_Matriz_Val)
+	a.Lista_Matriz = list.New()
+	a.Pila_Matriz = list.New()
+	a.Lista_MatrizHTML = list.New()
+	a.Pila_Matriz.PushBack(a.Lista_Matriz)
+
+	a.Lista_Errores = list.New()
 	a.Lista_Ambitos_Var.PushFront("Global")
+
+	a.AtributosStruct = list.New()
+	a.FuncionesStruct = list.New()
+	a.Lista_Struct = list.New()
+
+	a.Lista_Funciones = list.New()
+	a.Lista_Funciones_Var = list.New()
+	a.Lista_Funciones_Par = list.New()
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
 	nuevaLista := list.New()
 	a.Pila_Variables.PushFront(nuevaLista)
 	a.Lista_Variables = nuevaLista
+
+	nuevaArreglos_Val := list.New()
+	a.Pila_Arreglos.PushFront(nuevaArreglos_Val)
+	a.Lista_Arreglos = nuevaArreglos_Val
+
+	nuevaMatriz_Val := list.New()
+	a.Pila_Matriz.PushFront(nuevaMatriz_Val)
+	a.Lista_Matriz = nuevaMatriz_Val
+
 	a.Lista_Ambitos_Var.PushBack(ambito)
-	nuevaArreglos := list.New()
-	a.Pila_Arreglos.PushFront(nuevaArreglos)
-	a.Lista_Arreglos = nuevaArreglos
+}
+
+func (a *AST) AumentarNivel() {
+	nuevalista := list.New()
+	a.Pila_Matriz_Val.PushFront(nuevalista)
+	a.Lista_Matriz_Val = nuevalista
+}
+
+func (a *AST) QuitarNiveles() {
+	a.Pila_Matriz_Val.Init()
+	a.Lista_Matriz_Val.Init()
+	nuevaArreglos_Val := list.New()
+	a.Pila_Arreglos.PushFront(nuevaArreglos_Val)
+	a.Lista_Arreglos = nuevaArreglos_Val
 }
 
 func (a *AST) DisminuirAmbito() {
 	a.Pila_Variables.Remove(a.Pila_Variables.Front())
 	a.Lista_Variables = a.Pila_Variables.Front().Value.(*list.List)
+
+	a.Pila_Arreglos.Remove(a.Pila_Arreglos.Front())
+	a.Lista_Arreglos = a.Pila_Arreglos.Front().Value.(*list.List)
+
+	a.Pila_Matriz.Remove(a.Pila_Matriz.Front())
+	a.Lista_Matriz = a.Pila_Matriz.Front().Value.(*list.List)
+
 	if a.Lista_Ambitos_Var.Len() > 0 {
 		a.Lista_Ambitos_Var.Remove(a.Lista_Ambitos_Var.Back())
 	}
-	a.Pila_Arreglos.Remove(a.Pila_Arreglos.Front())
-	a.Lista_Arreglos = a.Pila_Arreglos.Front().Value.(*list.List)
 }
 
 func (a *AST) GuardarVariable(variable Variable) {
@@ -159,28 +262,71 @@ func (a *AST) GuardarArreglo(vector Vector) {
 	a.Lista_VectorHTML.PushBack(vector)
 }
 
-func (a *AST) ActualizarVariable(mariable *Variable, nuevoValor Symbol) {
+func (a *AST) GuardarMatriz(matriz Matriz) {
+	for e := a.Lista_Arreglos.Front(); e != nil; e = e.Next() {
+		if e.Value.(Vector).Name == matriz.Name {
+			Errores := Errores{
+				Descripcion: "La Matriz que esta intentando guardar ya existe en este ambito: \n Arreglo: " + matriz.Name,
+				Fila:        strconv.Itoa(e.Value.(Variable).Symbols.Lin),
+				Columna:     strconv.Itoa(e.Value.(Variable).Symbols.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      matriz.Symbols.Scope,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	for e := a.Lista_Matriz.Front(); e != nil; e = e.Next() {
+		if e.Value.(Matriz).Name == matriz.Name {
+			Errores := Errores{
+				Descripcion: "La Matriz que esta intentando guardar ya existe en este ambito: \n Arreglo: " + matriz.Name,
+				Fila:        strconv.Itoa(e.Value.(Variable).Symbols.Lin),
+				Columna:     strconv.Itoa(e.Value.(Variable).Symbols.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      matriz.Symbols.Scope,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+
+	a.Lista_Matriz.PushBack(matriz)
+	a.Lista_MatrizHTML.PushBack(matriz)
+}
+
+func (a *AST) ActualizarVariable(mariable *Variable) {
 	for e := a.Pila_Variables.Front(); e != nil; e = e.Next() {
 		lista := e.Value.(*list.List)
 		for v := lista.Front(); v != nil; v = v.Next() {
 			if v.Value.(Variable).Name == mariable.Name && mariable.Mutable {
 				variable := v.Value.(Variable)
-				variable.Symbols.Col = nuevoValor.Col
-				variable.Symbols.Lin = nuevoValor.Lin
-				variable.Symbols.Scope = nuevoValor.Scope
-				variable.Symbols.Tipo = nuevoValor.Tipo
-				variable.Symbols.Valor = nuevoValor.Valor
-				v.Value = variable
+				variable.Symbols.Col = mariable.Symbols.Col
+				variable.Symbols.Lin = mariable.Symbols.Lin
+				variable.Symbols.Scope = mariable.Symbols.Scope
+				variable.Symbols.Tipo = mariable.Symbols.Tipo
+				variable.Symbols.Valor = mariable.Symbols.Valor
+				v.Value = variable // Actualizar la variable en la lista
+				for j := a.Lista_VariablesHTML.Front(); j != nil; j = j.Next() {
+					if j.Value.(Variable).Name == mariable.Name && mariable.Mutable && j.Value.(Variable).Symbols.Scope == mariable.Symbols.Scope {
+						variablej := j.Value.(Variable)
+						variablej.Symbols.Col = mariable.Symbols.Col
+						variablej.Symbols.Lin = mariable.Symbols.Lin
+						variablej.Symbols.Scope = mariable.Symbols.Scope
+						variablej.Symbols.Tipo = mariable.Symbols.Tipo
+						variablej.Symbols.Valor = mariable.Symbols.Valor
+						j.Value = variable // Actualizar la variable en la lista
+					}
+				}
 				return
 			}
 		}
 	}
 	Errores := Errores{
 		Descripcion: "La variale que esta intentando modificar no existe: \n Variable: " + mariable.Name,
-		Fila:        strconv.Itoa(nuevoValor.Lin),
-		Columna:     strconv.Itoa(nuevoValor.Col),
+		Fila:        strconv.Itoa(mariable.Symbols.Lin),
+		Columna:     strconv.Itoa(mariable.Symbols.Col),
 		Tipo:        "Error Semantico",
-		Ambito:      nuevoValor.Scope,
+		Ambito:      mariable.Symbols.Scope,
 	}
 	a.ErroresHTML(Errores)
 }
@@ -205,6 +351,12 @@ func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
 			if v.Value.(Vector).Name == nombre && v.Value.(Vector).Mutable {
 				vector := v.Value.(Vector)
 				vector.Elements = nuevoValor.Elements
+				for i := a.Lista_VectorHTML.Front(); i != nil; i = i.Next() {
+					if i.Value.(Vector).Name == nombre && i.Value.(Vector).Mutable && i.Value.(Vector).Symbols.Scope == nuevoValor.Symbols.Scope {
+						vectorj := i.Value.(Vector)
+						vectorj.Elements = nuevoValor.Elements
+					}
+				}
 				return
 			}
 		}
@@ -226,6 +378,19 @@ func (a *AST) GetArreglo(nombre string) *Vector {
 			vector := v.Value.(Vector)
 			if vector.Name == nombre {
 				return &vector
+			}
+		}
+	}
+	return nil
+}
+
+func (a *AST) GetMatriz(nombre string) *Matriz {
+	for e := a.Pila_Matriz.Front(); e != nil; e = e.Next() {
+		lista := e.Value.(*list.List)
+		for v := lista.Front(); v != nil; v = v.Next() {
+			matriz := v.Value.(Matriz)
+			if matriz.Name == nombre {
+				return &matriz
 			}
 		}
 	}
@@ -387,6 +552,51 @@ func (a *AST) TablaVariablesHTML() {
 		rowNumber++
 	}
 
+	for e := a.Lista_MatrizHTML.Front(); e != nil; e = e.Next() {
+		matriz := e.Value.(Matriz)
+		var tipoexpstr string
+		switch matriz.Symbols.Tipo {
+		case 0:
+			tipoexpstr = "Int"
+		case 1:
+			tipoexpstr = "Float"
+		case 2:
+			tipoexpstr = "String"
+		case 3:
+			tipoexpstr = "Boolean"
+		case 4:
+			tipoexpstr = "Character"
+		default:
+			tipoexpstr = "nil"
+		}
+
+		matrizStr := fmt.Sprintf("%v", matriz.Elements)
+
+		fmt.Fprintf(file, `
+   					<tr>
+   						<td>%d</td>
+						<td>%s</td>
+   						<td>%s</td>
+   						<td>%t</td>
+   						<td>%d</td>
+   						<td>%d</td>
+   						<td>%v</td>
+   						<td>%s</td>
+   						<td>%s</td>
+   					</tr>`,
+			rowNumber,
+			matriz.TipoSimbolo,
+			matriz.Name,
+			matriz.Mutable,
+			matriz.Symbols.Lin,
+			matriz.Symbols.Col,
+			matrizStr,
+			tipoexpstr,
+			matriz.Symbols.Scope,
+		)
+		rowNumber++
+	}
+
 	// Write the HTML footer
 	fmt.Fprintln(file, `
            </table>
@@ -496,4 +706,302 @@ func (a *AST) LimpiarLista() {
 		}
 	}
 	a.removeFromListFromBack(numElementsToRemove)
+}
+
+type Node struct {
+	Id       int
+	Label    string
+	Children []*Node
+}
+
+func (t *AST) Postorder(tmp *Node) {
+	if tmp != nil {
+		for _, child := range tmp.Children {
+			t.Postorder(child)
+		}
+		t.Dot += strconv.Itoa(tmp.Id) + "[label=\"" + tmp.Label + "\" , shape=box, style=\"filled,rounded\", fillcolor=\"#F4A460\"];\n"
+		for _, child := range tmp.Children {
+			t.Dot += strconv.Itoa(tmp.Id) + "->" + strconv.Itoa(child.Id) + ";\n"
+		}
+	}
+}
+
+func (l *AST) Push(i *Node) {
+	l.Stack = append(l.Stack, i)
+}
+
+func (l *AST) Pop() *Node {
+	if len(l.Stack) < 1 {
+		panic("empty stack")
+	}
+	result := l.Stack[len(l.Stack)-1]
+	l.Stack = l.Stack[:len(l.Stack)-1]
+	return result
+}
+
+func (c *AST) GenerateCST() {
+	cstFile, err := os.Create("cst.dot")
+	if err != nil {
+		fmt.Println("Error creating CST DOT file:", err)
+		return
+	}
+	defer cstFile.Close()
+
+	_, err = cstFile.WriteString("digraph CST {\n")
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+	_, err = cstFile.WriteString(c.Dot)
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+	_, err = cstFile.WriteString("}\n")
+	if err != nil {
+		fmt.Println("Error writing to CST DOT file:", err)
+		return
+	}
+
+	// Ejecutar Graphviz para generar la imagen
+	cmd := exec.Command("dot", "-Tpng", "cst.dot", "-o", "cst.png")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error generating image:", err)
+		return
+	}
+	c.MostrarImagenCST()
+
+	fmt.Println("CST DOT file generated successfully.")
+}
+
+func (c *AST) MostrarImagenCST() {
+	// Create a new HTML file
+	file, err := os.Create("ImagenCST.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Write the HTML header and embed the image
+	fmt.Fprintln(file, `<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Reporte de Errores</title>
+		<style>
+			body {
+				background-color: #333;
+				color: white;
+				font-family: sans-serif;
+			}
+			h1 {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Árbol de Sintaxis Concreta</h1>
+           <img src="cst.png" alt="Árbol de Sintaxis Concreta" style="max-width: 100%;">
+       </body>
+       </html>`)
+
+	// Open the HTML file in the default web browser
+	open.Start("ImagenCST.html")
+}
+
+func (c *AST) NuevaMatriz(nombre string, mutable bool, simbolo Symbol, d ...int) Matriz {
+	var matriz Matriz
+	matriz.Elements = c.crearMatriz(d)
+	matriz.Name = nombre
+	matriz.Mutable = mutable
+	matriz.Symbols = simbolo
+	matriz.TipoSimbolo = "Matriz"
+	return matriz
+}
+
+// Función para crear una matriz anidada con dimensiones d
+func (c *AST) crearMatriz(d []int) interface{} {
+	if len(d) == 1 {
+		return make([]interface{}, d[0])
+	}
+
+	result := make([]interface{}, d[0])
+	for i := range result {
+		result[i] = c.crearMatriz(d[1:])
+	}
+	return result
+}
+
+// Función para ingresar un valor en la matriz en la posición pos
+func (c *AST) IngresarValor(mat *Matriz, pos []int, valor interface{}) {
+	c.ingresarValorEnPosicion(mat.Elements, pos, valor)
+}
+
+// Función auxiliar para ingresar un valor en la posición pos de la matriz
+func (c *AST) ingresarValorEnPosicion(data interface{}, pos []int, valor interface{}) {
+	if len(pos) == 1 {
+		data.([]interface{})[pos[0]] = valor
+		return
+	}
+
+	c.ingresarValorEnPosicion(data.([]interface{})[pos[0]], pos[1:], valor)
+}
+
+// Función para obtener un valor de la matriz en la posición pos
+func (c *AST) ObtenerValor(mat Matriz, pos []int) interface{} {
+	return c.obtenerValorEnPosicion(mat.Elements, pos)
+}
+
+// Función auxiliar para obtener un valor en la posición pos de la matriz
+func (c *AST) obtenerValorEnPosicion(data interface{}, pos []int) interface{} {
+	if len(pos) == 1 {
+		return data.([]interface{})[pos[0]]
+	}
+
+	return c.obtenerValorEnPosicion(data.([]interface{})[pos[0]], pos[1:])
+}
+
+// Función para llenar toda la matriz con un valor
+func (c *AST) LlenarMatriz(mat *Matriz, valor interface{}) {
+	c.llenarValores(mat.Elements, []int{}, valor)
+}
+
+// Función auxiliar para llenar los valores de la matriz con un valor
+func (c *AST) llenarValores(data interface{}, pos []int, valor interface{}) {
+	switch t := data.(type) {
+	case []interface{}:
+		for i := range t {
+			c.llenarValores(t[i], append(pos, i), valor)
+		}
+	default:
+		c.ingresarValorEnPosicion(data, pos, valor)
+	}
+}
+
+// Función para imprimir todos los valores de la matriz
+func (c *AST) ImprimirMatriz(mat Matriz) {
+	c.imprimirValores(mat.Elements, []int{})
+}
+
+// Función para sustituir todos los valores de una matriz 2x2
+func (c *AST) SustituirValores2(mat *Matriz, valor interface{}, dim1 int, dim2 int) {
+	for i := 0; i < dim1; i++ {
+		for j := 0; j < dim2; j++ {
+			c.IngresarValor(mat, []int{i, j}, valor)
+		}
+	}
+}
+
+// Función para sustituir todos los valores de una matriz 3x3x3
+func (c *AST) SustituirValores3(mat *Matriz, valor interface{}, dim1 int, dim2 int, dim3 int) {
+	for i := 0; i < dim1; i++ {
+		for j := 0; j < dim2; j++ {
+			for k := 0; k < dim3; k++ {
+				c.IngresarValor(mat, []int{i, j, k}, valor)
+			}
+		}
+	}
+}
+
+// Función para sustituir todos los valores de una matriz 4x4x4x4
+func (c *AST) SustituirValores4(mat *Matriz, valor interface{}, dim1 int, dim2 int, dim3 int, dim4 int) {
+	for i := 0; i < dim1; i++ {
+		for j := 0; j < dim2; j++ {
+			for k := 0; k < dim3; k++ {
+				for l := 0; l < dim4; l++ {
+					c.IngresarValor(mat, []int{i, j, k, l}, valor)
+				}
+			}
+		}
+	}
+}
+
+// Función para sustituir todos los valores de una matriz 5x5x5x5x5
+func (c *AST) SustituirValores5(mat *Matriz, valor interface{}, dim1 int, dim2 int, dim3 int, dim4 int, dim5 int) {
+	for i := 0; i < dim1; i++ {
+		for j := 0; j < dim2; j++ {
+			for k := 0; k < dim3; k++ {
+				for l := 0; l < dim4; l++ {
+					for m := 0; m < dim5; m++ {
+						c.IngresarValor(mat, []int{i, j, k, l, m}, valor)
+					}
+				}
+			}
+		}
+	}
+}
+
+// Función auxiliar para imprimir los valores de la matriz
+func (c *AST) imprimirValores(data interface{}, pos []int) {
+	switch t := data.(type) {
+	case []interface{}:
+		for i, v := range t {
+			c.imprimirValores(v, append(pos, i))
+		}
+	default:
+		fmt.Printf("Valor en la posición %v: %v\n", pos, data)
+	}
+}
+
+func (c *AST) ImprimirArreglovalores() {
+	contadorpila := 0
+	for nivel := c.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
+		lista := nivel.Value.(*list.List)
+		fmt.Println("Nivel de pila:", contadorpila)
+		fmt.Println("----------------------")
+		for elem := lista.Front(); elem != nil; elem = elem.Next() {
+			valores := elem.Value.(Valores_Matriz)
+			fmt.Printf("Tipo: %d\n", valores.Tipo)
+			fmt.Printf("tamaño lista: %d\n", lista.Len())
+			if valores.Elements != nil {
+				fmt.Println("Valores Elements")
+				fmt.Printf("Tamaño: %d\n", valores.Elements.Len())
+				fmt.Println("Valores en la lista:")
+				contador := 0
+				for e := valores.Elements.Front(); e != nil; e = e.Next() {
+					fmt.Printf("Elemento: %+v\n", e.Value)
+					fmt.Printf("contadro: %+v\n", contador)
+					contador++
+				}
+			}
+			if valores.Matriztam != nil {
+				fmt.Printf("Valor : %+v\n", valores.Valor)
+				fmt.Println("Valores Matriztam")
+				fmt.Printf("Tamaño: %d\n", valores.Matriztam.Len())
+				fmt.Println("Valores en la lista:")
+				for e := valores.Matriztam.Front(); e != nil; e = e.Next() {
+					fmt.Printf("Elemento: %+v\n", e.Value)
+
+				}
+			}
+		}
+		contadorpila++
+	}
+}
+
+func (a *AST) GuardarFuncion(funcion Funcion) {
+	for e := a.Lista_Funciones.Front(); e != nil; e = e.Next() {
+		if e.Value.(Funcion).Nombre == funcion.Nombre {
+			Errores := Errores{
+				Descripcion: "La Funcion que esta intentando guardar ya existe\n Variable: " + funcion.Nombre,
+				Fila:        strconv.Itoa(e.Value.(Funcion).Lin),
+				Columna:     strconv.Itoa(e.Value.(Funcion).Col),
+				Tipo:        "Error Semantico",
+				Ambito:      funcion.Nombre,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	a.Lista_Funciones.PushBack(funcion)
+}
+
+func (a *AST) GetFuncion(nombre string) *Funcion {
+	for v := a.Lista_Funciones.Front(); v != nil; v = v.Next() {
+		funcion := v.Value.(Funcion)
+		if funcion.Nombre == nombre {
+			return &funcion
+		}
+	}
+	return nil
 }

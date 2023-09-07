@@ -16,8 +16,8 @@ func NewArregloParametros(lin int, col int, op interfaces.Expression) ArregloPar
 	return exp
 }
 
-func (o ArregloParametros) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o ArregloParametros) Ejecutar(ast *environment.AST) environment.Symbol {
 	var op environment.Symbol
-	op = o.Op.Ejecutar(ast, env)
+	op = o.Op.Ejecutar(ast)
 	return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: op.Tipo, Valor: op.Valor}
 }

@@ -74,6 +74,26 @@ const App = () => {
     }
   };
 
+  const handleCstClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/arbol', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: textarea1Ref.current.value }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.result);
+        alert('Compilado con Exito');
+      } else {
+        alert('Error en la respuesta:', response.statusText);
+      }
+    } catch (error) {
+      alert('Error en la solicitud:', error);
+    }
+  };
+
   const handleSimbolosClick = async () => {
     try {
       const response = await fetch('http://localhost:8080/simbolos', {
@@ -165,7 +185,7 @@ const App = () => {
         <div className="row">
           <div className="col-md-12 text-center">
             <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Ejecutar</button>
-            <button id="mostrar-reportes" className="btn btn-outline-info">Mostrar Reportes</button>
+            <button id="mostrar-reportes" className="btn btn-outline-info" onClick={handleCstClick}>Mostrar Reportes</button>
             <button id="simbolos" className="btn btn-outline-warning" onClick={handleSimbolosClick}>Simbolos</button>
             <button id="errores" className="btn btn-outline-danger" onClick={handleErroresClick}>Errores</button>
           </div>

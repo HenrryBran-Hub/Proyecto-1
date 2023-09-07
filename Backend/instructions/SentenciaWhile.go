@@ -17,9 +17,9 @@ func NewSentenciaWhile(lin int, col int, expresion interfaces.Expression, bloque
 	return SentenciaWhile{lin, col, expresion, bloque}
 }
 
-func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaWhile) Ejecutar(ast *environment.AST) interface{} {
 	var condicion environment.Symbol
-	condicion = v.Expresion.Ejecutar(ast, env)
+	condicion = v.Expresion.Ejecutar(ast)
 	var retornable int = 0
 	var reexp environment.Symbol
 	if condicion.Tipo == environment.BOOLEAN {
@@ -61,7 +61,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 					breakPosition = i
 					break
 				}
-				instruction.Ejecutar(ast, env)
+				instruction.Ejecutar(ast)
 			}
 
 			if continueflag {
@@ -74,7 +74,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 					if !ok {
 						continue
 					}
-					instruction.Ejecutar(ast, env)
+					instruction.Ejecutar(ast)
 					bvari := ast.GetVariable("Break")
 					if bvari != nil {
 						retornable = 1
@@ -102,7 +102,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, env interface{}) interfac
 			if retornable == 1 || retornable == 2 || retornable == 3 {
 				condicion.Valor = false
 			} else {
-				condicion = v.Expresion.Ejecutar(ast, env)
+				condicion = v.Expresion.Ejecutar(ast)
 			}
 		}
 	} else {

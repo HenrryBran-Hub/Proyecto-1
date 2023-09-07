@@ -15,7 +15,7 @@ func NewVariableDeclaracionSinExp(lin int, col int, name string, tipo environmen
 	return VariableDeclaracionSinExp{Lin: lin, Col: col, Name: name, Type: tipo}
 }
 
-func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

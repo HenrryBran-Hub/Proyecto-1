@@ -16,7 +16,7 @@ func NewCallid(lin int, col int, name string) Callid {
 	return exp
 }
 
-func (o Callid) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o Callid) Ejecutar(ast *environment.AST) environment.Symbol {
 	variable := ast.GetVariable(o.Name)
 	if variable != nil {
 		return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: variable.Symbols.Tipo, Valor: variable.Symbols.Valor}

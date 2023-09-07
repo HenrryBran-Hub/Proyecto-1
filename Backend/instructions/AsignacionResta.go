@@ -19,8 +19,8 @@ func NewAsignacionResta(lin int, col int, name string, value interfaces.Expressi
 	return AsignacionResta{Lin: lin, Col: col, Name: name, Value: value}
 }
 
-func (v AsignacionResta) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
 		//valida el tipo
@@ -28,14 +28,11 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, env interface{}) interfa
 			val1, _ := Variable.Symbols.Valor.(int)
 			val2, _ := value.Valor.(int)
 			num2 := val1 - val2
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  Variable.Symbols.Tipo,
-				Valor: num2,
-				Scope: ast.ObtenerAmbito(),
-			}
-			ast.ActualizarVariable(Variable, symbol)
+			Variable.Symbols.Lin = v.Lin
+			Variable.Symbols.Col = v.Col
+			Variable.Symbols.Valor = num2
+			Variable.Symbols.Scope = ast.ObtenerAmbito()
+			ast.ActualizarVariable(Variable)
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
 			val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", Variable.Symbols.Valor), 64)
@@ -45,14 +42,11 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, env interface{}) interfa
 			if err != nil {
 				fmt.Println(err)
 			}
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  Variable.Symbols.Tipo,
-				Valor: num3,
-				Scope: ast.ObtenerAmbito(),
-			}
-			ast.ActualizarVariable(Variable, symbol)
+			Variable.Symbols.Lin = v.Lin
+			Variable.Symbols.Col = v.Col
+			Variable.Symbols.Valor = num3
+			Variable.Symbols.Scope = ast.ObtenerAmbito()
+			ast.ActualizarVariable(Variable)
 			return nil
 		} else {
 			Errores := environment.Errores{
@@ -78,14 +72,11 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, env interface{}) interfa
 			if err != nil {
 				fmt.Println(err)
 			}
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  Variable.Symbols.Tipo,
-				Valor: num3,
-				Scope: ast.ObtenerAmbito(),
-			}
-			ast.ActualizarVariable(Variable, symbol)
+			Variable.Symbols.Lin = v.Lin
+			Variable.Symbols.Col = v.Col
+			Variable.Symbols.Valor = num3
+			Variable.Symbols.Scope = ast.ObtenerAmbito()
+			ast.ActualizarVariable(Variable)
 			return nil
 		}
 	}

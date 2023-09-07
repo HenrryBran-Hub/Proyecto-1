@@ -50,12 +50,6 @@ func (s *BaseSwiftGrammarListener) EnterInstructionint(ctx *InstructionintContex
 // ExitInstructionint is called when production instructionint is exited.
 func (s *BaseSwiftGrammarListener) ExitInstructionint(ctx *InstructionintContext) {}
 
-// EnterPrintstmt is called when production printstmt is entered.
-func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
-
-// ExitPrintstmt is called when production printstmt is exited.
-func (s *BaseSwiftGrammarListener) ExitPrintstmt(ctx *PrintstmtContext) {}
-
 // EnterDeclavarible is called when production declavarible is entered.
 func (s *BaseSwiftGrammarListener) EnterDeclavarible(ctx *DeclavaribleContext) {}
 
@@ -73,30 +67,6 @@ func (s *BaseSwiftGrammarListener) EnterAsignacionvariable(ctx *Asignacionvariab
 
 // ExitAsignacionvariable is called when production asignacionvariable is exited.
 func (s *BaseSwiftGrammarListener) ExitAsignacionvariable(ctx *AsignacionvariableContext) {}
-
-// EnterPrintstmtint is called when production printstmtint is entered.
-func (s *BaseSwiftGrammarListener) EnterPrintstmtint(ctx *PrintstmtintContext) {}
-
-// ExitPrintstmtint is called when production printstmtint is exited.
-func (s *BaseSwiftGrammarListener) ExitPrintstmtint(ctx *PrintstmtintContext) {}
-
-// EnterDeclavaribleint is called when production declavaribleint is entered.
-func (s *BaseSwiftGrammarListener) EnterDeclavaribleint(ctx *DeclavaribleintContext) {}
-
-// ExitDeclavaribleint is called when production declavaribleint is exited.
-func (s *BaseSwiftGrammarListener) ExitDeclavaribleint(ctx *DeclavaribleintContext) {}
-
-// EnterDeclaconstanteint is called when production declaconstanteint is entered.
-func (s *BaseSwiftGrammarListener) EnterDeclaconstanteint(ctx *DeclaconstanteintContext) {}
-
-// ExitDeclaconstanteint is called when production declaconstanteint is exited.
-func (s *BaseSwiftGrammarListener) ExitDeclaconstanteint(ctx *DeclaconstanteintContext) {}
-
-// EnterAsignacionvariableint is called when production asignacionvariableint is entered.
-func (s *BaseSwiftGrammarListener) EnterAsignacionvariableint(ctx *AsignacionvariableintContext) {}
-
-// ExitAsignacionvariableint is called when production asignacionvariableint is exited.
-func (s *BaseSwiftGrammarListener) ExitAsignacionvariableint(ctx *AsignacionvariableintContext) {}
 
 // EnterTipodato is called when production tipodato is entered.
 func (s *BaseSwiftGrammarListener) EnterTipodato(ctx *TipodatoContext) {}
@@ -217,3 +187,171 @@ func (s *BaseSwiftGrammarListener) EnterVectoraccess(ctx *VectoraccessContext) {
 
 // ExitVectoraccess is called when production vectoraccess is exited.
 func (s *BaseSwiftGrammarListener) ExitVectoraccess(ctx *VectoraccessContext) {}
+
+// EnterMatrizcontrol is called when production matrizcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterMatrizcontrol(ctx *MatrizcontrolContext) {}
+
+// ExitMatrizcontrol is called when production matrizcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitMatrizcontrol(ctx *MatrizcontrolContext) {}
+
+// EnterTipomatriz is called when production tipomatriz is entered.
+func (s *BaseSwiftGrammarListener) EnterTipomatriz(ctx *TipomatrizContext) {}
+
+// ExitTipomatriz is called when production tipomatriz is exited.
+func (s *BaseSwiftGrammarListener) ExitTipomatriz(ctx *TipomatrizContext) {}
+
+// EnterDefmatriz is called when production defmatriz is entered.
+func (s *BaseSwiftGrammarListener) EnterDefmatriz(ctx *DefmatrizContext) {}
+
+// ExitDefmatriz is called when production defmatriz is exited.
+func (s *BaseSwiftGrammarListener) ExitDefmatriz(ctx *DefmatrizContext) {}
+
+// EnterListavaloresmat is called when production listavaloresmat is entered.
+func (s *BaseSwiftGrammarListener) EnterListavaloresmat(ctx *ListavaloresmatContext) {}
+
+// ExitListavaloresmat is called when production listavaloresmat is exited.
+func (s *BaseSwiftGrammarListener) ExitListavaloresmat(ctx *ListavaloresmatContext) {}
+
+// EnterListavaloresmat2 is called when production listavaloresmat2 is entered.
+func (s *BaseSwiftGrammarListener) EnterListavaloresmat2(ctx *Listavaloresmat2Context) {}
+
+// ExitListavaloresmat2 is called when production listavaloresmat2 is exited.
+func (s *BaseSwiftGrammarListener) ExitListavaloresmat2(ctx *Listavaloresmat2Context) {}
+
+// EnterListaexpresions is called when production listaexpresions is entered.
+func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
+
+// ExitListaexpresions is called when production listaexpresions is exited.
+func (s *BaseSwiftGrammarListener) ExitListaexpresions(ctx *ListaexpresionsContext) {}
+
+// EnterListaexpresion is called when production listaexpresion is entered.
+func (s *BaseSwiftGrammarListener) EnterListaexpresion(ctx *ListaexpresionContext) {}
+
+// ExitListaexpresion is called when production listaexpresion is exited.
+func (s *BaseSwiftGrammarListener) ExitListaexpresion(ctx *ListaexpresionContext) {}
+
+// EnterSimplematriz is called when production simplematriz is entered.
+func (s *BaseSwiftGrammarListener) EnterSimplematriz(ctx *SimplematrizContext) {}
+
+// ExitSimplematriz is called when production simplematriz is exited.
+func (s *BaseSwiftGrammarListener) ExitSimplematriz(ctx *SimplematrizContext) {}
+
+// EnterListamatrizaddsubs is called when production listamatrizaddsubs is entered.
+func (s *BaseSwiftGrammarListener) EnterListamatrizaddsubs(ctx *ListamatrizaddsubsContext) {}
+
+// ExitListamatrizaddsubs is called when production listamatrizaddsubs is exited.
+func (s *BaseSwiftGrammarListener) ExitListamatrizaddsubs(ctx *ListamatrizaddsubsContext) {}
+
+// EnterListamatrizaddsub is called when production listamatrizaddsub is entered.
+func (s *BaseSwiftGrammarListener) EnterListamatrizaddsub(ctx *ListamatrizaddsubContext) {}
+
+// ExitListamatrizaddsub is called when production listamatrizaddsub is exited.
+func (s *BaseSwiftGrammarListener) ExitListamatrizaddsub(ctx *ListamatrizaddsubContext) {}
+
+// EnterStructcontrol is called when production structcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterStructcontrol(ctx *StructcontrolContext) {}
+
+// ExitStructcontrol is called when production structcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitStructcontrol(ctx *StructcontrolContext) {}
+
+// EnterListaatributos is called when production listaatributos is entered.
+func (s *BaseSwiftGrammarListener) EnterListaatributos(ctx *ListaatributosContext) {}
+
+// ExitListaatributos is called when production listaatributos is exited.
+func (s *BaseSwiftGrammarListener) ExitListaatributos(ctx *ListaatributosContext) {}
+
+// EnterListaatributo is called when production listaatributo is entered.
+func (s *BaseSwiftGrammarListener) EnterListaatributo(ctx *ListaatributoContext) {}
+
+// ExitListaatributo is called when production listaatributo is exited.
+func (s *BaseSwiftGrammarListener) ExitListaatributo(ctx *ListaatributoContext) {}
+
+// EnterStructexpr is called when production structexpr is entered.
+func (s *BaseSwiftGrammarListener) EnterStructexpr(ctx *StructexprContext) {}
+
+// ExitStructexpr is called when production structexpr is exited.
+func (s *BaseSwiftGrammarListener) ExitStructexpr(ctx *StructexprContext) {}
+
+// EnterL_dupla is called when production l_dupla is entered.
+func (s *BaseSwiftGrammarListener) EnterL_dupla(ctx *L_duplaContext) {}
+
+// ExitL_dupla is called when production l_dupla is exited.
+func (s *BaseSwiftGrammarListener) ExitL_dupla(ctx *L_duplaContext) {}
+
+// EnterLlamadastruct is called when production llamadastruct is entered.
+func (s *BaseSwiftGrammarListener) EnterLlamadastruct(ctx *LlamadastructContext) {}
+
+// ExitLlamadastruct is called when production llamadastruct is exited.
+func (s *BaseSwiftGrammarListener) ExitLlamadastruct(ctx *LlamadastructContext) {}
+
+// EnterAsignacionparametrostruct is called when production asignacionparametrostruct is entered.
+func (s *BaseSwiftGrammarListener) EnterAsignacionparametrostruct(ctx *AsignacionparametrostructContext) {
+}
+
+// ExitAsignacionparametrostruct is called when production asignacionparametrostruct is exited.
+func (s *BaseSwiftGrammarListener) ExitAsignacionparametrostruct(ctx *AsignacionparametrostructContext) {
+}
+
+// EnterLlamadafuncionstruct is called when production llamadafuncionstruct is entered.
+func (s *BaseSwiftGrammarListener) EnterLlamadafuncionstruct(ctx *LlamadafuncionstructContext) {}
+
+// ExitLlamadafuncionstruct is called when production llamadafuncionstruct is exited.
+func (s *BaseSwiftGrammarListener) ExitLlamadafuncionstruct(ctx *LlamadafuncionstructContext) {}
+
+// EnterFunciondeclaracioncontrol is called when production funciondeclaracioncontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
+}
+
+// ExitFunciondeclaracioncontrol is called when production funciondeclaracioncontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
+}
+
+// EnterListaparametro is called when production listaparametro is entered.
+func (s *BaseSwiftGrammarListener) EnterListaparametro(ctx *ListaparametroContext) {}
+
+// ExitListaparametro is called when production listaparametro is exited.
+func (s *BaseSwiftGrammarListener) ExitListaparametro(ctx *ListaparametroContext) {}
+
+// EnterFuncionllamadacontrol is called when production funcionllamadacontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
+
+// ExitFuncionllamadacontrol is called when production funcionllamadacontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
+
+// EnterFuncionllamadacontrolConRetorno is called when production funcionllamadacontrolConRetorno is entered.
+func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrolConRetorno(ctx *FuncionllamadacontrolConRetornoContext) {
+}
+
+// ExitFuncionllamadacontrolConRetorno is called when production funcionllamadacontrolConRetorno is exited.
+func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrolConRetorno(ctx *FuncionllamadacontrolConRetornoContext) {
+}
+
+// EnterListaparametrosllamada is called when production listaparametrosllamada is entered.
+func (s *BaseSwiftGrammarListener) EnterListaparametrosllamada(ctx *ListaparametrosllamadaContext) {}
+
+// ExitListaparametrosllamada is called when production listaparametrosllamada is exited.
+func (s *BaseSwiftGrammarListener) ExitListaparametrosllamada(ctx *ListaparametrosllamadaContext) {}
+
+// EnterPrintstmt is called when production printstmt is entered.
+func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
+
+// ExitPrintstmt is called when production printstmt is exited.
+func (s *BaseSwiftGrammarListener) ExitPrintstmt(ctx *PrintstmtContext) {}
+
+// EnterIntembebida is called when production intembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterIntembebida(ctx *IntembebidaContext) {}
+
+// ExitIntembebida is called when production intembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitIntembebida(ctx *IntembebidaContext) {}
+
+// EnterFloatembebida is called when production floatembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterFloatembebida(ctx *FloatembebidaContext) {}
+
+// ExitFloatembebida is called when production floatembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitFloatembebida(ctx *FloatembebidaContext) {}
+
+// EnterStringembebida is called when production stringembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterStringembebida(ctx *StringembebidaContext) {}
+
+// ExitStringembebida is called when production stringembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitStringembebida(ctx *StringembebidaContext) {}

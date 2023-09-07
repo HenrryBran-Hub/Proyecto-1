@@ -18,18 +18,15 @@ func NewAsignacionVariable(lin int, col int, name string, value interfaces.Expre
 	return AsignacionVariable{Lin: lin, Col: col, Name: name, Value: value}
 }
 
-func (v AsignacionVariable) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v AsignacionVariable) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
-		symbol := environment.Symbol{
-			Lin:   v.Lin,
-			Col:   v.Col,
-			Tipo:  v.Type,
-			Valor: value.Valor,
-			Scope: ast.ObtenerAmbito(),
-		}
-		ast.ActualizarVariable(Variable, symbol)
+		Variable.Symbols.Lin = v.Lin
+		Variable.Symbols.Col = v.Col
+		Variable.Symbols.Valor = value.Valor
+		Variable.Symbols.Scope = ast.ObtenerAmbito()
+		ast.ActualizarVariable(Variable)
 	}
 
 	if Variable.Mutable == false {
