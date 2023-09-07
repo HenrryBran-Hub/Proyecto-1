@@ -131,7 +131,6 @@ expr returns [interfaces.Expression e]
 | left=expr op=(IG_IG|DIF) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
-| left=expr op=COMA right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | PARIZQ expr PARDER { $e = $expr.e }
 | SUB NUMBER                             
     {
@@ -246,6 +245,7 @@ whilecontrol returns [interfaces.Instruction whict]
 //CREACION DEL FOR
 forcontrol returns [interfaces.Instruction forct]
 : FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
+| FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
 | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)};
  
  //CREACION DE GUARD
@@ -618,7 +618,7 @@ listaparametrosllamada returns [interfaces.Instruction lpll]
 
 // FUNCION PRINT
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)};
+: PRINT PARIZQ listaexpresions PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$listaexpresions.blkparf)};
 
 intembebida returns [interfaces.Expression intemb]
 : INT PARIZQ expr PARDER { $intemb = instructions.NewFuncionIntEmbebida($expr.e)};
