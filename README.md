@@ -1,4 +1,4 @@
-# [Compiladores2]Proyecto No. 1
+### [Compiladores2]Proyecto No. 1
 
 ## Descripcion 
 ___
@@ -87,7 +87,7 @@ En esta parte se tendra lo que son los botones, Ejecutar, Mostrar Reportes, Simb
 Los archivos de prueba se encuentran en la carpeta Archivos
 ---
 
-### Creador
+## Creador
 | Nombre | Carnet | Usuario Git |
 |----------|----------|----------|
 | Henrry David Bran Velasquez | 201314439 | [Henrry Bran](https://github.com/HenrryBran-Hub) |
