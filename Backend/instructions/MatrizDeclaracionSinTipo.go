@@ -18,7 +18,7 @@ func NewMatrizDeclaracionSinTipo(lin int, col int, name string, def interfaces.I
 	return MatrizDeclaracionSinTipo{lin, col, name, def}
 }
 
-func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST) interface{} {
 	matexit := ast.GetMatriz(v.Name)
 	if matexit != nil {
 		Errores := environment.Errores{
@@ -33,7 +33,7 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, env interface{}
 		return nil
 	}
 
-	v.Def.Ejecutar(ast, env)
+	v.Def.Ejecutar(ast)
 	tipo := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor
 	tipo.Scope = ast.ObtenerAmbito()
 

@@ -121,14 +121,41 @@ type SwiftGrammarListener interface {
 	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
 	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
 
+	// EnterStructcontrol is called when entering the structcontrol production.
+	EnterStructcontrol(c *StructcontrolContext)
+
+	// EnterListaatributos is called when entering the listaatributos production.
+	EnterListaatributos(c *ListaatributosContext)
+
+	// EnterListaatributo is called when entering the listaatributo production.
+	EnterListaatributo(c *ListaatributoContext)
+
+	// EnterStructexpr is called when entering the structexpr production.
+	EnterStructexpr(c *StructexprContext)
+
+	// EnterL_dupla is called when entering the l_dupla production.
+	EnterL_dupla(c *L_duplaContext)
+
+	// EnterLlamadastruct is called when entering the llamadastruct production.
+	EnterLlamadastruct(c *LlamadastructContext)
+
+	// EnterAsignacionparametrostruct is called when entering the asignacionparametrostruct production.
+	EnterAsignacionparametrostruct(c *AsignacionparametrostructContext)
+
+	// EnterLlamadafuncionstruct is called when entering the llamadafuncionstruct production.
+	EnterLlamadafuncionstruct(c *LlamadafuncionstructContext)
+
 	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
 	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
 
-	// EnterListaparametros is called when entering the listaparametros production.
-	EnterListaparametros(c *ListaparametrosContext)
+	// EnterListaparametro is called when entering the listaparametro production.
+	EnterListaparametro(c *ListaparametroContext)
 
 	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
 	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// EnterFuncionllamadacontrolConRetorno is called when entering the funcionllamadacontrolConRetorno production.
+	EnterFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
 
 	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
 	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
@@ -259,14 +286,41 @@ type SwiftGrammarListener interface {
 	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
 	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
 
+	// ExitStructcontrol is called when exiting the structcontrol production.
+	ExitStructcontrol(c *StructcontrolContext)
+
+	// ExitListaatributos is called when exiting the listaatributos production.
+	ExitListaatributos(c *ListaatributosContext)
+
+	// ExitListaatributo is called when exiting the listaatributo production.
+	ExitListaatributo(c *ListaatributoContext)
+
+	// ExitStructexpr is called when exiting the structexpr production.
+	ExitStructexpr(c *StructexprContext)
+
+	// ExitL_dupla is called when exiting the l_dupla production.
+	ExitL_dupla(c *L_duplaContext)
+
+	// ExitLlamadastruct is called when exiting the llamadastruct production.
+	ExitLlamadastruct(c *LlamadastructContext)
+
+	// ExitAsignacionparametrostruct is called when exiting the asignacionparametrostruct production.
+	ExitAsignacionparametrostruct(c *AsignacionparametrostructContext)
+
+	// ExitLlamadafuncionstruct is called when exiting the llamadafuncionstruct production.
+	ExitLlamadafuncionstruct(c *LlamadafuncionstructContext)
+
 	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
 	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
 
-	// ExitListaparametros is called when exiting the listaparametros production.
-	ExitListaparametros(c *ListaparametrosContext)
+	// ExitListaparametro is called when exiting the listaparametro production.
+	ExitListaparametro(c *ListaparametroContext)
 
 	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
 	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitFuncionllamadacontrolConRetorno is called when exiting the funcionllamadacontrolConRetorno production.
+	ExitFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
 
 	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
 	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)

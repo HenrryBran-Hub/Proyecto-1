@@ -15,7 +15,7 @@ func NewArregloRemoveLast(line, col int, remove string) ArregloRemoveLast {
 	return ArregloRemoveLast{line, col, remove}
 }
 
-func (v ArregloRemoveLast) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloRemoveLast) Ejecutar(ast *environment.AST) interface{} {
 	Remove := ast.GetArreglo(v.Remove)
 	if Remove == nil {
 		Errores := environment.Errores{

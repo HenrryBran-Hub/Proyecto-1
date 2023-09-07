@@ -16,8 +16,8 @@ func NewMatrizDimension(lin, col int, tipo interfaces.Expression) MatrizDimensio
 	return exp
 }
 
-func (o MatrizDimension) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	valor := o.Type.Ejecutar(ast, env)
+func (o MatrizDimension) Ejecutar(ast *environment.AST) environment.Symbol {
+	valor := o.Type.Ejecutar(ast)
 	result := valor.Valor.(int) + 1
 	return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: valor.Tipo, Valor: result}
 }

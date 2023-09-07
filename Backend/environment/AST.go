@@ -34,6 +34,12 @@ type AST struct {
 	Lista_Matriz        *list.List
 	Pila_Matriz         *list.List
 	Lista_MatrizHTML    *list.List
+	AtributosStruct     *list.List
+	FuncionesStruct     *list.List
+	Lista_Struct        *list.List
+	Lista_Funciones     *list.List
+	Lista_Funciones_Var *list.List
+	Lista_Funciones_Par *list.List
 }
 
 type Variable struct {
@@ -83,6 +89,34 @@ type Valores_Matriz struct {
 	Elements  *list.List
 }
 
+type Funcion struct {
+	Lin           int
+	Col           int
+	Nombre        string
+	IsReturn      bool
+	IsParame      bool
+	Tipo          TipoExpresion
+	Retorno       interface{}
+	Parametros    *list.List
+	CodigoFuncion []interface{}
+}
+
+type VariableFuncion struct {
+	Name           string
+	Symbols        Symbol
+	Mutable        bool
+	TipoSimbolo    string
+	Inout          bool
+	EI             bool
+	ExternoInterno string
+}
+
+type Struc struct {
+	Nombre    string
+	Variables []Variable
+	Funciones []Funcion
+}
+
 func NewAST(inst []interface{}, print string, err string) AST {
 	ast := AST{Instructions: inst, Print: print, Errors: err, Id: 0, Dot: "graph{ \n graph [bgcolor=lightgray, fontname=\"Arial\", fontsize=12]; \n"}
 	return ast
@@ -126,6 +160,14 @@ func (a *AST) IniciarAmbito() {
 
 	a.Lista_Errores = list.New()
 	a.Lista_Ambitos_Var.PushFront("Global")
+
+	a.AtributosStruct = list.New()
+	a.FuncionesStruct = list.New()
+	a.Lista_Struct = list.New()
+
+	a.Lista_Funciones = list.New()
+	a.Lista_Funciones_Var = list.New()
+	a.Lista_Funciones_Par = list.New()
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -935,4 +977,31 @@ func (c *AST) ImprimirArreglovalores() {
 		}
 		contadorpila++
 	}
+}
+
+func (a *AST) GuardarFuncion(funcion Funcion) {
+	for e := a.Lista_Funciones.Front(); e != nil; e = e.Next() {
+		if e.Value.(Funcion).Nombre == funcion.Nombre {
+			Errores := Errores{
+				Descripcion: "La Funcion que esta intentando guardar ya existe\n Variable: " + funcion.Nombre,
+				Fila:        strconv.Itoa(e.Value.(Funcion).Lin),
+				Columna:     strconv.Itoa(e.Value.(Funcion).Col),
+				Tipo:        "Error Semantico",
+				Ambito:      funcion.Nombre,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	a.Lista_Funciones.PushBack(funcion)
+}
+
+func (a *AST) GetFuncion(nombre string) *Funcion {
+	for v := a.Lista_Funciones.Front(); v != nil; v = v.Next() {
+		funcion := v.Value.(Funcion)
+		if funcion.Nombre == nombre {
+			return &funcion
+		}
+	}
+	return nil
 }

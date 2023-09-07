@@ -15,8 +15,8 @@ func NewMatrizListaExpresionList(op1 interfaces.Instruction, op2 interfaces.Inst
 	return exp
 }
 
-func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	o.Op1.Ejecutar(ast, env)
-	o.Op2.Ejecutar(ast, env)
+func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST) interface{} {
+	o.Op1.Ejecutar(ast)
+	o.Op2.Ejecutar(ast)
 	return nil
 }

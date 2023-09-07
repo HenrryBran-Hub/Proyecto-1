@@ -15,9 +15,9 @@ func NewArregloAppend(name string, value interfaces.Expression) ArregloAppend {
 	return ArregloAppend{name, value}
 }
 
-func (v ArregloAppend) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloAppend) Ejecutar(ast *environment.AST) interface{} {
 	arreglo := ast.GetArreglo(v.Name)
-	expre := v.Value.Ejecutar(ast, env)
+	expre := v.Value.Ejecutar(ast)
 	if arreglo == nil {
 		Errores := environment.Errores{
 			Descripcion: "El arreglo que esta intentando agregar no existe: \n Arreglo: " + v.Name,

@@ -17,11 +17,11 @@ func NewArregloAppendArreglo(prin string, pop interfaces.Expression, secu string
 	return ArregloAppendArreglo{prin, pop, secu, sop}
 }
 
-func (v ArregloAppendArreglo) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v ArregloAppendArreglo) Ejecutar(ast *environment.AST) interface{} {
 	Principal := ast.GetArreglo(v.Prin)
-	Prinop := v.Pop.Ejecutar(ast, env)
+	Prinop := v.Pop.Ejecutar(ast)
 	Secundaria := ast.GetArreglo(v.Secu)
-	Secuop := v.Sop.Ejecutar(ast, env)
+	Secuop := v.Sop.Ejecutar(ast)
 	if Principal == nil || Secundaria == nil {
 		if Principal == nil {
 			Errores := environment.Errores{

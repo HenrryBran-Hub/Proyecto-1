@@ -13,7 +13,7 @@ func NewTransferenciaBreak(lin int, col int) TransferenciaBreak {
 	return TransferenciaBreak{Lin: lin, Col: col}
 }
 
-func (v TransferenciaBreak) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v TransferenciaBreak) Ejecutar(ast *environment.AST) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

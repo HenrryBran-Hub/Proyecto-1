@@ -16,9 +16,9 @@ func NewFuncionStringEmbebida(op interfaces.Expression) FuncionStringEmbebida {
 	return exp
 }
 
-func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST) environment.Symbol {
 	var op environment.Symbol
-	op = o.Op.Ejecutar(ast, env)
+	op = o.Op.Ejecutar(ast)
 
 	if op.Tipo == environment.INTEGER {
 		r1 := fmt.Sprintf("%v", op.Valor)

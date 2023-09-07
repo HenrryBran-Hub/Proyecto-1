@@ -18,9 +18,9 @@ func NewMatrizObtencionList(name string, exp1, exp2 interfaces.Expression, value
 	return MatrizObtencionList{name, exp1, exp2, values}
 }
 
-func (v MatrizObtencionList) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
+func (v MatrizObtencionList) Ejecutar(ast *environment.AST) environment.Symbol {
 
-	primerval := v.Expr1.Ejecutar(ast, env)
+	primerval := v.Expr1.Ejecutar(ast)
 
 	if primerval.Tipo != environment.INTEGER {
 		Errores := environment.Errores{
@@ -34,7 +34,7 @@ func (v MatrizObtencionList) Ejecutar(ast *environment.AST, env interface{}) env
 		return environment.Symbol{Lin: primerval.Lin, Col: primerval.Col, Tipo: environment.INTEGER, Valor: nil}
 	}
 
-	primerval2 := v.Expr2.Ejecutar(ast, env)
+	primerval2 := v.Expr2.Ejecutar(ast)
 
 	if primerval2.Tipo != environment.INTEGER {
 		Errores := environment.Errores{
@@ -57,7 +57,7 @@ func (v MatrizObtencionList) Ejecutar(ast *environment.AST, env interface{}) env
 		if !ok {
 			continue
 		}
-		values := instruction.Ejecutar(ast, env)
+		values := instruction.Ejecutar(ast)
 		listavalores.PushBack(values)
 	}
 

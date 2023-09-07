@@ -18,8 +18,8 @@ func NewVariableDeclaration(lin int, col int, name string, tipo environment.Tipo
 	return VariableDeclaracion{lin, col, name, tipo, value}
 }
 
-func (v VariableDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v VariableDeclaracion) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,

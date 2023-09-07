@@ -19,8 +19,8 @@ func NewAsignacionSuma(lin int, col int, name string, value interfaces.Expressio
 	return AsignacionSuma{Lin: lin, Col: col, Name: name, Value: value}
 }
 
-func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	value := v.Value.Ejecutar(ast, env)
+func (v AsignacionSuma) Ejecutar(ast *environment.AST) interface{} {
+	value := v.Value.Ejecutar(ast)
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
 		//valida el tipo
@@ -30,7 +30,6 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 			num2 := val1 + val2
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Tipo = v.Type
 			Variable.Symbols.Valor = num2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
@@ -45,7 +44,6 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, env interface{}) interfac
 			}
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Tipo = v.Type
 			Variable.Symbols.Valor = num3
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)

@@ -19,10 +19,10 @@ func NewSentenciaForRango(lin int, col int, id string, left interfaces.Expressio
 	return SentenciaForRango{lin, col, id, left, right, bloque}
 }
 
-func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v SentenciaForRango) Ejecutar(ast *environment.AST) interface{} {
 	var left, right environment.Symbol
-	left = v.Left.Ejecutar(ast, env)
-	right = v.Right.Ejecutar(ast, env)
+	left = v.Left.Ejecutar(ast)
+	right = v.Right.Ejecutar(ast)
 
 	if left.Tipo != environment.INTEGER && right.Tipo != environment.INTEGER {
 		Errores := environment.Errores{
@@ -74,7 +74,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, env interface{}) inter
 			if !ok {
 				continue
 			}
-			instruction.Ejecutar(ast, env)
+			instruction.Ejecutar(ast)
 			bvari := ast.GetVariable("Break")
 			if bvari != nil {
 				retornable = 1

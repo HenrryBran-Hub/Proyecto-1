@@ -38,6 +38,7 @@ AT: 'at';
 REPEATING: 'repeating';
 STRUCT: 'struct';
 MUTATING: 'mutating';
+SELF: 'self';
 
 // primitives
 NUMBER: [0-9]+ ('.' [0-9]+)?;
@@ -85,6 +86,8 @@ GUIONBAJO: '_';
 
 CORCHIZQ: '[';
 CORCHDER: ']';
+
+DIRME: '&';
 
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;

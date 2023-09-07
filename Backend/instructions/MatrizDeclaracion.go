@@ -19,7 +19,7 @@ func NewMatrizDeclaracion(lin int, col int, name string, tipo interfaces.Express
 	return MatrizDeclaracion{lin, col, name, tipo, def}
 }
 
-func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 	matexit := ast.GetMatriz(v.Name)
 	if matexit != nil {
 		Errores := environment.Errores{
@@ -34,8 +34,8 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, env interface{}) inter
 		return nil
 	}
 
-	tipo := v.Type.Ejecutar(ast, env)
-	v.Def.Ejecutar(ast, env)
+	tipo := v.Type.Ejecutar(ast)
+	v.Def.Ejecutar(ast)
 	tipo.Scope = ast.ObtenerAmbito()
 
 	Valor := ast.Lista_Matriz_Val.Back()
