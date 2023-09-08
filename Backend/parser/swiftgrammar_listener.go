@@ -142,8 +142,11 @@ type SwiftGrammarListener interface {
 	// EnterAsignacionparametrostruct is called when entering the asignacionparametrostruct production.
 	EnterAsignacionparametrostruct(c *AsignacionparametrostructContext)
 
-	// EnterLlamadafuncionstruct is called when entering the llamadafuncionstruct production.
-	EnterLlamadafuncionstruct(c *LlamadafuncionstructContext)
+	// EnterLlamadafuncionstructcontrol is called when entering the llamadafuncionstructcontrol production.
+	EnterLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
+
+	// EnterLlamadafuncionstructcontrolret is called when entering the llamadafuncionstructcontrolret production.
+	EnterLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
 
 	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
 	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
@@ -307,8 +310,11 @@ type SwiftGrammarListener interface {
 	// ExitAsignacionparametrostruct is called when exiting the asignacionparametrostruct production.
 	ExitAsignacionparametrostruct(c *AsignacionparametrostructContext)
 
-	// ExitLlamadafuncionstruct is called when exiting the llamadafuncionstruct production.
-	ExitLlamadafuncionstruct(c *LlamadafuncionstructContext)
+	// ExitLlamadafuncionstructcontrol is called when exiting the llamadafuncionstructcontrol production.
+	ExitLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
+
+	// ExitLlamadafuncionstructcontrolret is called when exiting the llamadafuncionstructcontrolret production.
+	ExitLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
 
 	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
 	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)

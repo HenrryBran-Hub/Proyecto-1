@@ -53,6 +53,7 @@ instruction returns [interfaces.Instruction inst]
 | funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
 | structexpr (PUNTOCOMA)? { $inst = $structexpr.strexpr}
 | asignacionparametrostruct (PUNTOCOMA)? { $inst = $asignacionparametrostruct.llmstruasig}
+| llamadafuncionstructcontrol (PUNTOCOMA)? { $inst = $llamadafuncionstructcontrol.llmstrufun}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -92,6 +93,7 @@ instructionint returns [interfaces.Instruction insint]
 | funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
 | structexpr (PUNTOCOMA)? { $insint = $structexpr.strexpr}
 | asignacionparametrostruct (PUNTOCOMA)? { $insint = $asignacionparametrostruct.llmstruasig}
+| llamadafuncionstructcontrol (PUNTOCOMA)? { $insint = $llamadafuncionstructcontrol.llmstrufun}
 ;
 
 /////////////////////////
@@ -205,6 +207,7 @@ expr returns [interfaces.Expression e]
 | stringembebida { $e = $stringembebida.stremb}
 | funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
 | llamadastruct { $e = $llamadastruct.llmstru}
+| llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
 ;
 
 // CREACION DE IF-ELSE
@@ -520,12 +523,27 @@ asignacionparametrostruct returns [interfaces.Instruction llmstruasig]
 }
 ;
 
-llamadafuncionstruct returns [interfaces.Instruction llmstrufun]
-: op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER
+// funciones struc
+llamadafuncionstructcontrol returns [interfaces.Instruction llmstrufun]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
 {
-    //$llmstrufun = instructions.NewStruckLlamadaFun($op.line, $op.pos, $op.text, $op1.text)
+    $llmstrufun = instructions.NewStruckFuncionesControlP($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
 }
-;
+| op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
+{
+    $llmstrufun = instructions.NewStruckFuncionesControl($op.line, $op.pos, $op.text, $op1.text)
+};
+
+llamadafuncionstructcontrolret returns [interfaces.Expression llmstrufunret]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $llmstrufunret = instructions.NewStruckFuncionesControlPR($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
+}
+| op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
+{
+    $llmstrufunret = instructions.NewStruckFuncionesControlR($op.line, $op.pos, $op.text, $op1.text)
+};
+
 
 //CREACION DE FUNCIONES
 funciondeclaracioncontrol returns [interfaces.Instruction fdc]
