@@ -16258,7 +16258,7 @@ func (p *SwiftGrammarParser) Asignacionparametrostruct() (localctx IAsignacionpa
 		localctx.(*AsignacionparametrostructContext)._expr = _x
 	}
 
-	localctx.(*AsignacionparametrostructContext).llmstruasig = instructions.NewStruckAsignacionExpre((func() int {
+	localctx.(*AsignacionparametrostructContext).llmstruasig = instructions.NewStruckAsignacionExpr((func() int {
 		if localctx.(*AsignacionparametrostructContext).GetOp() == nil {
 			return 0
 		} else {

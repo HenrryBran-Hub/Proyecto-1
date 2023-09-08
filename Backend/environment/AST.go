@@ -1133,3 +1133,37 @@ func (a *AST) GetVariableStruc(nombre string) *VariableStruct {
 	}
 	return nil
 }
+func (a *AST) ActualizarVariableStruc(mariable *VariableStruct) {
+	for e := a.Pila_Variables_Struct.Front(); e != nil; e = e.Next() {
+		lista := e.Value.(*list.List)
+		for v := lista.Front(); v != nil; v = v.Next() {
+			valor := v.Value.(VariableStruct)
+			if valor.Nombre == mariable.Nombre {
+				for e1 := valor.Strukt.Variables.Front(); e1 != nil; e1 = e1.Next() {
+					v1 := e1.Value.(Variable)
+					for e2 := mariable.Strukt.Variables.Front(); e2 != nil; e2 = e2.Next() {
+						v2 := e2.Value.(Variable)
+						if v1.Name == v2.Name {
+							v1.Symbols.Valor = v2.Symbols.Valor
+							e1.Value = v1
+							for e3 := a.Lista_Struct_HTML.Front(); e3 != nil; e3 = e3.Next() {
+								v3 := e3.Value.(VariableStruct)
+								v3.Strukt = mariable.Strukt
+								e3.Value = v3
+							}
+							return
+						}
+					}
+				}
+			}
+		}
+	}
+	Errores := Errores{
+		Descripcion: "La variable que está intentando modificar no existe: \n Variable: " + mariable.Nombre,
+		Fila:        strconv.Itoa(mariable.Lin),
+		Columna:     strconv.Itoa(mariable.Col),
+		Tipo:        "Error Semántico",
+		Ambito:      mariable.Scope,
+	}
+	a.ErroresHTML(Errores)
+}

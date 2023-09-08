@@ -4378,7 +4378,7 @@ public class SwiftGrammarParser extends Parser {
 			setState(931);
 			((AsignacionparametrostructContext)_localctx).expr = expr(0);
 
-			    _localctx.llmstruasig = instructions.NewStruckAsignacionExpre((((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getLine():0), (((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getCharPositionInLine():0), (((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getText():null), (((AsignacionparametrostructContext)_localctx).op1!=null?((AsignacionparametrostructContext)_localctx).op1.getText():null), ((AsignacionparametrostructContext)_localctx).expr.e)
+			    _localctx.llmstruasig = instructions.NewStruckAsignacionExpr((((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getLine():0), (((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getCharPositionInLine():0), (((AsignacionparametrostructContext)_localctx).op!=null?((AsignacionparametrostructContext)_localctx).op.getText():null), (((AsignacionparametrostructContext)_localctx).op1!=null?((AsignacionparametrostructContext)_localctx).op1.getText():null), ((AsignacionparametrostructContext)_localctx).expr.e)
 
 			}
 		}
