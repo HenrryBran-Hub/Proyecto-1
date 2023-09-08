@@ -202,6 +202,7 @@ expr returns [interfaces.Expression e]
 | floatembebida { $e = $floatembebida.floemb}
 | stringembebida { $e = $stringembebida.stremb}
 | funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
+| llamadastruct { $e = $llamadastruct.llmstru}
 ;
 
 // CREACION DE IF-ELSE
@@ -506,21 +507,21 @@ ldupla returns [interfaces.Instruction lduplist]
 llamadastruct returns [interfaces.Expression llmstru]
 : op=ID_VALIDO PUNTO op1=ID_VALIDO
 {
-    $llmstru = instructions.NewStruckLlamadaExp($op.text, $op1.text)
+    $llmstru = instructions.NewStruckLlamadaExp($op.line, $op.pos, $op.text, $op1.text)
 }
 ;
 
 asignacionparametrostruct returns [interfaces.Instruction llmstruasig]
 : op=ID_VALIDO PUNTO op1=ID_VALIDO IG expr
 {
-    $llmstruasig = instructions.NewStrucAsigna($op.text, $op1.text, $expr.e)
+    //$llmstruasig = instructions.NewStrucAsigna($op.line, $op.pos, $op.text, $op1.text, $expr.e)
 }
 ;
 
 llamadafuncionstruct returns [interfaces.Instruction llmstrufun]
 : op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER
 {
-    $llmstru = instructions.NewStruckLlamadaFun($op.text, $op1.text)
+    //$llmstrufun = instructions.NewStruckLlamadaFun($op.line, $op.pos, $op.text, $op1.text)
 }
 ;
 
