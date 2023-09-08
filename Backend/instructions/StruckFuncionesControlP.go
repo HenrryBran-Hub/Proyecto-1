@@ -7,24 +7,25 @@ import (
 	"strconv"
 )
 
-type FuncionesControlPR struct {
-	Lin   int
-	Col   int
-	Name  string
-	Lista interfaces.Instruction
+type StruckFuncionesControlP struct {
+	Lin       int
+	Col       int
+	IdStruk   string
+	IdFuncion string
+	Lista     interfaces.Instruction
 }
 
-func NewFuncionesControlPR(lin int, col int, name string, lista interfaces.Instruction) FuncionesControlPR {
-	return FuncionesControlPR{lin, col, name, lista}
+func NewStruckFuncionesControlP(lin int, col int, str, fun string, lista interfaces.Instruction) StruckFuncionesControlP {
+	return StruckFuncionesControlP{lin, col, str, fun, lista}
 }
 
-func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
+func (v StruckFuncionesControlP) Ejecutar(ast *environment.AST) interface{} {
 	v.Lista.Ejecutar(ast)
 
-	existfun := ast.GetFuncion(v.Name)
+	existfun := ast.GetVariableStruc(v.IdStruk)
 	if existfun == nil {
 		Errores := environment.Errores{
-			Descripcion: "No existe la funcion",
+			Descripcion: "No existe el struck con ese nombre",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
@@ -32,7 +33,41 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 		}
 		ast.ErroresHTML(Errores)
 		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return nil
+	}
+
+	funcion := environment.Funcion{}
+	for e := existfun.Strukt.Funciones.Front(); e != nil; e = e.Next() {
+		val := e.Value.(environment.Funcion)
+		if val.Nombre == v.IdFuncion {
+			funcion = val
+		}
+	}
+
+	if funcion.IsParame == false && ast.Lista_Funciones_Par.Len() > 0 {
+		Errores := environment.Errores{
+			Descripcion: "La funcion no debe de tener parametros",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+		ast.Lista_Funciones_Par.Init()
+		return nil
+	}
+
+	if funcion.Parametros.Len() != ast.Lista_Funciones_Par.Len() {
+		Errores := environment.Errores{
+			Descripcion: "La cantidad de parametros ingresados no coincide con la cantidad de parametros de la funcion",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+		ast.Lista_Funciones_Par.Init()
+		return nil
 	}
 
 	var listaparametros = list.New()
@@ -42,35 +77,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 	}
 	ast.Lista_Funciones_Par.Init()
 
-	if existfun.IsParame == false && listaparametros.Len() > 0 {
-		Errores := environment.Errores{
-			Descripcion: "La funcion no debe de tener parametros",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-		listaparametros.Init()
-		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
-	}
-
-	if existfun.Parametros.Len() != listaparametros.Len() {
-		Errores := environment.Errores{
-			Descripcion: "La cantidad de parametros ingresados no coincide con la cantidad de parametros de la funcion",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-		listaparametros.Init()
-		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
-	}
-
-	e1 := existfun.Parametros.Front()
+	e1 := funcion.Parametros.Front()
 	e2 := listaparametros.Front()
 	listavariablesinterna := list.New()
 
@@ -102,8 +109,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 			}
 			ast.ErroresHTML(Errores)
 			listaparametros.Init()
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+			return nil
 		}
 
 		if valor1.EI == true && valor2.EI == false {
@@ -117,8 +123,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 				}
 				ast.ErroresHTML(Errores)
 				listaparametros.Init()
-				ast.Lista_Funciones_Par.Init()
-				return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+				return nil
 			}
 		} else if valor1.EI == true && valor2.EI == true {
 			if valor1.ExternoInterno != valor2.Name {
@@ -131,8 +136,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 				}
 				ast.ErroresHTML(Errores)
 				listaparametros.Init()
-				ast.Lista_Funciones_Par.Init()
-				return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+				return nil
 			}
 		}
 
@@ -146,8 +150,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 			}
 			ast.ErroresHTML(Errores)
 			listaparametros.Init()
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+			return nil
 		} else if valor1.Inout == false && valor2.Inout == true {
 			Errores := environment.Errores{
 				Descripcion: "Se esta enviando el valor como referencia",
@@ -158,8 +161,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 			}
 			ast.ErroresHTML(Errores)
 			listaparametros.Init()
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+			return nil
 		}
 
 		listavariablesinterna.PushBack(Variable)
@@ -168,13 +170,13 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 		e2 = e2.Next()
 	}
 
-	ast.AumentarAmbito("Funcion-" + v.Name)
+	ast.AumentarAmbito("Funcion-" + v.IdStruk + "-" + v.IdFuncion)
 	for e := listavariablesinterna.Front(); e != nil; e = e.Next() {
 		vari := e.Value.(environment.Variable)
 		ast.GuardarVariable(vari)
 	}
-	var retorno environment.Symbol
-	for _, inst := range existfun.CodigoFuncion {
+
+	for _, inst := range funcion.CodigoFuncion {
 		if inst == nil {
 			continue
 		}
@@ -183,15 +185,23 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 			continue
 		}
 		instruction.Ejecutar(ast)
-		revari := ast.GetVariable("ReturnExp")
-		if revari != nil {
-			retorno = revari.Symbols
-			break
-		}
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
-			retorno = rvari.Symbols
 			break
+		}
+		revari := ast.GetVariable("ReturnExp")
+		if revari != nil {
+			Errores := environment.Errores{
+				Descripcion: "Se esta devolviendo un valor en una funcion que no debe de tener retorno",
+				Fila:        strconv.Itoa(v.Lin),
+				Columna:     strconv.Itoa(v.Col),
+				Tipo:        "Error Semantico",
+				Ambito:      ast.ObtenerAmbito(),
+			}
+			ast.ErroresHTML(Errores)
+			listaparametros.Init()
+			ast.DisminuirAmbito()
+			return nil
 		}
 	}
 
@@ -201,7 +211,7 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 	}
 	ast.DisminuirAmbito()
 
-	e1 = existfun.Parametros.Front()
+	e1 = funcion.Parametros.Front()
 	e2 = listaparametros.Front()
 	for e1 != nil && e2 != nil {
 		valor1 := e1.Value.(environment.VariableFuncion)
@@ -220,34 +230,19 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST) environment.Symbol {
 		e2 = e2.Next()
 	}
 
-	if existfun.IsReturn == true {
-		if retorno.Tipo == existfun.Tipo {
-			listaparametros.Init()
-			return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: retorno.Valor}
-		} else {
-			Errores := environment.Errores{
-				Descripcion: "El tipo de dato devuelto no es del tipo de la funcion",
-				Fila:        strconv.Itoa(v.Lin),
-				Columna:     strconv.Itoa(v.Col),
-				Tipo:        "Error Semantico",
-				Ambito:      ast.ObtenerAmbito(),
-			}
-			ast.ErroresHTML(Errores)
-			listaparametros.Init()
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: nil}
-		}
-	} else {
+	if funcion.IsReturn == true {
 		Errores := environment.Errores{
-			Descripcion: "Esta llamando una funcion sin retorno a la operacion",
+			Descripcion: "Se esta declarando una funcion con retorno fuera de un ambiente que acepte esto",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		ast.Lista_Funciones_Par.Init()
 		listaparametros.Init()
-		return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: nil}
+		return nil
+	} else {
+		listaparametros.Init()
+		return nil
 	}
 }

@@ -133,8 +133,8 @@ type SwiftGrammarListener interface {
 	// EnterStructexpr is called when entering the structexpr production.
 	EnterStructexpr(c *StructexprContext)
 
-	// EnterL_dupla is called when entering the l_dupla production.
-	EnterL_dupla(c *L_duplaContext)
+	// EnterLdupla is called when entering the ldupla production.
+	EnterLdupla(c *LduplaContext)
 
 	// EnterLlamadastruct is called when entering the llamadastruct production.
 	EnterLlamadastruct(c *LlamadastructContext)
@@ -142,8 +142,11 @@ type SwiftGrammarListener interface {
 	// EnterAsignacionparametrostruct is called when entering the asignacionparametrostruct production.
 	EnterAsignacionparametrostruct(c *AsignacionparametrostructContext)
 
-	// EnterLlamadafuncionstruct is called when entering the llamadafuncionstruct production.
-	EnterLlamadafuncionstruct(c *LlamadafuncionstructContext)
+	// EnterLlamadafuncionstructcontrol is called when entering the llamadafuncionstructcontrol production.
+	EnterLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
+
+	// EnterLlamadafuncionstructcontrolret is called when entering the llamadafuncionstructcontrolret production.
+	EnterLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
 
 	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
 	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
@@ -298,8 +301,8 @@ type SwiftGrammarListener interface {
 	// ExitStructexpr is called when exiting the structexpr production.
 	ExitStructexpr(c *StructexprContext)
 
-	// ExitL_dupla is called when exiting the l_dupla production.
-	ExitL_dupla(c *L_duplaContext)
+	// ExitLdupla is called when exiting the ldupla production.
+	ExitLdupla(c *LduplaContext)
 
 	// ExitLlamadastruct is called when exiting the llamadastruct production.
 	ExitLlamadastruct(c *LlamadastructContext)
@@ -307,8 +310,11 @@ type SwiftGrammarListener interface {
 	// ExitAsignacionparametrostruct is called when exiting the asignacionparametrostruct production.
 	ExitAsignacionparametrostruct(c *AsignacionparametrostructContext)
 
-	// ExitLlamadafuncionstruct is called when exiting the llamadafuncionstruct production.
-	ExitLlamadafuncionstruct(c *LlamadafuncionstructContext)
+	// ExitLlamadafuncionstructcontrol is called when exiting the llamadafuncionstructcontrol production.
+	ExitLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
+
+	// ExitLlamadafuncionstructcontrolret is called when exiting the llamadafuncionstructcontrolret production.
+	ExitLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
 
 	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
 	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
