@@ -516,7 +516,7 @@ llamadastruct returns [interfaces.Expression llmstru]
 asignacionparametrostruct returns [interfaces.Instruction llmstruasig]
 : op=ID_VALIDO PUNTO op1=ID_VALIDO IG expr
 {
-    $llmstruasig = instructions.NewStruckAsignacion($op.line, $op.pos, $op.text, $op1.text, $expr.e)
+    $llmstruasig = instructions.NewStruckAsignacionExpre($op.line, $op.pos, $op.text, $op1.text, $expr.e)
 }
 ;
 

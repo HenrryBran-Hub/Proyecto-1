@@ -15,14 +15,13 @@ type StruckAsignacion struct {
 	Op         interfaces.Expression
 }
 
-func NewStruckAsignacion(lin, col int, varstr, variable string, op interfaces.Expression) StruckAsignacion {
+func NewStruckAsignacionExpre(lin int, col int, varstr string, variable string, op interfaces.Expression) StruckAsignacion {
 	return StruckAsignacion{lin, col, varstr, variable, op}
 }
 
 func (v StruckAsignacion) Ejecutar(ast *environment.AST) interface{} {
-
-	existvarstruc := ast.GetVariableStruc(v.IdStruct)
-	if existvarstruc == nil {
+	estructura := ast.GetVariableStruc(v.IdStruct)
+	if estructura == nil {
 		Errores := environment.Errores{
 			Descripcion: "El struc que estas intentando ingresar no existe",
 			Fila:        strconv.Itoa(v.Lin),
@@ -32,8 +31,11 @@ func (v StruckAsignacion) Ejecutar(ast *environment.AST) interface{} {
 		}
 		ast.ErroresHTML(Errores)
 		return nil
-	}
+	} else {
 
-	fmt.Println(existvarstruc)
-	return nil
+		expresion := v.Op.Ejecutar(ast)
+		fmt.Println(estructura)
+		fmt.Println(expresion)
+		return nil
+	}
 }
