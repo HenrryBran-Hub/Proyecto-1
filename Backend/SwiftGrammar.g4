@@ -51,6 +51,9 @@ instruction returns [interfaces.Instruction inst]
 | structcontrol { $inst = $structcontrol.struck}
 | funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
 | funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
+| structexpr (PUNTOCOMA)? { $inst = $structexpr.strexpr}
+| asignacionparametrostruct (PUNTOCOMA)? { $inst = $asignacionparametrostruct.llmstruasig}
+| llamadafuncionstructcontrol (PUNTOCOMA)? { $inst = $llamadafuncionstructcontrol.llmstrufun}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -86,7 +89,11 @@ instructionint returns [interfaces.Instruction insint]
 | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
+| matrizcontrol (PUNTOCOMA)? { $insint = $matrizcontrol.matct}
 | funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
+| structexpr (PUNTOCOMA)? { $insint = $structexpr.strexpr}
+| asignacionparametrostruct (PUNTOCOMA)? { $insint = $asignacionparametrostruct.llmstruasig}
+| llamadafuncionstructcontrol (PUNTOCOMA)? { $insint = $llamadafuncionstructcontrol.llmstrufun}
 ;
 
 /////////////////////////
@@ -199,6 +206,8 @@ expr returns [interfaces.Expression e]
 | floatembebida { $e = $floatembebida.floemb}
 | stringembebida { $e = $stringembebida.stremb}
 | funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
+| llamadastruct { $e = $llamadastruct.llmstru}
+| llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
 ;
 
 // CREACION DE IF-ELSE
@@ -276,7 +285,7 @@ retornos returns [interfaces.Instruction rect]
 ;
 
 
-//CREACION DEL VECTOR (pendiente)
+//CREACION DEL VECTOR 
 vectorcontrol returns [interfaces.Instruction vect]
 : VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ blockparams CORCHDER { $vect = instructions.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo, $blockparams.blkpar)}
 | VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ CORCHDER { $vect = instructions.NewArregloDeclaracionSinLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo)}
@@ -473,43 +482,68 @@ listaatributo returns [interfaces.Instruction listatstr]
 | (MUTATING)?  funciondeclaracioncontrol 
 {
     if $MUTATING != nil{
-        //$listatstr = instructions.NewStruckMutatingFunction($funciondeclaracioncontrol.fdc)
+        $listatstr = instructions.NewStruckFunctionMutating($funciondeclaracioncontrol.fdc)
     } else {
-        //$listatstr = instructions.NewStruckFunction($funciondeclaracioncontrol.fdc)
+        $listatstr = instructions.NewStruckFunction($funciondeclaracioncontrol.fdc)
     }
 }
 ;
 
 //asignacion del struct
-structexpr
-: (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG ID_VALIDO( l_dupla )?
-{}
-| (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG (ID_VALIDO)?
-{}
-| (VAR|LET) ID_VALIDO (DOS_PUNTOS ID_VALIDO)? IG expr
-{}
+structexpr returns [interfaces.Instruction strexpr]
+: op1=ID_VALIDO DOS_PUNTOS op=ID_VALIDO op2=ID_VALIDO PARIZQ ldupla PARDER
+{
+    $strexpr = instructions.NewStruckVariable($op1.line, $op1.pos, $op.text, $op1.text, $op2.text, $ldupla.lduplist, true)
+}
 ;
 
-l_dupla
-:(ID_VALIDO DOS_PUNTOS expr)+
-{}
+ldupla returns [interfaces.Instruction lduplist]
+: ID_VALIDO DOS_PUNTOS expr COMA op=ldupla
+{ 
+    $lduplist = instructions.NewStructListDuple($ID_VALIDO.text, $expr.e, $op.lduplist, true)
+}
+| ID_VALIDO DOS_PUNTOS expr
+{
+    $lduplist = instructions.NewStructDuple($ID_VALIDO.text, $expr.e, false)  
+}
 ;
 
 //asignacion y obtencio de struct
-llamadastruct
-: ID_VALIDO PUNTO ID_VALIDO
-{}
+llamadastruct returns [interfaces.Expression llmstru]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO
+{
+    $llmstru = instructions.NewStruckLlamadaExp($op.line, $op.pos, $op.text, $op1.text)
+}
 ;
 
-asignacionparametrostruct
-: ID_VALIDO PUNTO ID_VALIDO IG expr
-{}
+asignacionparametrostruct returns [interfaces.Instruction llmstruasig]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO IG expr
+{
+    $llmstruasig = instructions.NewStruckAsignacionExpr($op.line, $op.pos, $op.text, $op1.text, $expr.e)
+}
 ;
 
-llamadafuncionstruct
-: ID_VALIDO PUNTO ID_VALIDO PARIZQ PARDER
-{}
-;
+// funciones struc
+llamadafuncionstructcontrol returns [interfaces.Instruction llmstrufun]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $llmstrufun = instructions.NewStruckFuncionesControlP($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
+}
+| op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
+{
+    $llmstrufun = instructions.NewStruckFuncionesControl($op.line, $op.pos, $op.text, $op1.text)
+};
+
+llamadafuncionstructcontrolret returns [interfaces.Expression llmstrufunret]
+: op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $llmstrufunret = instructions.NewStruckFuncionesControlPR($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
+}
+| op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
+{
+    $llmstrufunret = instructions.NewStruckFuncionesControlR($op.line, $op.pos, $op.text, $op1.text)
+};
+
 
 //CREACION DE FUNCIONES
 funciondeclaracioncontrol returns [interfaces.Instruction fdc]
