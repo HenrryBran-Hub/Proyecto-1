@@ -12,34 +12,38 @@ import (
 )
 
 type AST struct {
-	Instructions        []interface{}
-	Print               string
-	Errors              string
-	Pila_Variables      *list.List
-	Lista_Variables     *list.List
-	Lista_VariablesHTML *list.List
-	Lista_Errores       *list.List
-	Lista_Ambitos_Var   *list.List
-	Lista_Arreglos      *list.List
-	Pila_Arreglos       *list.List
-	Lista_VectorHTML    *list.List
-	Variables           Variable
-	Stack               []*Node
-	Id                  int
-	Dot                 string
-	Root                *Node
-	ContadorDimen       int
-	Lista_Matriz_Val    *list.List
-	Pila_Matriz_Val     *list.List
-	Lista_Matriz        *list.List
-	Pila_Matriz         *list.List
-	Lista_MatrizHTML    *list.List
-	AtributosStruct     *list.List
-	FuncionesStruct     *list.List
-	Lista_Struct        *list.List
-	Lista_Funciones     *list.List
-	Lista_Funciones_Var *list.List
-	Lista_Funciones_Par *list.List
+	Instructions           []interface{}
+	Print                  string
+	Errors                 string
+	Pila_Variables         *list.List
+	Lista_Variables        *list.List
+	Lista_VariablesHTML    *list.List
+	Lista_Errores          *list.List
+	Lista_Ambitos_Var      *list.List
+	Lista_Arreglos         *list.List
+	Pila_Arreglos          *list.List
+	Lista_VectorHTML       *list.List
+	Variables              Variable
+	Stack                  []*Node
+	Id                     int
+	Dot                    string
+	Root                   *Node
+	ContadorDimen          int
+	Lista_Matriz_Val       *list.List
+	Pila_Matriz_Val        *list.List
+	Lista_Matriz           *list.List
+	Pila_Matriz            *list.List
+	Lista_MatrizHTML       *list.List
+	AtributosStruct        *list.List
+	FuncionesStruct        *list.List
+	Lista_Struct           *list.List
+	Lista_Funciones        *list.List
+	Lista_Funciones_Var    *list.List
+	Lista_Funciones_Par    *list.List
+	Lista_Variables_Struct *list.List
+	Pila_Variables_Struct  *list.List
+	ListaParametrosStruct  *list.List
+	Lista_Struct_HTML      *list.List
 }
 
 type Variable struct {
@@ -99,6 +103,7 @@ type Funcion struct {
 	Retorno       interface{}
 	Parametros    *list.List
 	CodigoFuncion []interface{}
+	Mutating      bool
 }
 
 type VariableFuncion struct {
@@ -112,9 +117,25 @@ type VariableFuncion struct {
 }
 
 type Struc struct {
+	Lin       int
+	Col       int
 	Nombre    string
-	Variables []Variable
-	Funciones []Funcion
+	Variables *list.List
+	Funciones *list.List
+}
+
+type VariableStruct struct {
+	Lin      int
+	Col      int
+	Nombre   string
+	Strukt   Struc
+	Mutating bool
+	Scope    string
+}
+
+type Parametrostruct struct {
+	Name    string
+	Symbolo Symbol
 }
 
 func NewAST(inst []interface{}, print string, err string) AST {
@@ -168,6 +189,12 @@ func (a *AST) IniciarAmbito() {
 	a.Lista_Funciones = list.New()
 	a.Lista_Funciones_Var = list.New()
 	a.Lista_Funciones_Par = list.New()
+
+	a.Lista_Variables_Struct = list.New()
+	a.Pila_Variables_Struct = list.New()
+	a.Pila_Variables_Struct.PushBack(a.Lista_Variables_Struct)
+	a.ListaParametrosStruct = list.New()
+	a.Lista_Struct_HTML = list.New()
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -182,6 +209,10 @@ func (a *AST) AumentarAmbito(ambito string) {
 	nuevaMatriz_Val := list.New()
 	a.Pila_Matriz.PushFront(nuevaMatriz_Val)
 	a.Lista_Matriz = nuevaMatriz_Val
+
+	nuevaStruct_Val := list.New()
+	a.Pila_Variables_Struct.PushFront(nuevaStruct_Val)
+	a.Lista_Variables_Struct = nuevaStruct_Val
 
 	a.Lista_Ambitos_Var.PushBack(ambito)
 }
@@ -213,6 +244,9 @@ func (a *AST) DisminuirAmbito() {
 	if a.Lista_Ambitos_Var.Len() > 0 {
 		a.Lista_Ambitos_Var.Remove(a.Lista_Ambitos_Var.Back())
 	}
+
+	a.Pila_Variables_Struct.Remove(a.Pila_Variables_Struct.Front())
+	a.Lista_Variables_Struct = a.Pila_Variables_Struct.Front().Value.(*list.List)
 }
 
 func (a *AST) GuardarVariable(variable Variable) {
@@ -593,6 +627,45 @@ func (a *AST) TablaVariablesHTML() {
 			matrizStr,
 			tipoexpstr,
 			matriz.Symbols.Scope,
+		)
+		rowNumber++
+	}
+
+	for e := a.Lista_Struct_HTML.Front(); e != nil; e = e.Next() {
+		stru := e.Value.(VariableStruct)
+		//variables
+		var tipoexpstr string = ""
+		for e := stru.Strukt.Variables.Front(); e != nil; e = e.Next() {
+			tipoexpstr += " " + e.Value.(Variable).Name + " - " + e.Value.(Variable).Symbols.Valor.(string)
+		}
+
+		//funciones
+		var struStr string = ""
+		for e := stru.Strukt.Funciones.Front(); e != nil; e = e.Next() {
+			struStr += " " + e.Value.(Funcion).Nombre
+		}
+
+		fmt.Fprintf(file, `
+   					<tr>
+   						<td>%d</td>
+						<td>%s</td>
+   						<td>%s</td>
+   						<td>%t</td>
+   						<td>%d</td>
+   						<td>%d</td>
+   						<td>%v</td>
+   						<td>%s</td>
+   						<td>%s</td>
+   					</tr>`,
+			rowNumber,
+			stru.Strukt.Nombre,
+			stru.Nombre,
+			stru.Mutating,
+			stru.Lin,
+			stru.Col,
+			"Funciones: "+struStr,
+			"Variables: "+tipoexpstr,
+			stru.Scope,
 		)
 		rowNumber++
 	}
@@ -1001,6 +1074,61 @@ func (a *AST) GetFuncion(nombre string) *Funcion {
 		funcion := v.Value.(Funcion)
 		if funcion.Nombre == nombre {
 			return &funcion
+		}
+	}
+	return nil
+}
+
+func (a *AST) GuardarStruct(stru Struc) {
+	for e := a.Lista_Struct.Front(); e != nil; e = e.Next() {
+		if e.Value.(Struc).Nombre == stru.Nombre {
+			Errores := Errores{
+				Descripcion: "El Strut que esta intentando guardar ya existe\n Variable: " + stru.Nombre,
+				Fila:        strconv.Itoa(e.Value.(Struc).Lin),
+				Columna:     strconv.Itoa(e.Value.(Struc).Col),
+				Tipo:        "Error Semantico",
+				Ambito:      stru.Nombre,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	a.Lista_Struct.PushBack(stru)
+}
+
+func (a *AST) GetStruc(nombre string) *Struc {
+	for v := a.Lista_Struct.Front(); v != nil; v = v.Next() {
+		variablestruc := v.Value.(Struc)
+		if variablestruc.Nombre == nombre {
+			return &variablestruc
+		}
+	}
+	return nil
+}
+
+func (a *AST) GuardarVariableStruc(stru VariableStruct) {
+	for e := a.Lista_Variables_Struct.Front(); e != nil; e = e.Next() {
+		if e.Value.(VariableStruct).Nombre == stru.Nombre {
+			Errores := Errores{
+				Descripcion: "La variale Struct que esta intentando guardar ya existe en este ambito: \n Variable: " + stru.Nombre,
+				Fila:        strconv.Itoa(e.Value.(VariableStruct).Lin),
+				Columna:     strconv.Itoa(e.Value.(VariableStruct).Col),
+				Tipo:        "Error Semantico",
+				Ambito:      stru.Scope,
+			}
+			a.ErroresHTML(Errores)
+			return
+		}
+	}
+	a.Lista_Variables_Struct.PushBack(stru)
+	a.Lista_Struct_HTML.PushBack(stru)
+}
+
+func (a *AST) GetVariableStruc(nombre string) *VariableStruct {
+	for v := a.Lista_Variables_Struct.Front(); v != nil; v = v.Next() {
+		variablestruc := v.Value.(VariableStruct)
+		if variablestruc.Nombre == nombre {
+			return &variablestruc
 		}
 	}
 	return nil

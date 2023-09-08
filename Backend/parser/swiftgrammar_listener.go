@@ -133,8 +133,8 @@ type SwiftGrammarListener interface {
 	// EnterStructexpr is called when entering the structexpr production.
 	EnterStructexpr(c *StructexprContext)
 
-	// EnterL_dupla is called when entering the l_dupla production.
-	EnterL_dupla(c *L_duplaContext)
+	// EnterLdupla is called when entering the ldupla production.
+	EnterLdupla(c *LduplaContext)
 
 	// EnterLlamadastruct is called when entering the llamadastruct production.
 	EnterLlamadastruct(c *LlamadastructContext)
@@ -298,8 +298,8 @@ type SwiftGrammarListener interface {
 	// ExitStructexpr is called when exiting the structexpr production.
 	ExitStructexpr(c *StructexprContext)
 
-	// ExitL_dupla is called when exiting the l_dupla production.
-	ExitL_dupla(c *L_duplaContext)
+	// ExitLdupla is called when exiting the ldupla production.
+	ExitLdupla(c *LduplaContext)
 
 	// ExitLlamadastruct is called when exiting the llamadastruct production.
 	ExitLlamadastruct(c *LlamadastructContext)

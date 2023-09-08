@@ -272,11 +272,11 @@ func (s *BaseSwiftGrammarListener) EnterStructexpr(ctx *StructexprContext) {}
 // ExitStructexpr is called when production structexpr is exited.
 func (s *BaseSwiftGrammarListener) ExitStructexpr(ctx *StructexprContext) {}
 
-// EnterL_dupla is called when production l_dupla is entered.
-func (s *BaseSwiftGrammarListener) EnterL_dupla(ctx *L_duplaContext) {}
+// EnterLdupla is called when production ldupla is entered.
+func (s *BaseSwiftGrammarListener) EnterLdupla(ctx *LduplaContext) {}
 
-// ExitL_dupla is called when production l_dupla is exited.
-func (s *BaseSwiftGrammarListener) ExitL_dupla(ctx *L_duplaContext) {}
+// ExitLdupla is called when production ldupla is exited.
+func (s *BaseSwiftGrammarListener) ExitLdupla(ctx *LduplaContext) {}
 
 // EnterLlamadastruct is called when production llamadastruct is entered.
 func (s *BaseSwiftGrammarListener) EnterLlamadastruct(ctx *LlamadastructContext) {}
