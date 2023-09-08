@@ -52,6 +52,7 @@ instruction returns [interfaces.Instruction inst]
 | funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
 | funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
 | structexpr (PUNTOCOMA)? { $inst = $structexpr.strexpr}
+| asignacionparametrostruct (PUNTOCOMA)? { $inst = $asignacionparametrostruct.llmstruasig}
 ;
 
 // LISTA DE INSTRUCCIONES LOCALES
@@ -90,6 +91,7 @@ instructionint returns [interfaces.Instruction insint]
 | matrizcontrol (PUNTOCOMA)? { $insint = $matrizcontrol.matct}
 | funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
 | structexpr (PUNTOCOMA)? { $insint = $structexpr.strexpr}
+| asignacionparametrostruct (PUNTOCOMA)? { $insint = $asignacionparametrostruct.llmstruasig}
 ;
 
 /////////////////////////
@@ -514,7 +516,7 @@ llamadastruct returns [interfaces.Expression llmstru]
 asignacionparametrostruct returns [interfaces.Instruction llmstruasig]
 : op=ID_VALIDO PUNTO op1=ID_VALIDO IG expr
 {
-    //$llmstruasig = instructions.NewStrucAsigna($op.line, $op.pos, $op.text, $op1.text, $expr.e)
+    $llmstruasig = instructions.NewStruckAsignacion($op.line, $op.pos, $op.text, $op1.text, $expr.e)
 }
 ;
 

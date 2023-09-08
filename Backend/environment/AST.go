@@ -636,7 +636,7 @@ func (a *AST) TablaVariablesHTML() {
 		//variables
 		var tipoexpstr string = ""
 		for e := stru.Strukt.Variables.Front(); e != nil; e = e.Next() {
-			tipoexpstr += " " + e.Value.(Variable).Name + " - " + e.Value.(Variable).Symbols.Valor.(string)
+			tipoexpstr += " " + e.Value.(Variable).Name + " - " + fmt.Sprintf("%v", e.Value.(Variable).Symbols.Valor)
 		}
 
 		//funciones

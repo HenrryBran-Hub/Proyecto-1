@@ -75,12 +75,6 @@ func (v StructVariable) Ejecutar(ast *environment.AST) interface{} {
 			Valor: valor2.Symbolo.Valor,
 			Scope: "Struct-" + v.IdStruct + "-" + v.IdVariable,
 		}
-		Variable := environment.Variable{
-			Name:        valor1.Name,
-			Symbols:     symbol,
-			Mutable:     valor1.Mutable,
-			TipoSimbolo: "Variable",
-		}
 
 		if valor1.Symbols.Tipo != valor2.Symbolo.Tipo {
 			Errores := environment.Errores{
@@ -91,7 +85,7 @@ func (v StructVariable) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.ListaParametrosStruct.Init().Init()
+			ast.ListaParametrosStruct.Init()
 			return nil
 		}
 
@@ -104,8 +98,15 @@ func (v StructVariable) Ejecutar(ast *environment.AST) interface{} {
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			ast.ListaParametrosStruct.Init().Init()
-			return nil
+			ast.ListaParametrosStruct.Init()
+			symbol.Valor = valor1.Symbols.Valor
+		}
+
+		Variable := environment.Variable{
+			Name:        valor1.Name,
+			Symbols:     symbol,
+			Mutable:     valor1.Mutable,
+			TipoSimbolo: "Variable",
 		}
 
 		variables.PushBack(Variable)
